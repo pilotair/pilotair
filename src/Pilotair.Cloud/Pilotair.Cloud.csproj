@@ -8,6 +8,8 @@
     <SpaRoot>./front-app</SpaRoot>
     <SpaProxyServerUrl>http://localhost:5173/__admin__</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+    <ContainerRepository>pilotair-cloud</ContainerRepository>
+    <ContainerFamily>alpine</ContainerFamily>
   </PropertyGroup>
 
   <ItemGroup>
