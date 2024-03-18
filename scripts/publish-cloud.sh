@@ -1,0 +1,1 @@
+npm run build --prefix ../src/Pilotair.Cloud/front-app

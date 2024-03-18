@@ -1,21 +1,31 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
-            "preLaunchTask": "build",
+            "name": "Launch Cloud",
+            "type": "coreclr",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/src/index.ts",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Pilotair.Cloud/bin/Debug/net8.0/Pilotair.Cloud.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Pilotair.Cloud",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "Launch Runtime",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Pilotair.Runtime/bin/Debug/net8.0/Pilotair.Runtime.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Pilotair.Runtime",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
         }
     ]
 }
