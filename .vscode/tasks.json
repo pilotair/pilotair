@@ -14,28 +14,14 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/pilotair.sln",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary;ForceNoAlign"
-            ],
-            "problemMatcher": "$msCompile"
+            "label": "publish cloud",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/publish-cloud.sh"
         },
         {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "--project",
-                "${workspaceFolder}/pilotair.sln"
-            ],
-            "problemMatcher": "$msCompile"
+            "label": "publish runtime",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/publish-runtime.sh"
         }
     ]
 }

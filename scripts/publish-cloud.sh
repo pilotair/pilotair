@@ -1,2 +1,2 @@
-npm run build --prefix ../src/Pilotair.Cloud/front-app;
-dotnet publish /t:PublishContainer ../src/Pilotair.Cloud
+npm run build --prefix src/Pilotair.Cloud/front-app;
+dotnet publish /t:PublishContainer src/Pilotair.Cloud
