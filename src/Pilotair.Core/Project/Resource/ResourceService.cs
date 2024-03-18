@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Pilotair.Core.Project;
 
-namespace Pilotair.Core.Resource;
+namespace Pilotair.Core.Project.Resource;
 
 public class ResourceService
 {

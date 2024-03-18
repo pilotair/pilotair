@@ -1,4 +1,4 @@
-namespace Pilotair.Core.Resource;
+namespace Pilotair.Core.Project.Resource;
 
 public class StaticFile
 {

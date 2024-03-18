@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using Pilotair.Core.Project;
+using Pilotair.Cloud.Services;
 
 namespace Pilotair.Cloud.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProjectController(ProjectService appService) : ControllerBase
+public class ProjectController(ProjectService projectService) : ControllerBase
 {
 
     // [HttpGet("{id}")]

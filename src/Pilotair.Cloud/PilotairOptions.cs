@@ -1,4 +1,4 @@
-namespace Pilotair.Core;
+namespace Pilotair.Cloud;
 
 public class PilotairOptions
 {

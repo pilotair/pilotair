@@ -4,5 +4,4 @@ public interface IProject
 {
     public Guid Id { get; }
     public string Name { get; }
-    public string Path { get; }
 }
