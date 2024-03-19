@@ -5,7 +5,7 @@ using Pilotair.Core.Project;
 namespace Pilotair.Cloud.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("__api__/[controller]")]
 public class ProjectController(ProjectService projectService) : ControllerBase
 {
     [HttpGet("{id}")]
