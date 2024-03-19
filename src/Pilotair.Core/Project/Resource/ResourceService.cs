@@ -6,10 +6,11 @@ namespace Pilotair.Core.Project.Resource;
 public class ResourceService
 {
     private const string FOLDER = "files";
-    private readonly WebProject _app;
+    private readonly WebProject project;
 
-    public ResourceService()
+    public ResourceService(WebProject project)
     {
+        this.project = project;
     }
 
     public async Task SaveAsync(IFormFileCollection files, string? folder)

@@ -8,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddPilotairCore();
+// builder.Services.AddPilotairCore();
 builder.Services.AddSingleton<ProjectService>();
 builder.Services.AddOptions<PilotairOptions>()
                 .Bind(builder.Configuration.GetSection(PilotairOptions.NAME));

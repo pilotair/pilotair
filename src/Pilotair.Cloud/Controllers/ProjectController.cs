@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Pilotair.Cloud.Services;
+using Pilotair.Core.Project;
 
 namespace Pilotair.Cloud.Controllers;
 
@@ -7,24 +8,23 @@ namespace Pilotair.Cloud.Controllers;
 [Route("api/[controller]")]
 public class ProjectController(ProjectService projectService) : ControllerBase
 {
+    [HttpGet("{id}")]
+    public WebProject Get(Guid id)
+    {
+        return projectService.Projects[id];
+    }
 
-    // [HttpGet("{id}")]
-    // public Pilotair.Core.Application.App Get(Guid id)
-    // {
-    //     return appService.Get(id);
-    // }
+    [HttpGet]
+    public IEnumerable<WebProject> Get()
+    {
+        return projectService.Projects.Values;
+    }
 
-    // [HttpGet]
-    // public Pilotair.Core.Application.App[] Get()
-    // {
-    //     return appService.List.ToArray();
-    // }
-
-    // [HttpPost]
-    // public Pilotair.Core.Application.App Post(string name)
-    // {
-    //     return appService.Add(name);
-    // }
+    [HttpPost]
+    public async Task<WebProject> PostAsync(string name)
+    {
+        return await projectService.CreateAsync(name);
+    }
 
     // [HttpPut("settings/{id}")]
     // public Pilotair.Core.Application.App Put(Guid id, [FromBody] UpdateSettings settings)

@@ -1,4 +1,4 @@
-namespace Pilotair.Cloud;
+namespace Pilotair.Runtime;
 
 public class PilotairOptions
 {
