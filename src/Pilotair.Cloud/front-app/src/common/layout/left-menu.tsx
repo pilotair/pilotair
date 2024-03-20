@@ -1,16 +1,14 @@
-import {Layout, Menu, } from "antd";
+import { Layout, Menu, } from "antd";
 import Sider from "antd/es/layout/Sider";
-import Logo from "./logo"
 import Breadcrumb from "../breadcrumb"
+import Header from "./header"
 
-const { Header, Content } = Layout
+const { Content } = Layout
 
 export default function LeftMenuLayout() {
     return (
         < Layout className="absolute inset-0">
-            <Header style={{ display: 'flex', alignItems: 'center' }}>
-                <Logo />
-            </Header>
+            <Header />
             <Layout>
                 <Sider width={200} >
                     <Menu
@@ -23,7 +21,7 @@ export default function LeftMenuLayout() {
                 <Layout style={{ padding: '0 24px 24px' }}>
                     <Breadcrumb items={[
                         {
-                           title:"app"
+                            title: "app"
                         }
                     ]}>
                     </Breadcrumb>

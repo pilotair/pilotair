@@ -1,15 +1,13 @@
 import { Layout } from "antd"
-import Logo from "./logo"
 import { Outlet } from "react-router-dom"
+import Header from "./header"
 
-const { Header, Content } = Layout
+const { Content } = Layout
 
 export default function RootLayout() {
     return (
         <Layout className="absolute inset-0">
-            <Header>
-                <Logo />
-            </Header>
+            <Header></Header>
             <Content>
                 <Outlet />
             </Content>
