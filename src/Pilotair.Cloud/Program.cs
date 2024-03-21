@@ -10,6 +10,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 // builder.Services.AddPilotairCore();
 builder.Services.AddSingleton<ProjectService>();
+builder.Services.AddSingleton<ContainerService>();
 builder.Services.AddOptions<PilotairOptions>()
                 .Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 
