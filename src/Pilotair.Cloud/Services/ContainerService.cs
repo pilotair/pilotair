@@ -53,7 +53,7 @@ public class ContainerService(IOptions<PilotairOptions> options)
                 { "pilotair.type", "WebProject" },
                 { "pilotair.id", project.Id.ToString() },
             },
-                Image = "pilotair-runtime:latest",
+                Image = "pilotair-web:latest",
             }), token);
             return await client.Containers.StartContainerAsync(response.ID, new ContainerStartParameters(), token);
         }

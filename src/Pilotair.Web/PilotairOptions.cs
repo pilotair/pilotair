@@ -1,4 +1,4 @@
-namespace Pilotair.Runtime;
+namespace Pilotair.Web;
 
 public class PilotairOptions
 {

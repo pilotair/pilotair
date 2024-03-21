@@ -19,9 +19,9 @@
             "command": "${workspaceFolder}/scripts/publish-cloud.sh"
         },
         {
-            "label": "publish runtime",
+            "label": "publish web",
             "type": "shell",
-            "command": "${workspaceFolder}/scripts/publish-runtime.sh"
+            "command": "${workspaceFolder}/scripts/publish-web.sh"
         }
     ]
 }

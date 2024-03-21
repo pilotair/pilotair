@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <ContainerRepository>pilotair-runtime</ContainerRepository>
+    <ContainerRepository>pilotair-web</ContainerRepository>
     <ContainerFamily>alpine</ContainerFamily>
     <UserSecretsId>0aa27e78-0fa9-4211-806b-3fc86175de50</UserSecretsId>
   </PropertyGroup>

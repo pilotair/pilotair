@@ -1,1 +1,0 @@
-dotnet publish /t:PublishContainer src/Pilotair.Runtime
