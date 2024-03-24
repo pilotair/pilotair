@@ -16,3 +16,7 @@ public class ProjectNotFoundException : PilotairException
     {
     }
 }
+
+public class ProjectExistException(string name) : PilotairException($"Project '{name}' exist")
+{
+}

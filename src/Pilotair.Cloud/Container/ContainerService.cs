@@ -11,10 +11,11 @@ public class ContainerService(IOptions<ContainerOptions> options)
 {
     private readonly DockerClient client = new DockerClientConfiguration(options.Value.Server).CreateClient();
 
-    public async Task<IEnumerable<ContainerListResponse>> ListAsync(CancellationToken token)
+    public async Task<IEnumerable<ContainerListResponse>> ListAsync(ContainerQueryModel query, CancellationToken token)
     {
         return await client.Containers.ListContainersAsync(new ContainersListParameters
         {
+            All = true,
             Filters = new Dictionary<string, IDictionary<string, bool>>
             {
                 {
@@ -22,7 +23,7 @@ public class ContainerService(IOptions<ContainerOptions> options)
                         { $"pilotair.type=WebProject",true}
                     }
                 }
-            }
+            },
         }, token);
     }
 

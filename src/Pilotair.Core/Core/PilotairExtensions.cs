@@ -10,7 +10,7 @@ public static class PilotairExtensions
     public static IServiceCollection AddPilotairCore(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddOptions<PilotairOptions>().Bind(configuration.GetSection(PilotairOptions.NAME));
-        services.AddSingleton<ProjectFactory>();
+        services.AddSingleton<ProjectService>();
         return services;
     }
 }

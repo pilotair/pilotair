@@ -5,12 +5,11 @@ using Pilotair.Core.Project;
 
 namespace Pilotair.Web;
 
-public class WebProject : ProjectBase
+public class WebProject : IProject
 {
+    public Guid Id { get; init; }
 
-    [JsonConstructor]
-    internal WebProject()
-    {
+    public string Name { get; init; }
 
-    }
+    public ProjectType Type => ProjectType.Web;
 }

@@ -11,8 +11,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddPilotairCore(builder.Configuration);
 builder.Services.AddSingleton<ContainerService>();
-// builder.Services.AddOptions<PilotairOptions>()
-//                 .Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 
 var app = builder.Build();
 app.MapFallbackToFile("index.html");
@@ -24,7 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var projectFactory = app.Services.GetService<ProjectFactory>();
+var projectFactory = app.Services.GetService<ProjectService>();
 await projectFactory!.InitAsync();
 
 app.UseHttpsRedirection();

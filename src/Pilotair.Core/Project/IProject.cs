@@ -5,11 +5,11 @@ namespace Pilotair.Core.Project;
 
 public interface IProject
 {
-    public const string SETTINGS_NAME = "settings.json";
+    const string SETTINGS_NAME = "settings.json";
 
-    public Guid Id { get; }
+    Guid Id { get; }
 
-    public string Name { get; }
+    string Name { get; }
 
-    public ProjectType Type { get; }
+    ProjectType Type { get; }
 }

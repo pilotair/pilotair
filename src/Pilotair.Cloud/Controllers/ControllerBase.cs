@@ -4,6 +4,6 @@ namespace Pilotair.Cloud.Controllers;
 
 [ApiController]
 [Route("__api__/[controller]")]
-public class ControllerBase
+public class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
 {
 }

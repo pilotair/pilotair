@@ -3,37 +3,37 @@ using Pilotair.Core.Project;
 
 namespace Pilotair.Cloud.Controllers;
 
-public class ProjectController(ProjectFactory projectFactory) : ControllerBase
+public class ProjectController(ProjectService projectService) : ControllerBase
 {
     [HttpGet("{id}")]
     public IProject Get(Guid id)
     {
-        return projectFactory.Projects[id];
+        return projectService.Get(id);
     }
 
     [HttpGet]
     public IEnumerable<IProject> Get()
     {
-        return projectFactory.Projects.Values;
+        return projectService.All();
     }
 
     [HttpPost("{type}/{name}")]
     public async Task<IProject> PostAsync(ProjectType type, string name)
     {
-        return await projectFactory.CreateAsync(type, name);
+        return await projectService.CreateAsync(type, name);
     }
 
     // [HttpPut("settings/{id}")]
-    // public Pilotair.Core.Application.App Put(Guid id, [FromBody] UpdateSettings settings)
+    // public IProject Put(Guid id, [FromBody] UpdateSettings settings)
     // {
     //     var application = appService.Get(id);
     //     application.Update(settings);
     //     return appService.Get(id);
     // }
 
-    // [HttpDelete("{id}")]
-    // public void Remove(Guid id)
-    // {
-    //     appService.Remove(id);
-    // }
+    [HttpDelete("{id}")]
+    public void Remove(Guid id)
+    {
+        projectService.Remove(id);
+    }
 }
