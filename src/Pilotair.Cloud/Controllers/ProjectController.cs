@@ -1,29 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
-using Pilotair.Cloud.Services;
 using Pilotair.Core.Project;
 
 namespace Pilotair.Cloud.Controllers;
 
-[ApiController]
-[Route("__api__/[controller]")]
-public class ProjectController(ProjectService projectService) : ControllerBase
+public class ProjectController(ProjectFactory projectFactory) : ControllerBase
 {
     [HttpGet("{id}")]
-    public WebProject Get(Guid id)
+    public IProject Get(Guid id)
     {
-        return projectService.Projects[id];
+        return projectFactory.Projects[id];
     }
 
     [HttpGet]
-    public IEnumerable<WebProject> Get()
+    public IEnumerable<IProject> Get()
     {
-        return projectService.Projects.Values;
+        return projectFactory.Projects.Values;
     }
 
-    [HttpPost]
-    public async Task<WebProject> PostAsync(string name)
+    [HttpPost("{type}/{name}")]
+    public async Task<IProject> PostAsync(ProjectType type, string name)
     {
-        return await projectService.CreateAsync(name);
+        return await projectFactory.CreateAsync(type, name);
     }
 
     // [HttpPut("settings/{id}")]

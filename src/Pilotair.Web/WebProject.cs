@@ -1,0 +1,16 @@
+
+using System.Text.Json.Serialization;
+using Pilotair.Core.Helpers;
+using Pilotair.Core.Project;
+
+namespace Pilotair.Web;
+
+public class WebProject : ProjectBase
+{
+
+    [JsonConstructor]
+    internal WebProject()
+    {
+
+    }
+}

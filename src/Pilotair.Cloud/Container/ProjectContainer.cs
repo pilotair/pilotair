@@ -4,7 +4,7 @@ namespace Pilotair.Cloud.Container;
 
 public class ProjectContainer
 {
-    public required WebProject Project { get; init; }
+    public required IProject Project { get; init; }
 
     public bool Created { get; set; }
 }

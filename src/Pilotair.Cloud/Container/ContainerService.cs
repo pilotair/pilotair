@@ -2,13 +2,14 @@ using System.Collections;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using Microsoft.Extensions.Options;
+using Pilotair.Cloud.Container;
 using Pilotair.Core.Project;
 
 namespace Pilotair.Cloud.Services;
 
-public class ContainerService(IOptions<PilotairOptions> options)
+public class ContainerService(IOptions<ContainerOptions> options)
 {
-    private readonly DockerClient client = new DockerClientConfiguration(options.Value.Container.Server).CreateClient();
+    private readonly DockerClient client = new DockerClientConfiguration(options.Value.Server).CreateClient();
 
     public async Task<IEnumerable<ContainerListResponse>> ListAsync(CancellationToken token)
     {
@@ -42,7 +43,7 @@ public class ContainerService(IOptions<PilotairOptions> options)
         return response.FirstOrDefault();
     }
 
-    public async Task<bool> RunProjectAsync(WebProject project, CancellationToken token)
+    public async Task<bool> RunProjectAsync(IProject project, CancellationToken token)
     {
         var container = await GetAsync(project.Id.ToString(), token);
         if (container == default)

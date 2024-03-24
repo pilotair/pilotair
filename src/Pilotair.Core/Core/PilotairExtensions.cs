@@ -1,19 +1,16 @@
-// using System.Text.Json;
-// using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Pilotair.Core.Project;
 
-// namespace Pilotair.Core;
+namespace Pilotair.Core;
 
-// public static class PilotairExtensions
-// {
-//     public static IServiceCollection AddPilotairCore(this IServiceCollection services)
-//     {
-//         services.AddSingleton(new JsonSerializerOptions
-//         {
-//             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-//             PropertyNameCaseInsensitive = true
-//         });
-
-//         services.AddSingleton<JsonService>();
-//         return services;
-//     }
-// }
+public static class PilotairExtensions
+{
+    public static IServiceCollection AddPilotairCore(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddOptions<PilotairOptions>().Bind(configuration.GetSection(PilotairOptions.NAME));
+        services.AddSingleton<ProjectFactory>();
+        return services;
+    }
+}
