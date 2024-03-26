@@ -26,6 +26,19 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
+        },
+        {
+            "name": "Launch Task",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Pilotair.Task/bin/Debug/net8.0/Pilotair.Task.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Pilotair.Task",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
         }
     ]
 }

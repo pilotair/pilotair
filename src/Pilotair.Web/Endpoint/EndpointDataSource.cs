@@ -14,12 +14,12 @@ public class EndpointDataSource : Microsoft.AspNetCore.Routing.EndpointDataSourc
         _changeToken = new CancellationChangeToken(_cancellationTokenSource.Token);
         Task.Run(() =>
         {
-            endpoints = new List<Microsoft.AspNetCore.Http.Endpoint> {
+            endpoints = [
                 new RouteEndpointBuilder((a)=>{
                     a.Response.WriteAsync("abc");
                     return Task.CompletedTask;
                 },RoutePatternFactory.Parse("/abc"),0).Build()
-            };
+            ];
 
             var oldCancellationTokenSource = _cancellationTokenSource;
             _cancellationTokenSource = new CancellationTokenSource();

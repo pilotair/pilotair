@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddPilotairCore(builder.Configuration);
+builder.Services.AddSingleton<ProjectService>();
 builder.Services.AddSingleton<ContainerService>();
 
 var app = builder.Build();
