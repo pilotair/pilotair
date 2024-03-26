@@ -15,13 +15,13 @@
             }
         },
         {
-            "name": "Launch Runtime",
+            "name": "Launch Web",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Pilotair.Runtime/bin/Debug/net8.0/Pilotair.Runtime.dll",
+            "program": "${workspaceFolder}/src/Pilotair.Web/bin/Debug/net8.0/Pilotair.Web.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Pilotair.Runtime",
+            "cwd": "${workspaceFolder}/src/Pilotair.Web",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
