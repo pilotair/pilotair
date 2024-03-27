@@ -1,14 +1,15 @@
 using System.Collections.Concurrent;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Helpers;
+using Pilotair.Core.Projects;
+using Pilotair.Web;
 
-namespace Pilotair.Core.Project;
+namespace Pilotair.Cloud.Services;
 
-public class ProjectService(IOptions<PilotairOptions> options, ILogger<ProjectService> logger)
+public class ProjectService(IOptions<PilotairCloudOptions> options, ILogger<ProjectService> logger)
 {
     private readonly string rootPath = Path.Combine(options.Value.DataPath, "projects");
-    private readonly ConcurrentDictionary<Guid, ProjectBase> _projects = new();
+    private readonly ConcurrentDictionary<Guid, Project> _projects = new();
 
     public async Task InitAsync()
     {
@@ -18,7 +19,7 @@ public class ProjectService(IOptions<PilotairOptions> options, ILogger<ProjectSe
         {
             try
             {
-                var project = await LoadAsync(dir);
+                var project = await Project.LoadAsync<WebProject>(dir);
                 _projects.TryAdd(project.Id, project);
             }
             catch (Exception ex)
@@ -28,26 +29,15 @@ public class ProjectService(IOptions<PilotairOptions> options, ILogger<ProjectSe
         }
     }
 
-    private static async Task<ProjectBase> LoadAsync(string path)
-    {
-        var settingPath = Path.Combine(path, IProject.SETTINGS_NAME);
-        if (!File.Exists(settingPath)) throw new ProjectNotFoundException(path);
-        var project = await JsonHelper.DeserializeAsync<ProjectBase>(settingPath);
-        if (project == default) throw new ProjectNotFoundException(path);
-        project.Path = path;
-        return project;
-    }
-
-    public async Task<IProject> CreateAsync(ProjectType type, string name)
+    public async Task<IProject> CreateAsync(string name)
     {
         var path = Path.Combine(rootPath, name);
         if (Directory.Exists(path)) throw new ProjectExistException(name);
 
-        var project = new ProjectBase
+        var project = new WebProject
         {
             Id = Guid.NewGuid(),
             Name = name,
-            Type = type,
             Path = path
         };
 
@@ -74,9 +64,6 @@ public class ProjectService(IOptions<PilotairOptions> options, ILogger<ProjectSe
     public void Remove(Guid id)
     {
         _projects.TryRemove(id, out var project);
-        if (project?.Path != default)
-        {
-            Directory.Delete(project.Path, true);
-        }
+        project?.Remove();
     }
 }

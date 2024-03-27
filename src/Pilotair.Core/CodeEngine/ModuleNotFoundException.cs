@@ -1,4 +1,4 @@
-namespace Pilotair.Core.Code;
+namespace Pilotair.Core.CodeEngine;
 
 public class ModuleNotFoundException : Exception
 {

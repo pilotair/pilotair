@@ -1,7 +1,7 @@
 using Jint;
 using Jint.Native;
 
-namespace Pilotair.Core.Code;
+namespace Pilotair.Core.CodeEngine;
 
 public class CodeExecutor(ModuleLoader moduleLoader)
 {

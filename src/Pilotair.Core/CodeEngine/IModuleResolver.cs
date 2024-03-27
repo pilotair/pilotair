@@ -1,7 +1,7 @@
 using Jint;
 using Jint.Runtime.Modules;
 
-namespace Pilotair.Core.Code;
+namespace Pilotair.Core.CodeEngine;
 
 public interface IModuleResolver
 {

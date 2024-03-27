@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pilotair.Core\Pilotair.Core.csproj" />
+    <ProjectReference Include="..\Pilotair.Web\Pilotair.Web.csproj" />
+    <ProjectReference Include="..\Pilotair.Task\Pilotair.Task.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="front-app\**\*" />

@@ -1,4 +1,4 @@
-namespace Pilotair.Cloud.Container;
+namespace Pilotair.Cloud.Containers;
 
 public class ContainerOptions
 {

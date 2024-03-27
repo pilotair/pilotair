@@ -2,8 +2,8 @@ using System.Collections;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using Microsoft.Extensions.Options;
-using Pilotair.Cloud.Container;
-using Pilotair.Core.Project;
+using Pilotair.Cloud.Containers;
+using Pilotair.Core.Projects;
 
 namespace Pilotair.Cloud.Services;
 
@@ -20,7 +20,7 @@ public class ContainerService(IOptions<ContainerOptions> options)
             {
                 {
                     "label",new Dictionary<string,bool>{
-                        { $"pilotair.type=WebProject",true}
+                        { $"pilotair.id",true}
                     }
                 }
             },
@@ -44,7 +44,7 @@ public class ContainerService(IOptions<ContainerOptions> options)
         return response.FirstOrDefault();
     }
 
-    public async Task<bool> RunProjectAsync(IProject project, CancellationToken token)
+    public async Task<bool> RunAsync(IProject project, CancellationToken token)
     {
         var container = await GetAsync(project.Id.ToString(), token);
         if (container == default)
@@ -52,7 +52,6 @@ public class ContainerService(IOptions<ContainerOptions> options)
             var response = await client.Containers.CreateContainerAsync(new CreateContainerParameters(new Config
             {
                 Labels = new Dictionary<string, string> {
-                { "pilotair.type", "WebProject" },
                 { "pilotair.id", project.Id.ToString() },
             },
                 Image = "pilotair-web:latest",

@@ -1,4 +1,4 @@
-namespace Pilotair.Core.Project;
+namespace Pilotair.Core.Projects;
 
 public class ProjectException(string? message) : PilotairException(message)
 {

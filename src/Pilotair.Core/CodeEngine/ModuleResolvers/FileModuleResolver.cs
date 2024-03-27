@@ -3,7 +3,7 @@ using Jint;
 using Jint.Runtime.Modules;
 using Microsoft.Extensions.Options;
 
-namespace Pilotair.Core.Code.ModuleResolvers;
+namespace Pilotair.Core.CodeEngine.ModuleResolvers;
 
 public class FileModuleResolver(IOptions<CodeOptions> codeOptions) : IModuleResolver
 {
