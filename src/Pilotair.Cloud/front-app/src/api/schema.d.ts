@@ -5,8 +5,37 @@
 
 
 export interface paths {
-  "/__api__/Project/{id}": {
+  "/__api__/Container": {
     get: {
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "text/plain": components["schemas"]["Container"][];
+            "application/json": components["schemas"]["Container"][];
+            "text/json": components["schemas"]["Container"][];
+          };
+        };
+      };
+    };
+    post: {
+      requestBody?: {
+        content: {
+          "application/json": components["schemas"]["ContainerModel"];
+          "text/json": components["schemas"]["ContainerModel"];
+          "application/*+json": components["schemas"]["ContainerModel"];
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          content: never;
+        };
+      };
+    };
+  };
+  "/__api__/Container/run/{id}": {
+    put: {
       parameters: {
         path: {
           id: string;
@@ -15,42 +44,7 @@ export interface paths {
       responses: {
         /** @description Success */
         200: {
-          content: {
-            "text/plain": components["schemas"]["WebProject"];
-            "application/json": components["schemas"]["WebProject"];
-            "text/json": components["schemas"]["WebProject"];
-          };
-        };
-      };
-    };
-  };
-  "/__api__/Project": {
-    get: {
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["WebProject"][];
-            "application/json": components["schemas"]["WebProject"][];
-            "text/json": components["schemas"]["WebProject"][];
-          };
-        };
-      };
-    };
-    post: {
-      parameters: {
-        query?: {
-          name?: string;
-        };
-      };
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "text/plain": components["schemas"]["WebProject"];
-            "application/json": components["schemas"]["WebProject"];
-            "text/json": components["schemas"]["WebProject"];
-          };
+          content: never;
         };
       };
     };
@@ -61,7 +55,15 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    WebProject: {
+    Container: {
+      project?: components["schemas"]["IProject"];
+      created?: boolean;
+      running?: boolean;
+    };
+    ContainerModel: {
+      name?: string | null;
+    };
+    IProject: {
       /** Format: uuid */
       id?: string;
       name?: string | null;

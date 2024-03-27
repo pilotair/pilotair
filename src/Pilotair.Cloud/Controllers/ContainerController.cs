@@ -27,7 +27,7 @@ public class ContainerController(ProjectService projectService, ContainerService
     }
 
     [HttpPost]
-    public async Task PostAsync(ContainerModel model)
+    public async Task PostAsync([FromBody] ContainerModel model)
     {
         var project = await projectService.CreateAsync(model.Name);
         await containerService.RunAsync(project, HttpContext.RequestAborted);
