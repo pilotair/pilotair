@@ -6,7 +6,7 @@
   },
   "scripts": {
     "dev": "bun src/index.ts",
-    "build": "bun build src/main.ts --target=bun --outfile=dist/server.js",
+    "build": "bun build src/main.ts --target=bun --outfile=dist/server.js&&bun run --cwd front-app build",
     "publish": "bun run build && docker build -t pilotair:latest ."
   },
   "peerDependencies": {
