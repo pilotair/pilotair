@@ -1,21 +1,15 @@
 {
   "name": "pilotair",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "type": "module",
-  "scripts": {
-    "start": "node dist/index.js",
-    "build": "esbuild src/index.ts --outdir=dist --sourcemap"
-  },
-  "keywords": [],
-  "author": "huanent",
-  "license": "ISC",
   "devDependencies": {
-    "@types/koa": "^2.13.6",
-    "esbuild": "^0.17.18"
+    "@types/bun": "latest"
   },
-  "dependencies": {
-    "koa": "^2.14.2"
+  "scripts": {
+    "dev": "bun src/index.ts",
+    "build": "bun build src/main.ts --target=bun --outfile=dist/server.js",
+    "publish": "bun run build && docker build -t pilotair:latest ."
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }
