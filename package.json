@@ -5,11 +5,14 @@
     "@types/bun": "latest"
   },
   "scripts": {
-    "dev": "bun src/index.ts",
+    "dev": "bun src/index.ts ",
     "build": "bun run scripts/build.ts",
     "publish": "bun run build && docker build -t pilotair:latest ."
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "mime": "^4.0.1"
   }
 }

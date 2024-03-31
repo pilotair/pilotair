@@ -8,11 +8,11 @@
             "type": "bun",
             "internalConsoleOptions": "neverOpen",
             "request": "launch",
-            "name": "Debug File",
+            "name": "Debug server",
             "program": "${workspaceFolder}/src/main.ts",
             "cwd": "${workspaceFolder}",
             "stopOnEntry": false,
-            "watchMode": false
+            "watchMode": false,
         },
     ]
 }
