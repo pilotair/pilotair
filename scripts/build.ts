@@ -1,9 +1,8 @@
-import { $, build } from "bun";
+import { $ } from "bun";
+import { cp, rm } from "node:fs/promises"
 
-await build({
-    entrypoints: ["src/main.ts"],
-    target: "bun",
-    outdir: "dist"
-})
-
+rm("dist", { recursive: true })
 await $`bun run --cwd front-app build`
+await cp("src", "dist", { recursive: true })
+await cp(".env.production", "dist/.env")
+

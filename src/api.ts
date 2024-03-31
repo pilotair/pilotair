@@ -3,7 +3,7 @@ import { extname, join } from "node:path"
 import { file, FileSystemRouter } from "bun"
 import { basePath } from "./utils/path"
 
-const apiPath = "/__api__"
+const prefix = "/__api__"
 
 const router = new FileSystemRouter({
     style: "nextjs",
@@ -11,8 +11,8 @@ const router = new FileSystemRouter({
 });
 
 export async function apiMiddleware(context: Context): Promise<boolean> {
-    if (!context.url.pathname.startsWith(apiPath)) return false;
-    const path = context.url.pathname.substring(apiPath.length)
+    if (!context.url.pathname.startsWith(prefix)) return false;
+    const path = context.url.pathname.substring(prefix.length)
     const route = router.match(path);
     if (!route) return false;
     const module = await import(route.filePath);
