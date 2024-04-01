@@ -2,10 +2,10 @@ import type { Context } from "./context";
 import { extname, join } from "node:path"
 import { file } from "bun"
 import mime from "mime/lite"
-import { basePath } from "./utils/path";
+import env from "@/env"
 
 const prefix = "/__admin__"
-const fallbackFile = join(basePath, prefix, "/index.html")
+const fallbackFile = join(env.PILOTAIR_CWD, prefix, "/index.html")
 
 
 export function adminMiddleware(context: Context): boolean {
@@ -15,7 +15,7 @@ export function adminMiddleware(context: Context): boolean {
     if (!extension) {
         path = fallbackFile
     } else {
-        path = join(basePath, path)
+        path = join(env.PILOTAIR_CWD, path)
     }
 
     let contentType = mime.getExtension(extension);

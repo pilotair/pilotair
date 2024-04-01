@@ -6,6 +6,7 @@
   },
   "scripts": {
     "dev": "bun src/main.ts ",
+    "dev_front": "bun run --cwd front-app dev",
     "build": "bun run --cwd front-app build",
     "publish": "bun run build && docker build -t pilotair:latest ."
   },

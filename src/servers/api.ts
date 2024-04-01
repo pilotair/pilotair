@@ -1,13 +1,13 @@
 import type { Context } from "./context";
-import { extname, join } from "node:path"
-import { file, FileSystemRouter } from "bun"
-import { basePath } from "./utils/path"
+import { join } from "node:path"
+import { FileSystemRouter } from "bun"
+import env from "@/env"
 
 const prefix = "/__api__"
 
 const router = new FileSystemRouter({
     style: "nextjs",
-    dir: join(basePath, "./routes"),
+    dir: join(env.PILOTAIR_CWD, "./routes"),
 });
 
 export async function apiMiddleware(context: Context): Promise<boolean> {
@@ -23,6 +23,6 @@ export async function apiMiddleware(context: Context): Promise<boolean> {
             ContentType: "application/json"
         }
     })
-    
+
     return true;
 }

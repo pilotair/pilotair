@@ -1,7 +1,6 @@
-import { cwd, env } from "node:process";
-import { join } from "node:path"
+import { cwd } from "node:process";
+import { join, isAbsolute } from "node:path"
 
-export const basePath = join(cwd(), env.PILOTAIR_CWD)
-
-console.log(`base path: ${basePath}`)
-
+export function getFullPath(...path: string[]) {
+    return join(cwd(), ...path)
+}
