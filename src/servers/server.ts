@@ -17,7 +17,7 @@ async function invoke(context: Context) {
 
 export function createServer() {
     return serve({
-        port: 80,
+        port: 8080,
         async fetch(request: Request) {
             const context = createContext(request);
             await invoke(context);
