@@ -5,8 +5,8 @@
     "@types/bun": "latest"
   },
   "scripts": {
-    "dev": "bun src/index.ts ",
-    "build": "bun run scripts/build.ts",
+    "dev": "bun src/main.ts ",
+    "build": "bun run --cwd front-app build",
     "publish": "bun run build && docker build -t pilotair:latest ."
   },
   "peerDependencies": {

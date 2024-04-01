@@ -1,6 +1,9 @@
 FROM oven/bun:alpine
-COPY ./dist /app
+WORKDIR /app
+COPY package.json bun.lockb ./
+RUN bun i -p 
+COPY src ./src
+COPY .env.production .
 VOLUME [ "/data" ]
 EXPOSE 80
-WORKDIR /app
-ENTRYPOINT [ "bun","main.ts" ]
+ENTRYPOINT [ "bun","src/main.ts" ]
