@@ -1,17 +1,16 @@
 import { serve } from "bun"
 import { createContext, type Context } from "./context"
-import { adminMiddleware } from "./admin"
-import { apiMiddleware } from "./api"
+import { adminMiddleware } from "../admin/middleware"
+// import { apiMiddleware } from "./api"
 import { isPromise } from "node:util/types"
-
-const middlewares = [adminMiddleware, apiMiddleware]
-
+const middlewares = [ adminMiddleware]
 
 async function invoke(context: Context) {
     for (const middleware of middlewares) {
         let result = middleware(context)
-        if (isPromise(result)) result = await result
-        if (result) return;
+        if (isPromise(result)) {
+            if (await result) return
+        }
     }
 }
 

@@ -2,10 +2,11 @@
   "name": "pilotair",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/react-dom": "^18.2.24"
   },
   "scripts": {
-    "dev": "bun src/main.ts ",
+    "dev": "bun --bun src/main.ts ",
     "dev_front": "bun run --cwd front-app dev",
     "build": "bun run --cwd front-app build",
     "publish": "bun run build && docker build -t pilotair:latest ."
@@ -14,6 +15,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "mime": "^4.0.1"
+    "mime": "^4.0.1",
+    "react": "next",
+    "react-dom": "next"
   }
 }
