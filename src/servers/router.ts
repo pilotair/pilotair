@@ -1,11 +1,11 @@
 import { FileSystemRouter, type MatchedRoute, file as _file } from "bun"
 import { exists } from "node:fs/promises"
 import { join } from "node:path"
-import { adminPath } from "@/utils/path"
+import { buildPath, srcPath } from "@/utils/path"
 
 interface RouterOptions {
     sourcePath: string;
-    buildPath: string;
+    buildPrefix: string;
     assetPrefix: string
     origin?: string,
 }
@@ -24,19 +24,24 @@ export async function createRouter(options: RouterOptions) {
 
     await Bun.build({
         entrypoints: [
-            join(adminPath, "hydrate.tsx"),
+            join(srcPath, "servers", "hydrate.tsx"),
             ...Object.values(sourceRouter.routes),
         ],
-        outdir: options.buildPath,
+        outdir: join(buildPath, options.assetPrefix),
         target: 'browser',
         splitting: true,
     });
 
+    let assetPrefix = options.assetPrefix;
+    if (!options.assetPrefix.endsWith('/')) {
+        assetPrefix += '/'
+    }
+
     const buildRouter = new Bun.FileSystemRouter({
-        dir: options.buildPath,
+        dir: join(buildPath, options.assetPrefix),
         style: 'nextjs',
         origin: options?.origin,
-        assetPrefix: options.assetPrefix + '/'
+        assetPrefix: assetPrefix
     });
 
     function checkPrefix(path: string) {
@@ -45,18 +50,17 @@ export async function createRouter(options: RouterOptions) {
 
     function match(path: string): RouteResult | undefined {
         if (!checkPrefix(path)) return;
-        path = path.substring(options.assetPrefix.length + 1)
+        path = getRelativePath(path, options.assetPrefix);
         const sourceRoute = sourceRouter.match(path);
         if (!sourceRoute) return;
-        const buildRoute = buildRouter.match(path);
+        const buildRoute = buildRouter.match(join(options.buildPrefix, path));
         if (!buildRoute) return;
         return { sourceRoute, buildRoute };
     }
 
     async function file(path: string) {
         if (!checkPrefix(path)) return;
-        path = path.substring(options.assetPrefix.length + 1)
-        path = join(options.buildPath, path);
+        path = join(buildPath, path);
 
         if (await exists(path)) {
             return _file(path)
@@ -64,4 +68,9 @@ export async function createRouter(options: RouterOptions) {
     }
 
     return { match, file }
+}
+
+function getRelativePath(path: string, assetPrefix: string) {
+    if (path.length == assetPrefix.length + 1) return "/";
+    return path.substring(assetPrefix.length + 1);
 }

@@ -1,5 +1,5 @@
-import { Counter } from "../Counter";
-import { Layout } from "../Layout";
+import { Counter } from "../components/Counter";
+import { Layout } from "../components/Layout";
 
 export default function () {
   return (
@@ -10,7 +10,7 @@ export default function () {
         <a href="/">Home</a>
       </p>
       <p>
-        <a href="/settings">Settings</a>
+        <a href="/_admin/settings">Settings</a>
       </p>
     </Layout>
   );

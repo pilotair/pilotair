@@ -1,6 +1,6 @@
 import { serve } from "bun"
 import { createContext, type Context } from "./context"
-import { adminMiddleware } from "../admin/middleware"
+import { adminMiddleware } from "../middleware"
 // import { apiMiddleware } from "./api"
 import { isPromise } from "node:util/types"
 const middlewares = [ adminMiddleware]
