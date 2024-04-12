@@ -9,10 +9,20 @@ const router = await createRouter({
     sourcePath: join(srcPath, "routes"),
     buildPrefix: "/routes",
     origin: "http://localhost:8080",
-    assetPrefix: "_admin",
+    assetPrefix: "_admin"
 })
 
 export async function adminMiddleware(context: Context): Promise<boolean> {
+    let result = await tryHandleRoute(context);
+    if (!result) result = await tryHandleFile(context);
+    if (!result) {
+        context.url.pathname = '/_admin';
+        result = await tryHandleRoute(context);
+    }
+    return result;
+}
+
+async function tryHandleRoute(context: Context) {
     const match = router.match(context.url.pathname);
     if (match) {
         const module = await import(match.sourceRoute.filePath);
@@ -28,6 +38,10 @@ export async function adminMiddleware(context: Context): Promise<boolean> {
         return true;
     }
 
+    return false;
+}
+
+async function tryHandleFile(context: Context) {
     const file = await router.file(context.url.pathname);
 
     if (file) {
@@ -37,6 +51,5 @@ export async function adminMiddleware(context: Context): Promise<boolean> {
 
         return true;
     }
-
     return false;
 }

@@ -7,7 +7,7 @@ interface RouterOptions {
     sourcePath: string;
     buildPrefix: string;
     assetPrefix: string
-    origin?: string,
+    origin?: string
 }
 
 interface RouteResult {

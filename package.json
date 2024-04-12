@@ -15,6 +15,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "antd": "^5.16.1",
     "mime": "^4.0.1",
     "react": "next",
     "react-dom": "next"
