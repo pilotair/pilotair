@@ -1,19 +1,17 @@
-import { Counter } from "../components/Counter";
-import { Layout } from "../components/Layout";
-import { Button } from "antd"
+import App from "@/admin/App"
 
-export default function () {
+export default function (props: { children: React.ReactNode }) {
   return (
-    <Layout title="Home">
-      <Counter />
-      <div style={{ height: "20px" }}></div>
-      <Button>btn</Button>
-      <p>
-        <a href="/">Home</a>
-      </p>
-      <p>
-        <a href="/_admin/settings">Settings</a>
-      </p>
-    </Layout>
+    <html>
+      <head>
+        <meta charSet="utf-8" />
+        <link rel="icon" href="favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>pilotair</title>
+      </head>
+      <body>
+        <App></App>
+      </body>
+    </html>
   );
 }
