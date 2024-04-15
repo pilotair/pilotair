@@ -14,11 +14,6 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish cloud",
-            "type": "shell",
-            "command": "${workspaceFolder}/scripts/publish-cloud.sh"
-        },
-        {
             "label": "publish web",
             "type": "shell",
             "command": "${workspaceFolder}/scripts/publish-web.sh"

@@ -2,19 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Cloud",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Pilotair.Cloud/bin/Debug/net8.0/Pilotair.Cloud.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/src/Pilotair.Cloud",
-            "stopAtEntry": false,
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
-        },
-        {
             "name": "Launch Web",
             "type": "coreclr",
             "request": "launch",

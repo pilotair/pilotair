@@ -1,11 +1,11 @@
 using Jint;
 using Jint.Runtime.Modules;
 
-namespace Pilotair.Core.CodeEngine;
+namespace Pilotair.Core.Runtime;
 
 public class ModuleLoader(IEnumerable<IModuleResolver> moduleResolvers) : IModuleLoader
 {
-    public Module LoadModule(Engine engine, ResolvedSpecifier resolved)
+    public Module LoadModule(Jint.Engine engine, ResolvedSpecifier resolved)
     {
         foreach (var moduleResolver in moduleResolvers)
         {

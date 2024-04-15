@@ -1,11 +1,10 @@
 using Esprima;
-using Jint;
 using Jint.Runtime.Modules;
 using Microsoft.Extensions.Options;
 
-namespace Pilotair.Core.CodeEngine.ModuleResolvers;
+namespace Pilotair.Core.Runtime.ModuleResolvers;
 
-public class FileModuleResolver(IOptions<CodeOptions> codeOptions) : IModuleResolver
+public class FileModuleResolver(IOptions<EngineOptions> codeOptions) : IModuleResolver
 {
     public string Scheme => Uri.UriSchemeFile;
 
@@ -14,7 +13,7 @@ public class FileModuleResolver(IOptions<CodeOptions> codeOptions) : IModuleReso
         return referencingModuleLocation.StartsWith("./") || referencingModuleLocation.StartsWith("../");
     }
 
-    public Module Load(Engine engine, ResolvedSpecifier resolved)
+    public Module Load(Jint.Engine engine, ResolvedSpecifier resolved)
     {
         var javaScriptParser = new JavaScriptParser();
         var code = File.ReadAllText(resolved.Uri.AbsolutePath);
@@ -28,7 +27,7 @@ public class FileModuleResolver(IOptions<CodeOptions> codeOptions) : IModuleReso
         ? Path.Combine(Path.GetFullPath(codeOptions.Value.RootPath), moduleRequest.Specifier) :
         Path.Combine(Path.GetDirectoryName(referencingModuleLocation), moduleRequest.Specifier);
         var uri = new Uri($"{Uri.UriSchemeFile}://{path}");
-        if (!File.Exists(uri.AbsolutePath)) uri = new Uri($"{Uri.UriSchemeFile}://{path}.js");
+        if (!File.Exists(uri.AbsolutePath)) uri = new Uri($"{Uri.UriSchemeFile}://{path}");
         return new ResolvedSpecifier(moduleRequest, path, uri, SpecifierType.RelativeOrAbsolute);
     }
 }

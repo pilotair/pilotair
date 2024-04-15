@@ -2,7 +2,7 @@ namespace Pilotair.Core.Projects;
 
 public class ProjectException(string? message) : PilotairException(message)
 {
-    public IProject? Project { get; set; }
+    public Project? Project { get; set; }
 }
 
 public class ProjectNotFoundException : PilotairException

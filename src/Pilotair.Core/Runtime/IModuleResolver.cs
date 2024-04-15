@@ -1,7 +1,6 @@
-using Jint;
 using Jint.Runtime.Modules;
 
-namespace Pilotair.Core.CodeEngine;
+namespace Pilotair.Core.Runtime;
 
 public interface IModuleResolver
 {
@@ -10,5 +9,5 @@ public interface IModuleResolver
 
     ResolvedSpecifier Resolved(string? referencingModuleLocation, ModuleRequest moduleRequest);
 
-    Module Load(Engine engine, ResolvedSpecifier resolved);
+    Module Load(Jint.Engine engine, ResolvedSpecifier resolved);
 }

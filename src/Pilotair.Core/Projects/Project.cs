@@ -3,7 +3,7 @@ using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Projects;
 
-public abstract class Project : IProject
+public class Project
 {
     public const string SETTINGS_NAME = "settings.json";
 
@@ -28,11 +28,11 @@ public abstract class Project : IProject
         Directory.Delete(Path, true);
     }
 
-    public static async Task<T> LoadAsync<T>(string path) where T : Project
+    public static async Task<Project> LoadAsync(string path) 
     {
         var settingPath = System.IO.Path.Combine(path, SETTINGS_NAME);
         if (!File.Exists(settingPath)) throw new ProjectNotFoundException(path);
-        var project = await JsonHelper.DeserializeAsync<T>(settingPath);
+        var project = await JsonHelper.DeserializeAsync<Project>(settingPath);
         if (project == default) throw new ProjectNotFoundException(path);
         project.Path = path;
         return project;
