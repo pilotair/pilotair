@@ -1,9 +1,11 @@
 using Pilotair.Core;
+using Pilotair.Web.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPilotairEngine();
 builder.Services.AddSingleton<MenuService>();
+builder.Services.AddSingleton<FileService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();

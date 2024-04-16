@@ -5,25 +5,18 @@ public class MenuService
     public IEnumerable<MenuItem> GetMainMenu()
     {
         var items = new List<MenuItem> {
-        new MenuItem
-        {
+        new() {
             Order = 1,
+            Key="home",
             Label = "Home",
             Icon = "HomeOutlined"
         },
-        new MenuItem
-        {
+        new() {
             Order = 2,
-            Label = "MenuItem1",
-            Icon = "HomeOutlined"
+            Key="files",
+            Label = "Files",
+            Icon = "PictureOutlined"
         },
-        new MenuItem
-        {
-            Order = 3,
-            Label = "MenuItem2",
-            Icon = "HomeOutlined"
-        }
-
         };
 
         return items;

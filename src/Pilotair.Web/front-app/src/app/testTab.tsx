@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function TestTab() {
+export default function TestTab() {
 
     const [count, setCount] = useState(0)
 

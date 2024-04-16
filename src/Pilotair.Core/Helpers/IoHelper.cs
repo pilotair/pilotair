@@ -9,4 +9,12 @@ public static class IoHelper
             Directory.CreateDirectory(path);
         }
     }
+
+    public static void ShouldBeRelative(string path)
+    {
+        if (Path.IsPathRooted(path))
+        {
+            throw new InvalidDataException($"Path '{path}' must be relative");
+        }
+    }
 }
