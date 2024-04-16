@@ -3,6 +3,7 @@ using Pilotair.Core;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPilotairEngine();
+builder.Services.AddSingleton<MenuService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
