@@ -1,4 +1,3 @@
-using Microsoft.Extensions.FileProviders;
 using Pilotair.Core;
 using Pilotair.Web.Files;
 
@@ -22,12 +21,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseFileServer(new FileServerOptions
-// {
-//     FileProvider = new PhysicalFileProvider(
-//            Path.Combine(builder.Environment.ContentRootPath, "__admin__")),
-//     RequestPath = "/__admin__"
-// });
+app.UseFileServer(new FileServerOptions
+{
+    RequestPath = "/__admin__"
+});
 // app.UseHttpsRedirection();
 app.UseRouting();
 var dataSource = app.Services.GetService<Pilotair.Web.Endpoint.EndpointDataSource>();

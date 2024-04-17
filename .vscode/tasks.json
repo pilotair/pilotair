@@ -14,7 +14,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build production",
+            "label": "build release",
             "command": "dotnet",
             "type": "process",
             "args": [

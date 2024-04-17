@@ -19,13 +19,13 @@
             "name": "Launch Web Preview",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Pilotair.Web/bin/Debug/net8.0/Pilotair.Web.dll",
+            "preLaunchTask": "build release",
+            "program": "${workspaceFolder}/src/Pilotair.Web/bin/Release/net8.0/Pilotair.Web.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Pilotair.Web",
             "stopAtEntry": false,
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_ENVIRONMENT": "Staging",
             }
         },
     ]

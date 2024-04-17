@@ -21,7 +21,7 @@ export function MenuContextProvider({ children }: Props) {
     const [menus, setMenus] = useState<MenuItem[]>([]);
 
     useEffect(() => {
-        httpClient.get<{ key: string, label: string, icon: string }[]>("__api__/menu").then(rsp => {
+        httpClient.get<{ key: string, label: string, icon: string }[]>("/__api__/menu").then(rsp => {
             setMenus(rsp.map(m => ({
                 key: m.key,
                 label: m.label,
