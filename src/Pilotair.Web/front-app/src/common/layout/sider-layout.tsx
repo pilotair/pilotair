@@ -1,27 +1,16 @@
-import { Layout, Dropdown, Avatar, MenuProps } from "antd";
+import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { ReactNode, useState } from "react";
 import LogoIcon from "../../assets/logo.svg"
-import { MenuFoldOutlined, UserOutlined } from "@ant-design/icons"
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 
 interface Props {
     sider: ReactNode,
-    content: ReactNode
+    content: ReactNode,
+    header: ReactNode
 }
 
-
-const items: MenuProps['items'] = [
-    {
-        key: '1',
-        label: (
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                1st menu item
-            </a>
-        ),
-    },
-];
-
-export default function LeftMenuLayout({ sider, content }: Props) {
+export default function LeftMenuLayout({ sider, content, header }: Props) {
     const [collapsed, setCollapsed] = useState(false)
 
     return (
@@ -36,10 +25,10 @@ export default function LeftMenuLayout({ sider, content }: Props) {
             </Sider>
             <Layout className="h-full flex flex-col">
                 <div className="h-12 bg-white shadow-sm flex items-center px-4 relative">
-                    <div className="flex-1"></div>
-                    <Dropdown menu={{ items }}>
-                        <Avatar className="bg-slate-300" icon={<UserOutlined />} />
-                    </Dropdown>
+                    {collapsed && <MenuUnfoldOutlined onClick={() => setCollapsed(false)} className="hover:text-blue-400" />}
+                    <div className="flex-1 flex">
+                        {header}
+                    </div>
                 </div>
                 <div className="p-2 flex-1">
                     {content}

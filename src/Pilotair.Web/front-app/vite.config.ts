@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: "/__admin__",
   build: {
-    outDir: "../wwwroot",
+    outDir: "../__admin__",
     emptyOutDir: true,
   },
   server: {

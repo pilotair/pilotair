@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Web",
+            "name": "Launch Web Dev",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -11,7 +11,21 @@
             "cwd": "${workspaceFolder}/src/Pilotair.Web",
             "stopAtEntry": false,
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+            }
+        },
+        {
+            "name": "Launch Web Preview",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Pilotair.Web/bin/Debug/net8.0/Pilotair.Web.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Pilotair.Web",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
             }
         },
     ]
