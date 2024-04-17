@@ -3,11 +3,12 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 import { TabsContext } from "./tabs"
 import { WorkspaceContext } from "./workspace"
 import { Icon } from "../common/Icon"
+import { httpClient } from "../utils/request"
 
 type MenuItem = { key: string, icon: ReactNode, label: string }
 
 interface MenuContextValue {
-    menus: MenuItem[]
+    menus: MenuItem[],
 }
 
 export const MenuContext = createContext<MenuContextValue>({} as MenuContextValue)
@@ -20,13 +21,8 @@ export function MenuContextProvider({ children }: Props) {
     const [menus, setMenus] = useState<MenuItem[]>([]);
 
     useEffect(() => {
-        fetch("__api__/menu", {
-            method: "GET",
-            headers: {
-                contentType: "application/json"
-            }
-        }).then(async rsp => {
-            setMenus((await rsp.json()).map(m => ({
+        httpClient.get<{ key: string, label: string, icon: string }[]>("__api__/menu").then(rsp => {
+            setMenus(rsp.map(m => ({
                 key: m.key,
                 label: m.label,
                 icon: <Icon name={m.icon} />
@@ -48,5 +44,6 @@ export function Menu() {
         items={menus}
         onClick={({ key }) => openTab(key)}
         selectedKeys={[active]}
+        theme="dark"
     />
 }

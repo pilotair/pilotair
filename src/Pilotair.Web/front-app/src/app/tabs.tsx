@@ -1,4 +1,4 @@
-import { Tabs as AntdTabs, TabsProps } from "antd"
+import { Tabs as AntdTabs, TabsProps, Empty, theme, Tag } from "antd"
 import { ReactNode, createContext, useContext, useState } from "react"
 import { WorkspaceContext } from "./workspace"
 import { Tab } from "./features"
@@ -49,30 +49,63 @@ export function TabsContextProvider({ children }: Props) {
 }
 
 
+type RenderTabBarProps = Parameters<NonNullable<TabsProps["renderTabBar"]>>[0]
+
 export function Tabs() {
     const { tabs, closeTab } = useContext(TabsContext)
     const { active, setActive } = useContext(WorkspaceContext)
+    const { token } = theme.useToken()
 
     function tabClick(key: string) {
         setActive(key)
     }
 
-    const onTabEdit = (
-        targetKey: string | React.MouseEvent | React.KeyboardEvent,
-        action: 'add' | 'remove',
-    ) => {
-        if (action !== 'remove') return;
-        if (typeof targetKey == "string") closeTab(targetKey);
-    };
+    function onClose(key: string, e: MouseEvent) {
+        e.preventDefault();
+        if (key == active) {
+            let currentTabIndex = tabs.findIndex(f => f.key == key);
+            if (currentTabIndex == -1) return;
+            if (currentTabIndex == 0) {
+                if (tabs.length > 1) currentTabIndex = 1
+            } else {
+                currentTabIndex--;
+            }
+            setActive(tabs[currentTabIndex].key)
+        }
+        closeTab(key);
+    }
 
+    if (!tabs.length) {
+        return <Empty className="h-full flex items-center justify-center" description={false} />
+    }
 
-    return <AntdTabs
-        className="bg-white h-full rounded-md"
-        type="editable-card" items={tabs}
-        hideAdd
-        onEdit={onTabEdit}
-        activeKey={active}
-        onTabClick={tabClick}
-        tabBarStyle={{ backgroundColor: "#f5f5f5" }}
-    />
+    function CustomTabBar(props: RenderTabBarProps) {
+        return <div>
+            {tabs.map(tab => {
+                return <Tag
+                    closeIcon
+                    onClose={(e) => onClose(tab.key, e)}
+                    bordered={false}
+                    className="cursor-pointer"
+                    color={props.activeKey == tab.key ? 'blue' : "default"}
+                    onClick={(e) => props.onTabClick(tab.key, e)}>
+                    {tab.label}
+                </Tag>
+            })}
+        </div>
+    }
+
+    return <>
+
+        <AntdTabs
+            className="h-full"
+            items={tabs}
+            activeKey={active}
+            onTabClick={tabClick}
+            tabBarStyle={{ backgroundColor: token.colorBgLayout }}
+            renderTabBar={CustomTabBar}
+        />
+    </>
 }
+
+
