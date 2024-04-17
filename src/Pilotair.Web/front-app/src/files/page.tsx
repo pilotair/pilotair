@@ -6,7 +6,7 @@ export default function File() {
         title: "root"
     }])
 
-    return <>
+    return <div className="p-2">
         <Breadcrumb items={items} />
-    </>
+    </div>
 }

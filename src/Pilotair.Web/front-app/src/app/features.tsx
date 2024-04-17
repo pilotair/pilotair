@@ -1,26 +1,20 @@
-import { lazy, Suspense } from "react"
 import { HomeOutlined, PictureOutlined } from "@ant-design/icons"
 
-const features = [
+export const features = [
     {
         name: 'home',
+        label: "Home",
         icon: <HomeOutlined />,
-        tab: () => import("./testTab")
+        tab: () => import("../files/page")
     },
     {
         name: 'files',
+        label: "Files",
         icon: <PictureOutlined />,
-        tab: () => import("./testTab")
+        tab: () => import("../files/page")
     }
 ]
 
-interface Props {
-    name: string
-}
-
-export function Tab({ name }: Props) {
-    const item = features.find(f => f.name == name);
-    const Tab = lazy(item!.tab)
-    return <Suspense fallback={<div>404</div>} children={<Tab />} />
-
+export function getFeature(name: string) {
+    return features.find(f => f.name == name);
 }
