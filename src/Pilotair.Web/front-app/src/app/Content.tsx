@@ -1,9 +1,9 @@
-import { TabsProps, Empty, Tag } from "antd"
+import { Empty } from "antd"
 import { ReactNode, createContext, useContext, useState } from "react"
 import { WorkspaceContext } from "./workspace"
-import Feature from "./Feature"
+import Feature from "./feature"
 import { getFeature } from "./features"
-import Tabs, { TabItem } from "../common/Tabs"
+import Tabs, { TabItem } from "../common/tabs"
 
 interface TabsContextValue {
     tabs: TabItem[],

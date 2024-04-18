@@ -1,7 +1,7 @@
 import SiderLayout from "../common/layout/sider-layout"
-import { Menu, MenuContextProvider } from "./Sider"
-import { Content, TabsContextProvider } from "./Content"
-import { Header } from "./Header"
+import { Menu, MenuContextProvider } from "./sider"
+import { Content, TabsContextProvider } from "./content"
+import { Header } from "./header"
 import { WorkspaceStateProvider } from "./workspace"
 
 export default function App() {

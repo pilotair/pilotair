@@ -1,8 +1,8 @@
 import { useState } from "react"
-import Breadcrumb, { Item } from "../common/Breadcrumb"
+import Breadcrumb, { Item } from "../common/breadcrumb"
 import { Button, Upload, UploadProps, message, Checkbox, Divider } from "antd"
 import { UploadOutlined } from "@ant-design/icons"
-import EntryItem from "./EntryItem"
+import EntryItem from "./entry-item"
 
 export default function File() {
     const [items] = useState<Item[]>([{

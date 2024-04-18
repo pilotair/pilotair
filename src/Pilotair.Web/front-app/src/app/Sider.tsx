@@ -1,8 +1,8 @@
 import { Menu as AntdMenu } from "antd"
 import { ReactNode, createContext, useContext, useEffect, useState } from "react"
-import { TabsContext } from "./Content"
+import { TabsContext } from "./content"
 import { WorkspaceContext } from "./workspace"
-import { Icon } from "../common/Icon"
+import { Icon } from "../common/icon"
 import { httpClient } from "../utils/request"
 
 type MenuItem = { key: string, icon: ReactNode, label: string }
