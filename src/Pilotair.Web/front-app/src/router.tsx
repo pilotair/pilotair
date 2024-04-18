@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from './account/login.tsx'
 import MainLayout from "./common/layout/main.tsx"
-import App from "./app/page.tsx"
+import Workspace from "./workspace/page.tsx"
 
 export const router = createBrowserRouter([
     {
-        element: <App />,
+        element: <Workspace />,
         path: "/",
     },
     {

@@ -1,5 +1,4 @@
 import { Layout } from "antd";
-import Sider from "antd/es/layout/Sider";
 import { ReactNode, useState } from "react";
 import LogoIcon from "../../assets/logo.svg"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
@@ -10,6 +9,8 @@ interface Props {
     header: ReactNode
 }
 
+const { Sider } = Layout
+
 export default function LeftMenuLayout({ sider, content, header }: Props) {
     const [collapsed, setCollapsed] = useState(false)
 
@@ -17,7 +18,7 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
         <Layout className="absolute inset-0">
             <Sider collapsible theme="dark" trigger={null} collapsed={collapsed}>
                 <div className="px-5 h-12 flex flex-shrink-0 items-center">
-                    <img onClick={() => setCollapsed(false)} className="w-10 h-10 cursor-pointer" src={LogoIcon} alt="pilotair" />
+                    <img className="w-10 h-10 cursor-default" src={LogoIcon} alt="pilotair" />
                     <div className="flex-1"></div>
                     {!collapsed && <MenuFoldOutlined onClick={() => setCollapsed(true)} className="text-white hover:text-blue-400" />}
                 </div>
