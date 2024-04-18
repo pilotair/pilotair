@@ -47,7 +47,7 @@ public class FileService
         return path;
     }
 
-    public async void SaveFile(string path, Stream stream, string fileName)
+    public async Task SaveFileAsync(string path, Stream stream, string fileName)
     {
         path = CreateFolder(path);
         path = Path.Combine(path, fileName);

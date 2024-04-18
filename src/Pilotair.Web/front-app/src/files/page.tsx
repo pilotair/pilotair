@@ -1,10 +1,10 @@
 import { ReactNode, useEffect, useState } from "react"
 import Breadcrumb, { Item } from "../common/breadcrumb"
-import { Button, Upload, UploadProps, message, Checkbox, Divider } from "antd"
-import { UploadOutlined } from "@ant-design/icons"
+import { Checkbox, Divider } from "antd"
 import EntryItem from "./entry-item"
 import { useFileStore } from "./files-store"
 import CreateFolderBtn from "./create-folder-btn"
+import UploadFilesBtn from "./upload-files-btn"
 
 export default function File() {
     const [items] = useState<Item[]>([{
@@ -16,24 +16,6 @@ export default function File() {
     useEffect(() => {
         loadFiles()
     }, [path])
-
-    const props: UploadProps = {
-        name: 'file',
-        action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
 
     const folders: ReactNode[] = [];
     const items1: ReactNode[] = [];
@@ -52,9 +34,7 @@ export default function File() {
                 <Breadcrumb items={items} />
                 <div className="flex">
                     <div className="flex-1 flex gap-2">
-                        <Upload {...props}>
-                            <Button type="primary" icon={<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
+                        <UploadFilesBtn />
                         <CreateFolderBtn />
                     </div>
                     <Checkbox className="flex items-center">Check all</Checkbox>

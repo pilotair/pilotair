@@ -3,7 +3,7 @@ import { Empty, Menu } from "antd"
 import { Header } from "./header"
 import { useWorkspaceStore } from "./workspace-store";
 import { useEffect } from "react";
-import Tabs from "../common/tabs";
+import Tabs from "../common/tab/tabs";
 
 export default function App() {
     const { menus, tabs, openTab, closeTab, setActiveKey, activeKey, loadMenus } = useWorkspaceStore();

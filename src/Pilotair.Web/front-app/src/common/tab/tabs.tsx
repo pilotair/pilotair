@@ -1,4 +1,4 @@
-import TagGroup, { TagItem } from "./tag-group"
+import TagGroup, { TagItem } from "../tag-group"
 import { ReactNode, createContext } from "react"
 
 export interface TabItem extends TagItem {

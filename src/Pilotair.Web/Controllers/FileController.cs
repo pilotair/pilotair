@@ -1,3 +1,4 @@
+using System.Collections;
 using Microsoft.AspNetCore.Mvc;
 using Pilotair.Web.Files;
 
@@ -10,13 +11,13 @@ public class FileController(FileService fileService) : ApiController
     }
 
     [HttpPost]
-    public void Post(IFormFileCollection files, string? path = "")
+    public async Task PostAsync(IEnumerable<IFormFile> files, [FromForm] string? path = "")
     {
         if (path != default) fileService.CreateFolder(path);
         foreach (var file in files)
         {
             using var stream = file.OpenReadStream();
-            fileService.SaveFile(path!, stream, file.FileName);
+            await fileService.SaveFileAsync(path!, stream, file.FileName);
         }
     }
 }

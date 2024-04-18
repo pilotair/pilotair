@@ -13,7 +13,7 @@ export default function EntryItem({ type, url, name }: Props) {
     function getPreview() {
         switch (type) {
             case "folder":
-                return <FolderTwoTone className="text-6xl" />
+                return <FolderTwoTone className="text-7xl" />
 
             case "image":
                 return <div className="w-14 h-14 bg-contain bg-center bg-no-repeat" style={{ backgroundImage: `url('${url}')` }}></div>

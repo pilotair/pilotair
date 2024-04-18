@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { TabItem } from "../common/tabs"
+import { TabItem } from "../common/tab/tabs"
 import { getFeature } from "./features"
 import Feature from "./feature"
 import { ReactNode } from "react"
@@ -63,6 +63,7 @@ export const useWorkspaceStore = create<Store>((set, get) => ({
     },
     async loadMenus() {
         const menus = await httpClient.get<{ key: string, label: string, icon: string }[]>("/__api__/menu");
+        if (!menus) return;
         set({
             menus: menus.map(m => ({
                 key: m.key,
