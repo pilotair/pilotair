@@ -7,7 +7,7 @@ interface Props {
 
 export default function Feature({ name }: Props) {
     const item = features.find(f => f.name == name);
-    const Tab = lazy(item!.tab)
-    return <Suspense fallback={<div>404</div>} children={<Tab />} />
+    const Component = lazy(item!.tab)
+    return <Suspense fallback={<div></div>} children={<Component />} />
 
 }

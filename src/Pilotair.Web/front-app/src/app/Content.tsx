@@ -1,15 +1,12 @@
-import { Tabs as AntdTabs, TabsProps, Empty, Tag } from "antd"
+import { TabsProps, Empty, Tag } from "antd"
 import { ReactNode, createContext, useContext, useState } from "react"
 import { WorkspaceContext } from "./workspace"
 import Feature from "./Feature"
 import { getFeature } from "./features"
-import { CloseOutlined } from "@ant-design/icons"
-
-
-type TabItems = NonNullable<TabsProps["items"]>
+import Tabs, { TabItem } from "../common/Tabs"
 
 interface TabsContextValue {
-    tabs: TabItems,
+    tabs: TabItem[],
     closeTab: (key: string) => void
     openTab: (key: string) => void
 }
@@ -22,7 +19,7 @@ interface Props {
 
 export function TabsContextProvider({ children }: Props) {
 
-    const [tabs, setTabs] = useState<TabItems>([])
+    const [tabs, setTabs] = useState<TabItem[]>([])
     const { setActive } = useContext(WorkspaceContext)
 
     function closeTab(key: string) {
@@ -40,9 +37,7 @@ export function TabsContextProvider({ children }: Props) {
                 key: key,
                 label: feature?.label,
                 icon: feature?.icon,
-                children: <div className="bg-white rounded-md h-full mt-2">
-                    <Feature name={key} />
-                </div>
+                panel: <Feature name={key} />
             }
             setTabs([...tabs, tab])
         }
@@ -54,10 +49,7 @@ export function TabsContextProvider({ children }: Props) {
     return <TabsContext.Provider value={{ tabs, closeTab, openTab }}>{children}</TabsContext.Provider>
 }
 
-
-type RenderTabBarProps = Parameters<NonNullable<TabsProps["renderTabBar"]>>[0]
-
-export function Tabs() {
+export function Content() {
     const { tabs, closeTab } = useContext(TabsContext)
     const { active, setActive } = useContext(WorkspaceContext)
 
@@ -84,33 +76,8 @@ export function Tabs() {
         return <Empty className="h-full flex items-center justify-center" description={false} />
     }
 
-    function CustomTabBar(props: RenderTabBarProps) {
-        return <div>
-            {tabs.map(tab => {
-                const active = props.activeKey == tab.key;
-                return <Tag
-                    key={tab.key}
-                    closeIcon={<CloseOutlined style={{ color: active ? '#fff' : '#000' }} />}
-                    onClose={(e) => onClose(tab.key, e)}
-                    bordered={false}
-                    icon={tab.icon}
-                    className="cursor-pointer"
-                    color={active ? 'blue-inverse' : "default"}
-                    onClick={(e) => props.onTabClick(tab.key, e)}>
-                    {tab.label}
-                </Tag>
-            })}
-        </div>
-    }
-
     return <>
-        <AntdTabs
-            className="h-full"
-            items={tabs}
-            activeKey={active}
-            onTabClick={tabClick}
-            renderTabBar={CustomTabBar}
-        />
+        <Tabs items={tabs} activeKey={active} />
     </>
 }
 

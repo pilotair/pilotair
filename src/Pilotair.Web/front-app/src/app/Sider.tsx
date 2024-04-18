@@ -1,6 +1,6 @@
 import { Menu as AntdMenu } from "antd"
 import { ReactNode, createContext, useContext, useEffect, useState } from "react"
-import { TabsContext } from "./tabs"
+import { TabsContext } from "./Content"
 import { WorkspaceContext } from "./workspace"
 import { Icon } from "../common/Icon"
 import { httpClient } from "../utils/request"
@@ -40,7 +40,6 @@ export function Menu() {
 
     return <AntdMenu
         mode="inline"
-        style={{ height: '100%', borderRight: 0 }}
         items={menus}
         onClick={({ key }) => openTab(key)}
         selectedKeys={[active]}

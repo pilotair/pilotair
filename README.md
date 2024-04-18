@@ -1,6 +1,6 @@
 ### TODO
 
 - 🚧 Custom openApi generate
-- [ ] deploy and docker build
+- [x] deploy and docker build
 - [ ] Container crud
 - [ ] Use http3 proxy

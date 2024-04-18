@@ -2,10 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-.ant-tabs .ant-tabs-tabpane {
-    height: 100%;
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.ant-tabs-content-holder {
-    display: flex;
+/* Track */
+::-webkit-scrollbar-track {
+    background: #88888871;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #444;
 }

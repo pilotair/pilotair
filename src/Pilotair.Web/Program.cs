@@ -12,7 +12,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<Pilotair.Web.Endpoint.EndpointDataSource>();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
