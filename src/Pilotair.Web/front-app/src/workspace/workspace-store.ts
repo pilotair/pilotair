@@ -17,49 +17,49 @@ interface Store {
     loadMenus: () => void
 }
 
-export const useWorkspaceStore = create<Store>(set => ({
+export const useWorkspaceStore = create<Store>((set, get) => ({
     activeKey: "",
     tabs: [],
     menus: [],
     setActiveKey(key: string) {
-        return { activeKey: key }
+        set({ activeKey: key })
     },
     closeTab(key: string) {
-        set((state) => {
-            const tab = state.tabs.find(f => f.key == key);
-            if (!tab) return {};
-            let activeKey = state.activeKey;
+        const { tabs, activeKey } = get();
+        const tab = tabs.find(f => f.key == key);
+        if (!tab) return;
 
-            if (key == state.activeKey) {
-                const currentTabIndex = state.tabs.indexOf(tab);
-                if (state.tabs[currentTabIndex - 1]) {
-                    activeKey = state.tabs[currentTabIndex - 1].key
-                } else if (state.tabs[currentTabIndex + 1]) {
-                    activeKey = state.tabs[currentTabIndex + 1].key
-                }
+        if (key == activeKey) {
+            const currentTabIndex = tabs.indexOf(tab);
+            if (tabs[currentTabIndex - 1]) {
+                set({ activeKey: tabs[currentTabIndex - 1].key })
+            } else if (tabs[currentTabIndex + 1]) {
+                set({ activeKey: tabs[currentTabIndex + 1].key })
             }
+        }
 
-            return { tabs: state.tabs.filter(f => f != tab), activeKey }
-        })
+        set({ tabs: tabs.filter(f => f != tab) })
     },
     openTab(key: string) {
-        set(state => {
-            let tab = state.tabs.find(f => f.key == key);
-            if (tab) {
-                return { activeKey: tab.key }
-            }
-            const feature = getFeature(key)
-            if (!feature) return {};
+        const { tabs } = get();
+        let tab = tabs.find(f => f.key == key);
 
-            tab = {
-                key: key,
-                label: feature?.label,
-                icon: feature?.icon,
-                panel: Feature({ name: feature.name })
-            }
+        if (tab) {
+            set({ activeKey: tab.key });
+            return;
+        }
 
-            return { tabs: [...state.tabs, tab], activeKey: tab.key }
-        })
+        const feature = getFeature(key)
+        if (!feature) return;
+
+        tab = {
+            key: key,
+            label: feature?.label,
+            icon: feature?.icon,
+            panel: Feature({ name: feature.name })
+        }
+
+        set({ tabs: [...tabs, tab], activeKey: tab.key })
     },
     async loadMenus() {
         const menus = await httpClient.get<{ key: string, label: string, icon: string }[]>("/__api__/menu");

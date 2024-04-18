@@ -12,18 +12,18 @@ export interface TagItem {
 interface Props {
     items: TagItem[],
     activeKey?: string,
-    onClose?: (key: string) => void,
-    onClick?: (key: string) => void
+    onTagClose?: (key: string) => void,
+    onTagClick?: (key: string) => void
 }
 
 
 
-export default function TagGroup({ items, activeKey, onClose, onClick }: Props) {
+export default function TagGroup({ items, activeKey, onTagClose, onTagClick }: Props) {
     const tags: ReactNode[] = [];
 
-    function onTagClose(key: string, e: React.MouseEvent) {
+    function onClose(key: string, e: React.MouseEvent) {
         e.preventDefault();
-        onClose?.(key)
+        onTagClose?.(key)
     }
 
     for (const item of items) {
@@ -32,12 +32,12 @@ export default function TagGroup({ items, activeKey, onClose, onClick }: Props) 
         const tag = <Tag
             key={item.key}
             closeIcon={closeIcon}
-            onClose={(e) => onTagClose(item.key, e)}
+            onClose={(e) =>onClose(item.key, e)}
             bordered={false}
             icon={item.icon}
             className="cursor-pointer"
             color={isActive ? 'blue-inverse' : "default"}
-            onClick={() => onClick?.(item.key)}>
+            onClick={() => onTagClick?.(item.key)}>
             {item.label}
         </Tag>
         tags.push(tag);

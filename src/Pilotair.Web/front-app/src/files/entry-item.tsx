@@ -3,10 +3,11 @@ import { Typography, Checkbox } from "antd";
 
 interface Props {
     type: 'folder' | "text" | "image",
-    url: string
+    url: string,
+    name: string
 }
 
-export default function EntryItem({ type, url }: Props) {
+export default function EntryItem({ type, url, name }: Props) {
     const { Text } = Typography;
 
     function getPreview() {
@@ -28,7 +29,7 @@ export default function EntryItem({ type, url }: Props) {
             <div className="w-16 h-16 flex justify-center items-center">
                 {getPreview()}
             </div>
-            <Text>text file</Text>
+            <Text>{name}</Text>
             <Checkbox className="absolute top-1 right-1 opacity-0 group-hover:opacity-100" />
         </div>
     )

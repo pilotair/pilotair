@@ -25,7 +25,7 @@ export default function App() {
             return <Empty className="h-full flex items-center justify-center" description={false} />
         }
 
-        return <Tabs items={tabs} activeKey={activeKey} onClose={closeTab} onClick={setActiveKey} />
+        return <Tabs items={tabs} activeKey={activeKey} onTabClose={closeTab} onTabClick={setActiveKey} />
     }
 
     const content = Content();

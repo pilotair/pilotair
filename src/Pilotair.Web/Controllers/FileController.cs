@@ -12,6 +12,7 @@ public class FileController(FileService fileService) : ApiController
     [HttpPost]
     public void Post(IFormFileCollection files, string? path = "")
     {
+        if (path != default) fileService.CreateFolder(path);
         foreach (var file in files)
         {
             using var stream = file.OpenReadStream();
