@@ -11,7 +11,7 @@ public class FileController(FileService fileService) : ApiController
     }
 
     [HttpPost]
-    public async Task PostAsync(IEnumerable<IFormFile> files, [FromForm] string? path = "")
+    public async Task PostAsync(IEnumerable<IFormFile> files, string? path = "")
     {
         if (path != default) fileService.CreateFolder(path);
         foreach (var file in files)

@@ -1,43 +1,56 @@
 import { ReactNode, useEffect, useState } from "react"
-import Breadcrumb, { Item } from "../common/breadcrumb"
-import { Checkbox, Divider } from "antd"
+import { Button, Checkbox, Divider } from "antd"
 import EntryItem from "./entry-item"
-import { useFileStore } from "./files-store"
+import { Entry, useFileStore } from "./files-store"
 import CreateFolderBtn from "./create-folder-btn"
 import UploadFilesBtn from "./upload-files-btn"
+import { DeleteOutlined } from "@ant-design/icons"
+import FolderBreadcrumb from "./folder-breadcrumb"
 
 export default function File() {
-    const [items] = useState<Item[]>([{
-        title: "root"
-    }])
-
-    const { path, loadFiles, files } = useFileStore();
+    const { path, loadFiles, files, openFolder } = useFileStore();
+    const [selectedFiles, setSelectedFiles] = useState<Entry[]>([])
 
     useEffect(() => {
         loadFiles()
-    }, [path])
+    }, [path, loadFiles])
 
     const folders: ReactNode[] = [];
     const items1: ReactNode[] = [];
 
     for (const file of files) {
         if (file.isFolder) {
-            folders.push(<EntryItem key={file.name} type="folder" url="" name={file.name} />)
+            folders.push(<EntryItem
+                selected={selectedFiles.includes(file)}
+                key={file.name}
+                type="folder"
+                url=""
+                name={file.name}
+                onSelected={() => setSelectedFiles(selectedFiles.includes(file) ? selectedFiles.filter(f => f !== file) : [...selectedFiles, file])}
+                onClick={() => openFolder(file.name)}
+            />)
         } else {
-            items1.push(<EntryItem key={file.name} type="text" url="" name={file.name} />)
+            items1.push(<EntryItem
+                selected={selectedFiles.includes(file)}
+                key={file.name}
+                type="text"
+                url=""
+                name={file.name}
+                onSelected={() => setSelectedFiles(selectedFiles.includes(file) ? selectedFiles.filter(f => f !== file) : [...selectedFiles, file])}
+            />)
         }
     }
 
     return (
         <div className="p-4 space-y-4 flex flex-col h-full">
             <div className="flex-shrink-0 space-y-4 ">
-                <Breadcrumb items={items} />
                 <div className="flex">
-                    <div className="flex-1 flex gap-2">
-                        <UploadFilesBtn />
+                    <Checkbox className="flex items-center flex-1">Check all</Checkbox>
+                    <div className=" flex gap-2">
+                        {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />}>Delete</Button>}
                         <CreateFolderBtn />
+                        <UploadFilesBtn />
                     </div>
-                    <Checkbox className="flex items-center">Check all</Checkbox>
                 </div>
 
                 <Divider />
@@ -52,6 +65,7 @@ export default function File() {
                     {items1}
                 </div>
             </div>
+            {!!path && <FolderBreadcrumb path={path} className="flex-shrink-0" />}
         </div>
     )
 }

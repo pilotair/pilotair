@@ -3,6 +3,7 @@ import { TabContext } from "../common/tab/tab-panel";
 import { useContext } from "react";
 import { httpClient } from "../utils/request";
 import { useFileStore } from "./files-store";
+import { combine } from "../utils/path";
 
 export default function CreateFolderBtn() {
     const { openModal } = useContext(TabContext)
@@ -11,7 +12,8 @@ export default function CreateFolderBtn() {
     let closeModal: () => void
 
     async function onFinish(value: { name: string }) {
-        await httpClient.post(`/__api__/file?path=${value.name}`);
+        const path = combine(fileStore.path, value.name);
+        await httpClient.post(`/__api__/file?path=${path}`);
         await fileStore.loadFiles();
         closeModal?.()
     }

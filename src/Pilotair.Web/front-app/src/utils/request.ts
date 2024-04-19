@@ -1,14 +1,12 @@
+async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", body?: unknown, headers: Record<string, string> = {}) {
+    if (!("contentType" in headers)) {
+        headers.contentType = "application/json"
+    }
 
-
-
-async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", body?: unknown, header: Record<string, string> = {}) {
     const response = await fetch(url, {
         method: method,
-        headers: {
-            contentType: "application/json",
-            ...header
-        },
-        body: body ? JSON.stringify(body) : undefined
+        headers,
+        body: bodyStringify(headers.contentType, body)
     })
 
     try {
@@ -19,6 +17,25 @@ async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", b
     }
 
 }
+
+function bodyStringify(contentType: string, body: unknown) {
+    if (!body) return undefined;
+    switch (contentType) {
+        case "application/x-www-form-urlencoded": {
+            const formData = new FormData();
+            if (typeof body == "object") {
+                for (const key in body) {
+                    formData.append(key, body[key as keyof typeof body])
+                }
+            }
+            return formData;
+        }
+
+        default:
+            return JSON.stringify(body)
+    }
+}
+
 
 function createClient() {
     return {

@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { TabItem } from "../common/tab/tabs"
-import { getFeature } from "./features"
+import { features, getFeature } from "./features"
 import Feature from "./feature"
 import { ReactNode } from "react"
 import { httpClient } from "../utils/request"
@@ -68,6 +68,7 @@ export const useWorkspaceStore = create<Store>((set, get) => ({
             menus: menus.map(m => ({
                 key: m.name,
                 label: m.label,
+                icon: features.find(f => f.name == m.name)?.icon
             }))
         })
     }

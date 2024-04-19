@@ -14,10 +14,9 @@ export default function UploadFilesBtn({ path }: Props) {
 
     const props: UploadProps = {
         name: "files",
-        action: "/__api__/file",
+        action: `/__api__/file?path=${path}`,
         multiple: true,
         showUploadList: false,
-        data: { path: path ?? '' },
         fileList,
         beforeUpload(_file, FileList) {
             setFileList(FileList)
