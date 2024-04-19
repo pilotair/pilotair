@@ -10,6 +10,8 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    port: 80,
+    strictPort: true,
     proxy: {
       '/__api__': {
         target: 'http://localhost:8080',

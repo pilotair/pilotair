@@ -4,7 +4,7 @@ public class MenuItem
 {
     public required uint Order { get; init; }
 
-    public required string Key { get; init; }
+    public required string Name { get; init; }
 
     public required string Label { get; init; } = string.Empty;
     public string Icon { get; set; } = string.Empty;

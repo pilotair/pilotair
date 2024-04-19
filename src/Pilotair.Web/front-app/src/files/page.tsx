@@ -22,9 +22,9 @@ export default function File() {
 
     for (const file of files) {
         if (file.isFolder) {
-            folders.push(<EntryItem type="folder" url="" name={file.name} />)
+            folders.push(<EntryItem key={file.name} type="folder" url="" name={file.name} />)
         } else {
-            items1.push(<EntryItem type="text" url="" name={file.name} />)
+            items1.push(<EntryItem key={file.name} type="text" url="" name={file.name} />)
         }
     }
 

@@ -1,9 +1,12 @@
 
-async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", body: unknown = undefined) {
+
+
+async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", body?: unknown, header: Record<string, string> = {}) {
     const response = await fetch(url, {
         method: method,
         headers: {
-            contentType: "application/json"
+            contentType: "application/json",
+            ...header
         },
         body: body ? JSON.stringify(body) : undefined
     })
@@ -19,20 +22,19 @@ async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", b
 
 function createClient() {
     return {
-        get<T>(url: string) {
-            return send<T>(url, "GET")
+        get<T>(url: string, header?: Record<string, string>) {
+            return send<T>(url, "GET", header)
         },
-        post<T>(url: string, body?: unknown) {
-            return send<T>(url, "POST", body)
+        post<T>(url: string, body?: unknown, header?: Record<string, string>) {
+            return send<T>(url, "POST", body, header)
         },
-        put<T>(url: string, body?: unknown) {
-            return send<T>(url, "PUT", body)
+        put<T>(url: string, body?: unknown, header?: Record<string, string>) {
+            return send<T>(url, "PUT", body, header)
         },
-        delete<T>(url: string,) {
-            return send<T>(url, "DELETE")
+        delete<T>(url: string, header?: Record<string, string>) {
+            return send<T>(url, "DELETE", header)
         },
     }
 }
-
 
 export const httpClient = createClient();

@@ -20,6 +20,6 @@ export const useFileStore = create<Store>((set, get) => ({
     async loadFiles() {
         const { path } = get();
         const files = await httpClient.get<Entry[]>(`/__api__/file?path=${path}`);
-        set({ files })
+        if(files) set({ files })
     }
 }))

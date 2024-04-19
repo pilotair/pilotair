@@ -3,7 +3,7 @@ import { Tag } from "antd"
 import { CloseOutlined } from "@ant-design/icons";
 
 export interface TagItem {
-    key: string
+    name: string
     label?: string,
     icon?: ReactNode,
     closable?: boolean
@@ -11,33 +11,34 @@ export interface TagItem {
 
 interface Props {
     items: TagItem[],
-    activeKey?: string,
-    onTagClose?: (key: string) => void,
-    onTagClick?: (key: string) => void
+    activeName?: string,
+    onTagClose?: (name: string) => void,
+    onTagClick?: (name: string) => void
 }
 
 
 
-export default function TagGroup({ items, activeKey, onTagClose, onTagClick }: Props) {
+export default function TagGroup({ items, activeName, onTagClose, onTagClick }: Props) {
     const tags: ReactNode[] = [];
 
-    function onClose(key: string, e: React.MouseEvent) {
+    function onClose(name: string, e: React.MouseEvent) {
         e.preventDefault();
-        onTagClose?.(key)
+        onTagClose?.(name)
     }
 
     for (const item of items) {
-        const isActive = item.key === activeKey;
+        const isActive = item.name === activeName;
         const closeIcon = <CloseOutlined style={{ color: isActive ? '#fff' : '#000' }} />
         const tag = <Tag
-            key={item.key}
+            key={item.name}
             closeIcon={closeIcon}
-            onClose={(e) =>onClose(item.key, e)}
+            onClose={(e) =>onClose(item.name, e)}
             bordered={false}
             icon={item.icon}
             className="cursor-pointer"
             color={isActive ? 'blue-inverse' : "default"}
-            onClick={() => onTagClick?.(item.key)}>
+            onClick={() => onTagClick?.(item.name)}
+        >
             {item.label}
         </Tag>
         tags.push(tag);

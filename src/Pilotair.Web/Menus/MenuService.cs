@@ -7,13 +7,13 @@ public class MenuService
         var items = new List<MenuItem> {
         new() {
             Order = 1,
-            Key="home",
+            Name="home",
             Label = "Home",
             Icon = "HomeOutlined"
         },
         new() {
             Order = 2,
-            Key="files",
+            Name="files",
             Label = "Files",
             Icon = "PictureOutlined"
         },

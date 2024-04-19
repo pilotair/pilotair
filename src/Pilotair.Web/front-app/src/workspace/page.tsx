@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import Tabs from "../common/tab/tabs";
 
 export default function App() {
-    const { menus, tabs, openTab, closeTab, setActiveKey, activeKey, loadMenus } = useWorkspaceStore();
+    const { menus, tabs, openTab, closeTab, setActiveName, activeName, loadMenus } = useWorkspaceStore();
 
     useEffect(() => {
         loadMenus()
@@ -16,7 +16,7 @@ export default function App() {
         mode="inline"
         items={menus}
         onClick={({ key }) => openTab(key)}
-        selectedKeys={[activeKey]}
+        selectedKeys={[activeName]}
         theme="dark"
     />
 
@@ -25,7 +25,7 @@ export default function App() {
             return <Empty className="h-full flex items-center justify-center" description={false} />
         }
 
-        return <Tabs items={tabs} activeKey={activeKey} onTabClose={closeTab} onTabClick={setActiveKey} />
+        return <Tabs items={tabs} activeName={activeName} onTabClose={closeTab} onTabClick={setActiveName} />
     }
 
     const content = Content();

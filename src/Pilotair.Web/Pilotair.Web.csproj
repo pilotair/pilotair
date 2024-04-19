@@ -9,7 +9,7 @@
     <ContainerFamily>alpine</ContainerFamily>
     <UserSecretsId>0aa27e78-0fa9-4211-806b-3fc86175de50</UserSecretsId>
     <SpaRoot>./front-app</SpaRoot>
-    <SpaProxyServerUrl>http://localhost:5173/__admin__</SpaProxyServerUrl>
+    <SpaProxyServerUrl>http://dev.pilotair.org/__admin__</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
   </PropertyGroup>
 

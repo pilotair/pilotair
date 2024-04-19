@@ -9,7 +9,7 @@ interface Props {
 
 export default function UploadFilesBtn({ path }: Props) {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [status, setStatus] = useState('Uploading');
+    const [status, setStatus] = useState('all');
 
 
     const props: UploadProps = {
@@ -31,13 +31,13 @@ export default function UploadFilesBtn({ path }: Props) {
     const fileItems: ReactNode[] = [];
 
     for (const file of fileList) {
-        if (file.status == status) fileItems.push(<div>{file.name} <Progress percent={file.percent} /></div>)
+        if (file.status == status || status == 'all') fileItems.push(<div key={file.name}>{file.name} <Progress percent={file.percent} /></div>)
     }
 
     const footer = (
         <div className="text-center"><Button className="w-full" onClick={() => setFileList([])}>Close</Button></div>
     )
-    const title = (<div className="text-center"><Segmented value={status} onChange={(value) => setStatus(value)} options={['uploading', 'done', "error"]} /></div>)
+    const title = (<div className="text-center"><Segmented value={status} onChange={(value) => setStatus(value)} options={["all", 'uploading', 'done', "error"]} /></div>)
 
     return <>
         <Upload {...props}>

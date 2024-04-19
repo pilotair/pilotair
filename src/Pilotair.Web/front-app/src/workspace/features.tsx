@@ -5,7 +5,7 @@ export const features = [
         name: 'home',
         label: "Home",
         icon: <HomeOutlined />,
-        tab: () => import("../files/page")
+        tab: () => import("../home/page")
     },
     {
         name: 'files',
