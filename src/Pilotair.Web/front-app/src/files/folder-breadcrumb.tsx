@@ -13,15 +13,23 @@ export default function FolderBreadcrumb({ path, className }: Props) {
     const Items = useMemo(() => {
         const items: BreadcrumbProps["items"] = [];
         const fragments = path.split('/').filter(f => f)
+        const length = fragments.length;
 
         while (fragments.length) {
-            const path = fragments.join('/')
-            items.unshift({
-                title: <a>{fragments[fragments.length - 1]}</a>,
-                onClick() {
-                    goTo(path)
-                }
-            })
+            const title = fragments[fragments.length - 1];
+            
+            if (fragments.length == length) {
+                items.unshift({ title: title })
+            } else {
+                const path = fragments.join('/')
+                items.unshift({
+                    title: <a>{title}</a>,
+                    onClick() {
+                        goTo(path)
+                    }
+                })
+            }
+
             fragments.splice(fragments.length - 1, 1)
         }
 

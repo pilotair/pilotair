@@ -1,13 +1,13 @@
 import { FileOutlined, FolderTwoTone } from "@ant-design/icons";
 import { Typography, Checkbox } from "antd";
-import React from "react";
+import React, { MouseEvent } from "react";
 
 interface Props {
     type: 'folder' | "text" | "image",
     url: string,
     name: string,
     selected: boolean,
-    onSelected: (e: React.MouseEvent) => void;
+    onSelected: (value: boolean) => void;
     onClick?: (e: React.MouseEvent) => void
 }
 
@@ -27,14 +27,18 @@ export default function EntryItem({ type, url, name, selected, onSelected, onCli
         }
     }
 
-    return (
-        <div className=" w-28 h-28 inline-flex flex-col items-center justify-center hover:bg-gray-300 rounded-md relative group" onClick={onClick} >
+    function onCheckboxClick(e: MouseEvent) {
+        e.stopPropagation();
+        onSelected(!selected)
+    }
 
-            <div className="w-16 h-16 flex justify-center items-center">
+    return (
+        <div className={"w-28 h-28 inline-flex flex-col items-center justify-center hover:bg-gray-300 rounded-md relative group" + (selected ? " bg-blue-300/30" : "")}  >
+            <div onClick={onClick} className="w-16 h-16 flex justify-center items-center cursor-pointer">
                 {getPreview()}
             </div>
             <Text>{name}</Text>
-            <Checkbox checked={selected} className="absolute top-1 left-1 opacity-0 group-hover:opacity-100" onClick={onSelected} />
+            <Checkbox checked={selected} className={"absolute top-1 left-1 opacity-0 group-hover:opacity-100" + (selected ? " opacity-100" : "")} onClick={onCheckboxClick} />
         </div>
     )
 }

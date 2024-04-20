@@ -1,12 +1,40 @@
-async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", body?: unknown, headers: Record<string, string> = {}) {
+type SearchParams = Record<string, string | string[]>;
+
+interface SendParams {
+    searchParams?: SearchParams
+    body?: unknown,
+    headers?: Record<string, string>
+}
+type SupportMethods = "GET" | "POST" | "PUT" | "DELETE";
+
+async function send<T>(url: string, method: SupportMethods, sendParams?: SendParams) {
+    const urlObject = new URL(url, URL.canParse(url) ? undefined : location.origin)
+
+    if (sendParams?.searchParams) {
+        for (const key in sendParams.searchParams) {
+            const value = sendParams.searchParams[key];
+            if (typeof value == "string") {
+                urlObject.searchParams.append(key, value);
+            } else {
+                for (const i of value) {
+                    urlObject.searchParams.append(key, i);
+                }
+            }
+        }
+    }
+
+    const headers = sendParams?.headers ?? {};
+
     if (!("contentType" in headers)) {
         headers.contentType = "application/json"
     }
 
-    const response = await fetch(url, {
-        method: method,
+    const body = bodyStringify(headers.contentType, sendParams?.body)
+
+    const response = await fetch(urlObject, {
+        method,
         headers,
-        body: bodyStringify(headers.contentType, body)
+        body
     })
 
     try {
@@ -15,7 +43,6 @@ async function send<T>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", b
     } catch (error) {
         return null
     }
-
 }
 
 function bodyStringify(contentType: string, body: unknown) {
@@ -36,20 +63,19 @@ function bodyStringify(contentType: string, body: unknown) {
     }
 }
 
-
 function createClient() {
     return {
-        get<T>(url: string, header?: Record<string, string>) {
-            return send<T>(url, "GET", header)
+        get<T>(url: string, searchParams?: SearchParams, sendParams?: Omit<SendParams, "body" | "searchParams">) {
+            return send<T>(url, "GET", { ...sendParams, searchParams })
         },
-        post<T>(url: string, body?: unknown, header?: Record<string, string>) {
-            return send<T>(url, "POST", body, header)
+        post<T>(url: string, body?: unknown, sendParams?: Omit<SendParams, "body">) {
+            return send<T>(url, "POST", { ...sendParams, body })
         },
-        put<T>(url: string, body?: unknown, header?: Record<string, string>) {
-            return send<T>(url, "PUT", body, header)
+        put<T>(url: string, body?: unknown, sendParams?: Omit<SendParams, "body">) {
+            return send<T>(url, "PUT", { ...sendParams, body })
         },
-        delete<T>(url: string, header?: Record<string, string>) {
-            return send<T>(url, "DELETE", header)
+        delete<T>(url: string, searchParams?: SearchParams, sendParams?: Omit<SendParams, "body" | "searchParams">) {
+            return send<T>(url, "DELETE", { ...sendParams, searchParams })
         },
     }
 }

@@ -22,7 +22,7 @@ export const useFileStore = create<Store>((set, get) => ({
     files: [],
     async loadFiles() {
         const { path } = get();
-        const files = await httpClient.get<Entry[]>(`/__api__/file?path=${path}`);
+        const files = await httpClient.get<Entry[]>("/__api__/file", {path});
         if (files) set({ files })
     },
     openFolder(folder: string) {

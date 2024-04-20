@@ -1,4 +1,7 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Pilotair.Core;
+using Pilotair.Web.Codes;
 using Pilotair.Web.Files;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,10 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPilotairEngine();
 builder.Services.AddSingleton<MenuService>();
 builder.Services.AddSingleton<FileService>();
+builder.Services.AddSingleton<CodeService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<Pilotair.Web.Endpoint.EndpointDataSource>();
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

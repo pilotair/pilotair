@@ -7,11 +7,12 @@ public class FileService
 {
     private readonly string basePath;
     private readonly PilotairOptions options;
+    protected virtual string Folder { get; } = "files";
 
     public FileService(IOptions<PilotairOptions> options)
     {
         this.options = options.Value;
-        basePath = Path.Combine(this.options.DataPath, "files");
+        basePath = Path.Combine(this.options.DataPath, Folder);
         IoHelper.EnsureDirectoryExist(basePath);
     }
 
@@ -53,5 +54,25 @@ public class FileService
         path = Path.Combine(path, fileName);
         using var fs = System.IO.File.OpenWrite(path);
         await stream.CopyToAsync(fs);
+    }
+
+    public void Delete(string path, string[] entries)
+    {
+        path = Path.Combine(basePath, path);
+        if (!Directory.Exists(path)) return;
+
+        foreach (var item in entries)
+        {
+            var entryPath = Path.Combine(path, item);
+            var isFolder = Directory.Exists(entryPath);
+            if (isFolder)
+            {
+                Directory.Delete(entryPath, true);
+            }
+            else
+            {
+                System.IO.File.Delete(entryPath);
+            }
+        }
     }
 }

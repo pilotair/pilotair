@@ -1,11 +1,19 @@
 import { create } from "zustand"
 import { TabItem } from "../common/tab/tabs"
-import { features, getFeature } from "./features"
-import Feature from "./feature"
+import { features } from "./features"
 import { ReactNode } from "react"
 import { httpClient } from "../utils/request"
+import { combine } from "../utils/path"
 
-type MenuItem = { key: string, icon?: ReactNode, label: string }
+type MenuItem = {
+    key: string,
+    icon?: ReactNode,
+    label: ReactNode,
+    feature?: typeof features[0],
+    children?: MenuItem[]
+}
+
+type ApiMenuItem = { order: number, name: string, type: string, children?: ApiMenuItem[] }
 
 interface Store {
     activeName: string,
@@ -13,7 +21,7 @@ interface Store {
     menus: MenuItem[],
     setActiveName: (name: string) => void,
     closeTab: (name: string) => void,
-    openTab: (name: string) => void,
+    openTab: (name: string, label: ReactNode, panel: ReactNode, icon?: ReactNode) => void,
     loadMenus: () => void
 }
 
@@ -31,16 +39,18 @@ export const useWorkspaceStore = create<Store>((set, get) => ({
 
         if (name == activeName) {
             const currentTabIndex = tabs.indexOf(tab);
+            let activeName = ''
             if (tabs[currentTabIndex - 1]) {
-                set({ activeName: tabs[currentTabIndex - 1].name })
+                activeName = tabs[currentTabIndex - 1]?.name
             } else if (tabs[currentTabIndex + 1]) {
-                set({ activeName: tabs[currentTabIndex + 1].name })
+                activeName = tabs[currentTabIndex + 1]?.name
             }
+            set({ activeName })
         }
 
         set({ tabs: tabs.filter(f => f != tab) })
     },
-    openTab(name: string) {
+    openTab(name: string, label: ReactNode, panel: ReactNode, icon?: ReactNode) {
         const { tabs } = get();
         let tab = tabs.find(f => f.name == name);
 
@@ -49,27 +59,54 @@ export const useWorkspaceStore = create<Store>((set, get) => ({
             return;
         }
 
-        const feature = getFeature(name)
-        if (!feature) return;
-
         tab = {
             name: name,
-            label: feature?.label,
-            icon: feature?.icon,
-            panel: Feature({ name: feature.name })
+            label,
+            icon,
+            panel
         }
 
         set({ tabs: [...tabs, tab], activeName: tab.name })
     },
     async loadMenus() {
-        const menus = await httpClient.get<{ name: string, label: string, icon: string }[]>("/__api__/menu");
+        const menus = await httpClient.get<ApiMenuItem[]>("/__api__/menu");
         if (!menus) return;
         set({
-            menus: menus.map(m => ({
-                key: m.name,
-                label: m.label,
-                icon: features.find(f => f.name == m.name)?.icon
-            }))
+            menus: mapMenuItem(menus, '')
         })
     }
 }));
+
+function mapMenuItem(items: ApiMenuItem[], currentPath: string) {
+    const result: MenuItem[] = [];
+
+    for (const item of items) {
+        const feature = features.find(f => f.name == item.type);
+        let label: ReactNode = item.name;
+        if (feature) {
+            if (feature.label) {
+                if (typeof feature.label === "function") {
+                    label = feature.label(item.name)
+                } else {
+                    label = feature.label
+                }
+            }
+        }
+
+        const key = combine(currentPath, item.name);
+
+        const i: MenuItem = {
+            key: key,
+            label,
+            icon: feature?.icon,
+            feature
+        }
+
+        result.push(i)
+        if (item.children) {
+            i.children = mapMenuItem(item.children, key)
+        }
+    }
+
+    return result;
+}

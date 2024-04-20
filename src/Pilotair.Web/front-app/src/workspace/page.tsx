@@ -2,7 +2,7 @@ import SiderLayout from "../common/layout/sider-layout"
 import { Empty, Menu } from "antd"
 import { Header } from "./header"
 import { useWorkspaceStore } from "./workspace-store";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Tabs from "../common/tab/tabs";
 
 export default function App() {
@@ -12,10 +12,32 @@ export default function App() {
         loadMenus()
     }, [loadMenus])
 
+    const expandMenus = useMemo(() => {
+        const result: typeof menus = []
+
+        function getMenus(items: typeof menus) {
+            for (const menu of items) {
+                result.push(menu);
+                if (menu.children) {
+                    getMenus(menu.children)
+                }
+            }
+        }
+
+        getMenus(menus)
+        return result;
+    }, [menus])
+
+    function onMenuItemClick(key: string) {
+        const menu = expandMenus.find(f => f.key == key);
+        if (!menu || !menu.feature?.tab) return;
+        openTab(key, menu.label, menu.feature.tab, menu.icon)
+    }
+
     const sider = <Menu
         mode="inline"
         items={menus}
-        onClick={({ key }) => openTab(key)}
+        onClick={({ key }) => onMenuItemClick(key)}
         selectedKeys={[activeName]}
         theme="dark"
     />

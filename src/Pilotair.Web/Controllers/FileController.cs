@@ -20,4 +20,10 @@ public class FileController(FileService fileService) : ApiController
             await fileService.SaveFileAsync(path!, stream, file.FileName);
         }
     }
+
+    [HttpDelete]
+    public void Delete([FromQuery] string[] entries, string? path = "")
+    {
+        fileService.Delete(path!, entries);
+    }
 }

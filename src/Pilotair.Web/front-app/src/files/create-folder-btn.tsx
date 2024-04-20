@@ -13,7 +13,9 @@ export default function CreateFolderBtn() {
 
     async function onFinish(value: { name: string }) {
         const path = combine(fileStore.path, value.name);
-        await httpClient.post(`/__api__/file?path=${path}`);
+        await httpClient.post("/__api__/file", undefined, {
+            searchParams: { path }
+        });
         await fileStore.loadFiles();
         closeModal?.()
     }

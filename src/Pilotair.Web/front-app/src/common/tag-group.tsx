@@ -4,7 +4,7 @@ import { CloseOutlined } from "@ant-design/icons";
 
 export interface TagItem {
     name: string
-    label?: string,
+    label?: ReactNode,
     icon?: ReactNode,
     closable?: boolean
 }
