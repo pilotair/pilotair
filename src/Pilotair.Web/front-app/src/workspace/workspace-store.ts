@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { TabItem } from "../common/tab/tabs"
-import { features } from "./features"
+import { getFeature } from "./features"
 import { ReactNode } from "react"
 import { httpClient } from "../utils/request"
 import { combine } from "../utils/path"
@@ -9,7 +9,7 @@ type MenuItem = {
     key: string,
     icon?: ReactNode,
     label: ReactNode,
-    feature?: typeof features[0],
+    feature?: ReturnType<typeof getFeature>,
     children?: MenuItem[]
 }
 
@@ -81,7 +81,7 @@ function mapMenuItem(items: ApiMenuItem[], currentPath: string) {
     const result: MenuItem[] = [];
 
     for (const item of items) {
-        const feature = features.find(f => f.name == item.type);
+        const feature = getFeature(item.type);
         let label: ReactNode = item.name;
         if (feature) {
             if (feature.label) {

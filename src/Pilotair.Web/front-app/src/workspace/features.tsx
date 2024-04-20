@@ -1,15 +1,14 @@
-import { FileOutlined, HomeOutlined, JavaScriptOutlined, PictureOutlined } from "@ant-design/icons"
+import { CodepenOutlined, FileOutlined, HomeOutlined, PictureOutlined } from "@ant-design/icons"
 import { ReactNode } from "react";
 
 interface Feature {
     name: string;
     label?: ReactNode | ((value: ReactNode) => ReactNode),
     icon?: ReactNode,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    tab?: any
+    tab?: () => Promise<{ default: React.ComponentType<unknown>; }>
 }
 
-export const features: Feature[] = [
+const features: Feature[] = [
     {
         name: 'Home',
         label: "Home",
@@ -25,19 +24,17 @@ export const features: Feature[] = [
     {
         name: 'Codes',
         label: "Codes",
-        icon: <JavaScriptOutlined />,
-        tab: () => import("../files/page")
+        icon: <CodepenOutlined />,
     },
     {
         name: 'CodeFolder',
         label: (value) => value,
-        tab: () => import("../files/page")
     },
     {
         name: 'Code',
         icon: <FileOutlined />,
         label: (value) => value,
-        tab: () => import("../files/page")
+        tab: () => import("../code/page")
     }
 ]
 

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+namespace Pilotair.Web.Controllers;
+
 public class MenuController(MenuService menuService) : ApiController
 {
     [HttpGet]

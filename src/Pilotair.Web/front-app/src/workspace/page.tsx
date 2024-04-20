@@ -4,6 +4,7 @@ import { Header } from "./header"
 import { useWorkspaceStore } from "./workspace-store";
 import { useEffect, useMemo } from "react";
 import Tabs from "../common/tab/tabs";
+import AsyncComponent from "../common/async-component";
 
 export default function App() {
     const { menus, tabs, openTab, closeTab, setActiveName, activeName, loadMenus } = useWorkspaceStore();
@@ -31,7 +32,7 @@ export default function App() {
     function onMenuItemClick(key: string) {
         const menu = expandMenus.find(f => f.key == key);
         if (!menu || !menu.feature?.tab) return;
-        openTab(key, menu.label, menu.feature.tab, menu.icon)
+        openTab(key, menu.label, <AsyncComponent component={menu.feature.tab} />, menu.icon)
     }
 
     const sider = <Menu

@@ -2,6 +2,8 @@ using System.Collections;
 using Microsoft.AspNetCore.Mvc;
 using Pilotair.Web.Files;
 
+namespace Pilotair.Web.Controllers;
+
 public class FileController(FileService fileService) : ApiController
 {
     [HttpGet]

@@ -8,6 +8,7 @@ public class FileService
     private readonly string basePath;
     private readonly PilotairOptions options;
     protected virtual string Folder { get; } = "files";
+    protected string BasePath => basePath;
 
     public FileService(IOptions<PilotairOptions> options)
     {
@@ -54,6 +55,17 @@ public class FileService
         path = Path.Combine(path, fileName);
         using var fs = System.IO.File.OpenWrite(path);
         await stream.CopyToAsync(fs);
+    }
+
+    public Stream GetFile(string path, string name)
+    {
+        IoHelper.ShouldBeRelative(path);
+        path = Path.Combine(path, name);
+        if (!System.IO.File.Exists(path))
+        {
+            throw new FileNotFoundException();
+        }
+        return System.IO.File.OpenRead(path);
     }
 
     public void Delete(string path, string[] entries)
