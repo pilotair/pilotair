@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 using Pilotair.Core;
 using Pilotair.Web.Codes;
 using Pilotair.Web.Files;
@@ -21,7 +22,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.MapFallbackToFile("index.html");
@@ -41,5 +42,9 @@ if (dataSource != default)
     ((IEndpointRouteBuilder)app).DataSources.Add(dataSource);
 }
 
+var pilotairOptions = app.Services.GetService<IOptions<PilotairOptions>>();
+Console.WriteLine($"Data root path: {pilotairOptions?.Value.DataPath}");
+
 app.MapControllers();
 app.Run();
+
