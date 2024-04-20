@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Pilotair.Core;
 using Pilotair.Web.Codes;
 using Pilotair.Web.Files;
@@ -10,6 +9,7 @@ builder.Services.AddPilotairEngine();
 builder.Services.AddSingleton<MenuService>();
 builder.Services.AddSingleton<FileService>();
 builder.Services.AddSingleton<CodeService>();
+builder.Services.AddOptions<PilotairOptions>().Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
