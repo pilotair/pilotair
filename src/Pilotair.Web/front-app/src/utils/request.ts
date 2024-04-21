@@ -24,17 +24,19 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
     }
 
     const headers = sendParams?.headers ?? {};
+    let body: string | FormData | undefined;
 
-    if (!("contentType" in headers)) {
-        headers.contentType = "application/json"
+    if (!(sendParams?.body instanceof FormData)) {
+        if (!("contentType" in headers)) headers.contentType = "application/json"
+        body = bodyStringify(headers.contentType, sendParams?.body)
+    } else {
+        body = sendParams?.body
     }
-
-    const body = bodyStringify(headers.contentType, sendParams?.body)
 
     const response = await fetch(urlObject, {
         method,
         headers,
-        body
+        body,
     })
 
     try {
@@ -47,6 +49,7 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
 
 function bodyStringify(contentType: string, body: unknown) {
     if (!body) return undefined;
+
     switch (contentType) {
         case "application/x-www-form-urlencoded": {
             const formData = new FormData();
@@ -77,6 +80,7 @@ function createClient() {
         delete<T>(url: string, searchParams?: SearchParams, sendParams?: Omit<SendParams, "body" | "searchParams">) {
             return send<T>(url, "DELETE", { ...sendParams, searchParams })
         },
+        send
     }
 }
 
