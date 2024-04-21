@@ -6,12 +6,13 @@ interface Props {
     type: 'folder' | "text" | "image",
     url: string,
     name: string,
+    extension?: string
     selected: boolean,
     onSelected: (value: boolean) => void;
     onClick?: (e: React.MouseEvent) => void
 }
 
-export default function EntryItem({ type, url, name, selected, onSelected, onClick }: Props) {
+export default function EntryItem({ type, url, name, selected, onSelected, onClick, extension }: Props) {
     const { Text } = Typography;
 
     function getPreview() {
@@ -37,7 +38,10 @@ export default function EntryItem({ type, url, name, selected, onSelected, onCli
             <div onClick={onClick} className="w-16 h-16 flex justify-center items-center cursor-pointer">
                 {getPreview()}
             </div>
-            <Text>{name}</Text>
+            <Text ellipsis={{
+                suffix: extension,
+                tooltip: name,
+            }} >{name}</Text>
             <Checkbox checked={selected} className={"absolute top-1 left-1 opacity-0 group-hover:opacity-100" + (selected ? " opacity-100" : "")} onClick={onCheckboxClick} />
         </div>
     )

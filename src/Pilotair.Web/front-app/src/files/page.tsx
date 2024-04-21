@@ -32,6 +32,7 @@ export default function File() {
             url=""
             name={file.name}
             onSelected={(value) => setSelectedFiles(value ? [...selectedFiles, file] : selectedFiles.filter(f => f !== file))}
+            extension={file.extension}
             onClick={() => file.isFolder && openFolder(file.name)}
         />)
     }

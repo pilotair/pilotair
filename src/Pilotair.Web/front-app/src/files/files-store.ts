@@ -6,7 +6,9 @@ export interface Entry {
     name: string;
     creationTime: string;
     lastWriteTime: string;
-    isFolder: boolean
+    isFolder: boolean,
+
+    extension: string
 }
 
 interface Store {
@@ -22,7 +24,7 @@ export const useFileStore = create<Store>((set, get) => ({
     files: [],
     async loadFiles() {
         const { path } = get();
-        const files = await httpClient.get<Entry[]>("/__api__/file", {path});
+        const files = await httpClient.get<Entry[]>("/__api__/file", { path });
         if (files) set({ files })
     },
     openFolder(folder: string) {

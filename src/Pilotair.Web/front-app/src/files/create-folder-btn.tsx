@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { httpClient } from "../utils/request";
 import { useFileStore } from "./files-store";
 import { combine } from "../utils/path";
+import { FolderAddOutlined } from "@ant-design/icons";
 
 export default function CreateFolderBtn() {
     const { openModal } = useContext(TabContext)
@@ -36,5 +37,5 @@ export default function CreateFolderBtn() {
         })
     }
 
-    return <Button ghost type="primary" onClick={onCreateFolder}>Create Folder</Button>
+    return <Button ghost icon={<FolderAddOutlined />} type="primary" onClick={onCreateFolder}>Create Folder</Button>
 }

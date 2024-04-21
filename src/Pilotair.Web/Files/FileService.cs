@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Helpers;
 
@@ -86,5 +87,13 @@ public class FileService
                 System.IO.File.Delete(entryPath);
             }
         }
+    }
+
+    public void ImportFromZip(string path, Stream stream)
+    {
+        IoHelper.ShouldBeRelative(path);
+        using var zipArchive = new ZipArchive(stream);
+        path = Path.Combine(basePath, path);
+        zipArchive.ExtractToDirectory(path, true);
     }
 }

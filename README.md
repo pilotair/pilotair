@@ -2,6 +2,5 @@
 
 - 🚧 Custom openApi generate
 - [x] deploy and docker build
-- [ ] new http client
-- [ ] Container crud
+- [ ] code generation
 - [ ] Use http3 proxy

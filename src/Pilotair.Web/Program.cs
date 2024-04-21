@@ -10,6 +10,7 @@ builder.Services.AddPilotairEngine();
 builder.Services.AddSingleton<MenuService>();
 builder.Services.AddSingleton<FileService>();
 builder.Services.AddSingleton<CodeService>();
+builder.Services.AddSingleton<FrontApp>();
 builder.Services.AddOptions<PilotairOptions>().Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
@@ -28,6 +29,8 @@ if (app.Environment.IsDevelopment())
     app.MapFallbackToFile("index.html");
     app.UseSwagger();
     app.UseSwaggerUI();
+    var frontApp = app.Services.GetService<FrontApp>();
+    frontApp.GenerateApiSchema();
 }
 
 app.UseFileServer(new FileServerOptions

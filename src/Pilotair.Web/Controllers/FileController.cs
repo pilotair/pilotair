@@ -23,6 +23,14 @@ public class FileController(FileService fileService) : ApiController
         }
     }
 
+    [HttpPost("zip")]
+    public void ImportZip(IFormFile file, string? path = "")
+    {
+        if (path != default) fileService.CreateFolder(path);
+        using var stream = file.OpenReadStream();
+        fileService.ImportFromZip(path!, stream);
+    }
+
     [HttpDelete]
     public void Delete([FromQuery] string[] entries, string? path = "")
     {
