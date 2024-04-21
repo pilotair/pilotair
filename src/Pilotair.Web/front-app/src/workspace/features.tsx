@@ -1,4 +1,5 @@
-import { CodepenOutlined, FileOutlined, HomeOutlined, PictureOutlined } from "@ant-design/icons"
+import { CodepenOutlined, FileOutlined, HomeOutlined, PictureOutlined, PlusOutlined } from "@ant-design/icons"
+import { Dropdown } from "antd";
 import { ReactNode } from "react";
 
 interface Feature {
@@ -23,7 +24,18 @@ const features: Feature[] = [
     },
     {
         name: 'Codes',
-        label: "Codes",
+        label: <div className="flex group"><div className="flex-1">Codes</div><Dropdown trigger={["click"]} menu={{
+            items: [{
+                key: "file",
+                label: "Add file"
+            }, {
+                key: "folder",
+                label: "Add folder"
+            }, {
+                key: "router",
+                label: "Add router"
+            }],
+        }}><PlusOutlined className="opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()} /></Dropdown></div>,
         icon: <CodepenOutlined />,
     },
     {

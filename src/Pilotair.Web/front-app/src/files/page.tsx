@@ -12,11 +12,13 @@ import { TabContext } from "../common/tab/tab-panel"
 export default function File() {
     const { path, loadFiles, files, openFolder } = useFileStore();
     const [selectedFiles, setSelectedFiles] = useState<Entry[]>([])
-    const { openConfirm } = useContext(TabContext)
+    const { openConfirm, loading } = useContext(TabContext)
 
     useEffect(() => {
-        loadFiles()
-    }, [path, loadFiles]);
+        loading(async () => {
+            await loadFiles()
+        })
+    }, [path]);
 
     useEffect(() => {
         setSelectedFiles([])

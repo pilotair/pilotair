@@ -6,9 +6,9 @@ import { router } from "./router"
 import { ConfigProvider } from 'antd'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ConfigProvider>
-      <RouterProvider router={router} />
-    </ConfigProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ConfigProvider>
+    <RouterProvider router={router} />
+  </ConfigProvider>
+  //</React.StrictMode>,
 )

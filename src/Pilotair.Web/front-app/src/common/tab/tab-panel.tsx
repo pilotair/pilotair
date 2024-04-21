@@ -1,10 +1,12 @@
 import { Modal, ModalFuncProps, ModalProps } from "antd";
-import { ReactNode, createContext, createRef, forwardRef, useImperativeHandle, useState } from "react";
+import { ReactNode, createContext, createRef, forwardRef, useImperativeHandle, useRef, useState } from "react";
+import Loading from "../loading";
 
 interface TabContextValue {
     modalContainer: HTMLDivElement | null,
     openModal: (props: ModalProps) => () => void;
     openConfirm: (props: ModalFuncProps) => Promise<void>;
+    loading: (action: () => Promise<void>) => Promise<void>;
 }
 
 export const TabContext = createContext<TabContextValue>({} as TabContextValue)
@@ -21,6 +23,8 @@ interface ModalHandle {
 
 export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     const [modals, setModals] = useState<ReactNode[]>([]);
+    const loadStack = useRef(0)
+    const [showLoading, setShowLoading] = useState(false)
     const modalContainer = createRef<HTMLDivElement>()
 
     function openModal(props: ModalProps) {
@@ -81,16 +85,36 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
         })
     }
 
+    async function loading(action: () => Promise<void>) {
+        setShowLoading(true)
+        loadStack.current++;
+        try {
+            await action()
+        } finally {
+            loadStack.current--;
+            if (!loadStack.current) setShowLoading(false)
+        }
+    }
+
     return (
-        <TabContext.Provider value={{ modalContainer: modalContainer.current, openModal, openConfirm }}>
+        <TabContext.Provider value={{
+            modalContainer: modalContainer.current,
+            openModal,
+            openConfirm,
+            loading: loading,
+        }}>
+
             <div
                 className={"bg-white rounded-md h-full overflow-auto relative" + ` tab-panel-${name}`}
                 style={{ display: isActive ? 'block' : 'none' }}
             >
-                <div className="h-full overflow-auto">{children}</div>
+                <div className="h-full overflow-auto">
+                    {children}
+                </div>
                 <div ref={modalContainer}>{modals}</div>
+                {showLoading && <Loading className="absolute inset-0" />}
             </div>
 
-        </TabContext.Provider>
+        </TabContext.Provider >
     )
 }

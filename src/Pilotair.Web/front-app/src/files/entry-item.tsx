@@ -38,10 +38,7 @@ export default function EntryItem({ type, url, name, selected, onSelected, onCli
             <div onClick={onClick} className="w-16 h-16 flex justify-center items-center cursor-pointer">
                 {getPreview()}
             </div>
-            <Text ellipsis={{
-                suffix: extension,
-                tooltip: name,
-            }} >{name}</Text>
+            <Text className="px-1" ellipsis={true}>{name}</Text>
             <Checkbox checked={selected} className={"absolute top-1 left-1 opacity-0 group-hover:opacity-100" + (selected ? " opacity-100" : "")} onClick={onCheckboxClick} />
         </div>
     )

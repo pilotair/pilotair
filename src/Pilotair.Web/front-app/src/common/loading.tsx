@@ -1,8 +1,11 @@
 import { Spin } from "antd"
 
-export default function Loading() {
+interface Props {
+    className?: string
+}
 
-    return <div className="flex items-center justify-center h-full" >
+export default function Loading({ className }: Props) {
+    return <div className={"flex items-center justify-center h-full bg-white/30 " + className} >
         <Spin size="large" />
     </div>
 }
