@@ -12,7 +12,7 @@ interface Props {
     onClick?: (e: React.MouseEvent) => void
 }
 
-export default function EntryItem({ type, url, name, selected, onSelected, onClick, extension }: Props) {
+export default function EntryItem({ type, url, name, selected, onSelected, onClick }: Props) {
     const { Text } = Typography;
 
     function getPreview() {

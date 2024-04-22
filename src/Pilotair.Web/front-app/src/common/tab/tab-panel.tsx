@@ -103,7 +103,6 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
             openConfirm,
             loading: loading,
         }}>
-
             <div
                 className={"bg-white rounded-md h-full overflow-auto relative" + ` tab-panel-${name}`}
                 style={{ display: isActive ? 'block' : 'none' }}
