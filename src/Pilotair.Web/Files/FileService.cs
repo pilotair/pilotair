@@ -9,7 +9,7 @@ public class FileService
     private readonly string basePath;
     private readonly PilotairOptions options;
     protected virtual string Folder { get; } = "files";
-    protected string BasePath => basePath;
+    public string BasePath => basePath;
 
     public FileService(IOptions<PilotairOptions> options)
     {

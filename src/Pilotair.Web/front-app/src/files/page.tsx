@@ -67,7 +67,7 @@ export default function File() {
     return (
         <div className="p-4 space-y-4 flex flex-col h-full">
             <div className="flex-shrink-0 space-y-4 ">
-                <div className="flex">
+                <div className="flex items-center">
                     <Checkbox indeterminate={indeterminate} checked={checkAll} className="flex items-center" onClick={onCheckAllClick} disabled={!files.length}>Check all</Checkbox>
                     <div className="flex-1"></div>
                     <div className="flex gap-2">

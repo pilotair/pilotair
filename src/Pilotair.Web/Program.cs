@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Pilotair.Core;
 using Pilotair.Web.Codes;
@@ -24,19 +25,23 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 var app = builder.Build();
 
+var fileService = app.Services.GetService<FileService>();
+
+app.UseFileServer(new FileServerOptions
+{
+    FileProvider = new PhysicalFileProvider(fileService.BasePath)
+});
+
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapFallbackToFile("index.html");
+    // app.MapFallbackToFile("index.html");
     app.UseSwagger();
     app.UseSwaggerUI();
     var frontApp = app.Services.GetService<FrontApp>();
     frontApp.GenerateApiSchema();
 }
 
-app.UseFileServer(new FileServerOptions
-{
-    RequestPath = "/__admin__"
-});
 // app.UseHttpsRedirection();
 app.UseRouting();
 var dataSource = app.Services.GetService<Pilotair.Web.Endpoint.EndpointDataSource>();
@@ -47,6 +52,11 @@ if (dataSource != default)
 
 var pilotairOptions = app.Services.GetService<IOptions<PilotairOptions>>();
 Console.WriteLine($"Data root path: {pilotairOptions?.Value.DataPath}");
+
+app.UseFileServer(new FileServerOptions
+{
+    RequestPath = "/__admin__"
+});
 
 app.MapControllers();
 app.Run();

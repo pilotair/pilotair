@@ -90,16 +90,16 @@ export default function UploadFilesBtn() {
         </Button>, buttons[1]]
     }
 
-    return <>
+    return <div className="flex">
         <Dropdown.Button trigger={["click"]} type="primary" menu={{ items, onClick: onMenuClick }} buttonsRender={buttonsRender}></Dropdown.Button>
-        <Upload {...{
+        <Upload className="hidden" {...{
             ...props, directory: true, multiple: false
         }}><span ref={folderUpload} /></Upload>
-        <Upload {...{ ...props, name: "file", action: `/__api__/file/zip`, accept: ".zip", multiple: false }}><span ref={zipUpload} /></Upload>
+        <Upload className="hidden" {...{ ...props, name: "file", action: `/__api__/file/zip`, accept: ".zip", multiple: false }}><span ref={zipUpload} /></Upload>
         <TabModal closable={false} open={!!fileList.length} footer={footer} title={title}>
             <div className="max-h-96 overflow-auto">
                 {fileItems}
             </div>
         </TabModal>
-    </>
+    </div>
 }
