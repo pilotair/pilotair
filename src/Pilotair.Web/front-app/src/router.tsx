@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from './account/login.tsx'
-import MainLayout from "./common/layout/main.tsx"
+import BlankLayout from "./common/layout/blank-layout.tsx"
 import Workspace from "./workspace/page.tsx"
 
 export const router = createBrowserRouter([
@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/account",
-        element: <MainLayout />,
+        element: <BlankLayout />,
         children: [
             {
                 path: "login",
@@ -18,4 +18,4 @@ export const router = createBrowserRouter([
             }
         ]
     },
-], { basename: "/__admin__"});
+], { basename: "/__admin__" });

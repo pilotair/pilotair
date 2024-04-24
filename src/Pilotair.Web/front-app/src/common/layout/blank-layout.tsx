@@ -1,14 +1,12 @@
 import { Layout } from "antd"
 import { Outlet } from "react-router-dom"
-import Header from "./header"
 
 const { Content } = Layout
 
-export default function RootLayout() {
+export default function BlankLayout() {
     return (
         <Layout className="absolute inset-0">
-            <Header></Header>
-            <Content>
+            <Content className="flex flex-col justify-center items-center">
                 <Outlet />
             </Content>
         </Layout>

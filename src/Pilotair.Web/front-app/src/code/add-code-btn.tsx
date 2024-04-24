@@ -17,7 +17,7 @@ export default function AddCodeBtn() {
                 label: "Add router"
             }],
         }}>
-            <PlusOutlined className="opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()} />
+            <PlusOutlined onClick={(e) => e.stopPropagation()} />
         </Dropdown>
         </div>
     )

@@ -58,6 +58,13 @@ public class FileService
         await stream.CopyToAsync(fs);
     }
 
+    public async Task SaveFileAsync(string path, string content, string fileName)
+    {
+        path = CreateFolder(path);
+        path = Path.Combine(path, fileName);
+        await System.IO.File.WriteAllTextAsync(path, content);
+    }
+
     public Stream GetFile(string path, string name)
     {
         IoHelper.ShouldBeRelative(path);

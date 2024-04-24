@@ -24,3 +24,25 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #444;
 }
+
+
+.color-bg {
+    background: linear-gradient(-45deg, #0093D3, #F6AB20, #18c8e2, #F6AB20, #0093D3);
+    background-size: 800% 800%;
+    animation: gradient 60s ease infinite;
+    height: 100vh;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}

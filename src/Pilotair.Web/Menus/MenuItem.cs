@@ -7,11 +7,13 @@ public class MenuItem
     public enum Types
     {
         Unknown,
-        Home,
+        Features,
         Files,
         Codes,
         Code,
-        CodeFolder
+        CodeFolder,
+        Contents,
+        Options,
     }
     public required uint Order { get; init; }
 

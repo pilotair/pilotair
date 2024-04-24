@@ -5,7 +5,6 @@ public class Code : Files.File
 {
     public Code(FileInfo fileInfo) : base(fileInfo)
     {
+                
     }
-
-    
 }

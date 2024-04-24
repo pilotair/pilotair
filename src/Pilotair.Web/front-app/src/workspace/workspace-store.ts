@@ -108,5 +108,5 @@ function mapMenuItem(items: ApiMenuItem[], currentPath: string) {
         }
     }
 
-    return result;
+    return result.length ? result : undefined;
 }

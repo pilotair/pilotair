@@ -9,8 +9,8 @@ public class MenuService(CodeService codeService)
         var items = new List<MenuItem> {
             new() {
                 Order = 1,
-                Name="home",
-                Type=MenuItem.Types.Home
+                Name="features",
+                Type=MenuItem.Types.Features
             },
             new() {
                 Order = 2,
@@ -22,6 +22,16 @@ public class MenuService(CodeService codeService)
                 Name="codes",
                 Type=MenuItem.Types.Codes,
                 Children=codeService.GetMenuItems(),
+            },
+            new(){
+                Order = 4,
+                Name="contents",
+                Type= MenuItem.Types.Contents
+            },
+            new(){
+                Order = 5,
+                Name="options",
+                Type= MenuItem.Types.Options
             },
         };
 

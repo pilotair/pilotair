@@ -1,6 +1,6 @@
-import { CodepenOutlined, FileOutlined, HomeOutlined, PictureOutlined, PlusOutlined } from "@ant-design/icons"
-import { Dropdown } from "antd";
+import { AppstoreOutlined, CodepenOutlined, ControlOutlined, FileOutlined, FolderOutlined, FormOutlined } from "@ant-design/icons"
 import { ReactNode } from "react";
+import AddCodeBtn from "../code/add-code-btn";
 
 interface Feature {
     name: string;
@@ -11,31 +11,20 @@ interface Feature {
 
 const features: Feature[] = [
     {
-        name: 'Home',
-        label: "Home",
-        icon: <HomeOutlined />,
-        tab: () => import("../home/page")
+        name: 'Features',
+        label: "Features",
+        icon: <AppstoreOutlined />,
+        tab: () => import("../feature/page")
     },
     {
         name: 'Files',
         label: "Files",
-        icon: <PictureOutlined />,
+        icon: <FolderOutlined />,
         tab: () => import("../files/page")
     },
     {
         name: 'Codes',
-        label: <div className="flex group"><div className="flex-1">Codes</div><Dropdown trigger={["click"]} menu={{
-            items: [{
-                key: "file",
-                label: "Add file"
-            }, {
-                key: "folder",
-                label: "Add folder"
-            }, {
-                key: "router",
-                label: "Add router"
-            }],
-        }}><PlusOutlined className="opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()} /></Dropdown></div>,
+        label: <AddCodeBtn />,
         icon: <CodepenOutlined />,
     },
     {
@@ -46,6 +35,18 @@ const features: Feature[] = [
         name: 'Code',
         icon: <FileOutlined />,
         label: (value) => value,
+        tab: () => import("../code/page")
+    },
+    {
+        name: 'Contents',
+        icon: <FormOutlined />,
+        label: "Contents",
+        tab: () => import("../code/page")
+    },
+    {
+        name: 'Options',
+        icon: <ControlOutlined />,
+        label: "Options",
         tab: () => import("../code/page")
     }
 ]
