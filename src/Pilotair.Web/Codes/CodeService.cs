@@ -37,4 +37,10 @@ public class CodeService : FileService
 
         return items;
     }
+
+    public IEnumerable<Code> GetRoutes()
+    {
+        var paths = Directory.GetFiles(BasePath, "route.js", SearchOption.AllDirectories);
+        return paths.Select(s => new Code(new FileInfo(s), BasePath)).ToArray();
+    }
 }

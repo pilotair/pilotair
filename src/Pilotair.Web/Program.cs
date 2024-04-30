@@ -2,12 +2,18 @@ using System.Text.Json;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Pilotair.Core;
+using Pilotair.Core.Runtime;
 using Pilotair.Web.Codes;
 using Pilotair.Web.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPilotairEngine();
+builder.Services.AddOptions<EngineOptions>().Configure<CodeService>((options, codeService) =>
+{
+    options.RootPath = codeService.BasePath;
+});
+builder.Services.AddScoped<Engine>();
 builder.Services.AddSingleton<MenuService>();
 builder.Services.AddSingleton<FileService>();
 builder.Services.AddSingleton<CodeService>();
@@ -16,7 +22,7 @@ builder.Services.AddOptions<PilotairOptions>().Bind(builder.Configuration.GetSec
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<Pilotair.Web.Endpoint.EndpointDataSource>();
+builder.Services.AddCodesRouting();
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNameCaseInsensitive = true;
@@ -25,33 +31,28 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 var app = builder.Build();
 
-var fileService = app.Services.GetService<FileService>();
+if (app.Environment.IsDevelopment())
+{
+    // app.MapFallbackToFile("index.html");
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    var frontApp = app.Services.GetRequiredService<FrontApp>();
+    frontApp.GenerateApiSchema();
+}
+
+// app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCodesRouting();
+
+var fileService = app.Services.GetRequiredService<FileService>();
 
 app.UseFileServer(new FileServerOptions
 {
     FileProvider = new PhysicalFileProvider(fileService.BasePath)
 });
 
-
-if (app.Environment.IsDevelopment())
-{
-    // app.MapFallbackToFile("index.html");
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    var frontApp = app.Services.GetService<FrontApp>();
-    frontApp.GenerateApiSchema();
-}
-
-// app.UseHttpsRedirection();
-app.UseRouting();
-var dataSource = app.Services.GetService<Pilotair.Web.Endpoint.EndpointDataSource>();
-if (dataSource != default)
-{
-    ((IEndpointRouteBuilder)app).DataSources.Add(dataSource);
-}
-
-var pilotairOptions = app.Services.GetService<IOptions<PilotairOptions>>();
-Console.WriteLine($"Data root path: {pilotairOptions?.Value.DataPath}");
+var pilotairOptions = app.Services.GetRequiredService<IOptions<PilotairOptions>>();
+Console.WriteLine($"Data root path: {pilotairOptions.Value.DataPath}");
 
 app.UseFileServer(new FileServerOptions
 {
