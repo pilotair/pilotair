@@ -30,7 +30,7 @@ public class CodeService : FileService
 
             if (entry.IsFolder)
             {
-                var path = entry.Name;
+                var path = Path.Combine(currentPath, entry.Name);
                 item.Children = GetMenuItems(path);
             }
         }
