@@ -21,7 +21,7 @@ public class EngineTest
     public async Task ImportModule()
     {
         var engine = CreateEngine();
-        var module = await engine.ExecuteAsync("./module_import");
+        var module = await engine.ExecuteAsync("./module_import.js");
         var result = module.Get("default");
         Assert.AreEqual(result.ToString(), "hello world!");
     }
