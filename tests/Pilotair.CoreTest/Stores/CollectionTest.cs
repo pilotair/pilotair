@@ -10,6 +10,7 @@ public class CollectionTest
     {
         var store = new Store("test.db");
         var userCollection = store.GetOrCreate<User>();
+
         var doc = new Document<User>
         {
             Data = new User
@@ -33,6 +34,7 @@ public class CollectionTest
         await userCollection.UpdateDocumentAsync(docOnDb);
         docOnDb = await userCollection.GetAsync(doc.Id);
         Assert.AreEqual(docOnDb.Data.Name, "jobs");
+        Assert.IsTrue(docOnDb.LastWriteTime > doc.LastWriteTime);
         await userCollection.RemoveDocumentAsync(doc.Id);
         await Assert.ThrowsExceptionAsync<DocumentNotFoundException>(async () =>
         {

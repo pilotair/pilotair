@@ -129,7 +129,7 @@ public class Collection<T> where T : new()
         FOR EACH ROW
         BEGIN
             UPDATE {Name}
-            SET LastWriteTime = unixepoch('now')
+            SET LastWriteTime = unixepoch('subsec') * 1000
             WHERE Id = OLD.Id;
         END;
         """);
