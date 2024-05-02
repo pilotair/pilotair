@@ -20,7 +20,7 @@ public class Store
         connectionString = builder.ToString();
     }
 
-    public Collection<T> Get<T>() where T : class, new()
+    public Collection<T> Get<T>() where T : new()
     {
         if (!collections.TryGetValue(typeof(T).Name, out var collection))
         {
@@ -30,7 +30,7 @@ public class Store
         return collection;
     }
 
-    public Collection<T> GetOrCreate<T>() where T : class, new()
+    public Collection<T> GetOrCreate<T>() where T : new()
     {
         return collections.GetOrAdd(typeof(T).Name, (name) => new Collection<T>(connectionString));
     }

@@ -4,11 +4,12 @@ using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Stores;
 
-public class Collection<T> where T : class, new()
+public class Collection<T> where T : new()
 {
     private readonly string connectionString;
 
     public SqliteConnection Connection => new(connectionString);
+    public Query<T> Query => new(Connection, Name);
 
     public Collection(string connectionString)
     {
@@ -21,7 +22,8 @@ public class Collection<T> where T : class, new()
     public async Task<Document<T>> GetAsync(string id)
     {
         using var connection = Connection;
-        var result = await connection.QueryFirstOrDefaultAsync<(string Id, long CreationTime, long LastWriteTime, string Data)>($"""
+        
+        var result = await connection.QueryFirstOrDefaultAsync<DocumentModel>($"""
         SELECT 
             Id,
             CreationTime,
@@ -35,17 +37,9 @@ public class Collection<T> where T : class, new()
             throw new DocumentNotFoundException();
         }
 
-        var data = JsonHelper.Deserialize<T>(result.Data) ?? throw new DocumentDataInvalidException();
-
-        return new Document<T>
-        {
-            Id = result.Id,
-            CreationTime = DateTimeOffset.FromUnixTimeMilliseconds(result.CreationTime),
-            LastWriteTime = DateTimeOffset.FromUnixTimeMilliseconds(result.LastWriteTime),
-            Data = data
-        };
+        return result.ToDocument<T>();
     }
-    
+
     public async Task<Document<T>> AddDocumentAsync(T data)
     {
         var doc = new Document<T>
