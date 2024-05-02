@@ -3,6 +3,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Pilotair.Core;
 using Pilotair.Core.Runtime;
+using Pilotair.Web.Account;
 using Pilotair.Web.Codes;
 using Pilotair.Web.Files;
 
@@ -23,6 +24,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCodesRouting();
+builder.Services.AddSingleton<PilotairStore>();
+builder.Services.AddSingleton<AccountService>();
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNameCaseInsensitive = true;
@@ -58,7 +61,7 @@ app.UseFileServer(new FileServerOptions
 {
     RequestPath = "/__admin__"
 });
-
+app.Services.GetServices<PilotairStore>();
 app.MapControllers();
 app.Run();
 

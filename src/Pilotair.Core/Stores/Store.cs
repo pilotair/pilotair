@@ -1,10 +1,12 @@
+using System.Collections.Concurrent;
 using Microsoft.Data.Sqlite;
 
 namespace Pilotair.Core.Stores;
 
-public abstract class Store
+public class Store
 {
-    protected readonly string connectionString;
+    private readonly string connectionString;
+    private readonly ConcurrentDictionary<string, dynamic> collections = [];
 
     public Store(string path)
     {
@@ -16,5 +18,20 @@ public abstract class Store
         };
 
         connectionString = builder.ToString();
+    }
+
+    public Collection<T> Get<T>() where T : class, new()
+    {
+        if (!collections.TryGetValue(typeof(T).Name, out var collection))
+        {
+            throw new CollectionNotFoundException();
+        }
+
+        return collection;
+    }
+
+    public Collection<T> GetOrCreate<T>() where T : class, new()
+    {
+        return collections.GetOrAdd(typeof(T).Name, (name) => new Collection<T>(connectionString));
     }
 }

@@ -18,7 +18,6 @@ public class Collection<T> where T : class, new()
 
     public string Name { get; init; } = typeof(T).Name;
 
-
     public async Task<Document<T>> GetAsync(string id)
     {
         using var connection = Connection;
@@ -46,7 +45,7 @@ public class Collection<T> where T : class, new()
             Data = data
         };
     }
-
+    
     public async Task<Document<T>> AddDocumentAsync(T data)
     {
         var doc = new Document<T>
