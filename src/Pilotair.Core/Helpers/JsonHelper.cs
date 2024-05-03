@@ -15,6 +15,11 @@ public static class JsonHelper
         return JsonSerializer.Deserialize<T>(json, defaultOptions);
     }
 
+    public static string Serialize(object value)
+    {
+        return JsonSerializer.Serialize(value, defaultOptions);
+    }
+
     public static async ValueTask<T?> DeserializeAsync<T>(string path, CancellationToken token = default)
     {
         using var stream = new FileStream(path, FileMode.Open);
@@ -25,10 +30,5 @@ public static class JsonHelper
     {
         using var stream = new FileStream(path, FileMode.OpenOrCreate);
         await JsonSerializer.SerializeAsync(stream, value, defaultOptions, token);
-    }
-
-    public static string Serialize(object value)
-    {
-        return JsonSerializer.Serialize(value, defaultOptions);
     }
 }

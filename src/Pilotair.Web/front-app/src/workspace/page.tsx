@@ -6,7 +6,7 @@ import { useEffect, useMemo } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
 
-export default function App() {
+export default function Workspace() {
     const { menus, tabs, openTab, closeTab, setActiveName, activeName, loadMenus } = useWorkspaceStore();
 
     useEffect(() => {
@@ -41,6 +41,7 @@ export default function App() {
         onClick={({ key }) => onMenuItemClick(key)}
         selectedKeys={[activeName]}
         theme="dark"
+        inlineIndent={12}
     />
 
     function Content() {

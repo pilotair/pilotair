@@ -10,7 +10,8 @@ type MenuItem = {
     icon?: ReactNode,
     label: ReactNode,
     feature?: ReturnType<typeof getFeature>,
-    children?: MenuItem[]
+    children?: MenuItem[],
+    className?: string
 }
 
 type ApiMenuItem = { order: number, name: string, type: string, children?: ApiMenuItem[] }
@@ -99,7 +100,7 @@ function mapMenuItem(items: ApiMenuItem[], currentPath: string) {
             key: key,
             label,
             icon: feature?.icon,
-            feature
+            feature,
         }
 
         result.push(i)

@@ -1,6 +1,8 @@
 import { AppstoreOutlined, CodepenOutlined, ControlOutlined, FileOutlined, FolderOutlined, FormOutlined } from "@ant-design/icons"
 import { ReactNode } from "react";
-import AddCodeBtn from "../code/add-code-btn";
+import MoreBtn from "../common/menu/more-btn";
+import { menu as codeFolderMenu } from "../code/folder-more-menu"
+import OptionsFolderLabel from "../options/folder-label"
 
 interface Feature {
     name: string;
@@ -24,12 +26,12 @@ const features: Feature[] = [
     },
     {
         name: 'Codes',
-        label: <AddCodeBtn />,
+        label: <MoreBtn label="Codes" menu={codeFolderMenu} />,
         icon: <CodepenOutlined />,
     },
     {
         name: 'CodeFolder',
-        label: (value) => value,
+        label: (value) => <MoreBtn label={value} menu={codeFolderMenu} />,
     },
     {
         name: 'Code',
@@ -40,14 +42,13 @@ const features: Feature[] = [
     {
         name: 'Contents',
         icon: <FormOutlined />,
-        label: "Contents",
+        label: <MoreBtn label="Contents" menu={codeFolderMenu} />,
         tab: () => import("../code/page")
     },
     {
         name: 'Options',
         icon: <ControlOutlined />,
-        label: "Options",
-        tab: () => import("../code/page")
+        label: <OptionsFolderLabel />,
     }
 ]
 

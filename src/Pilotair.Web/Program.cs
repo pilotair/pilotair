@@ -25,6 +25,7 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCodesRouting();
 builder.Services.AddSingleton<PilotairStore>();
+builder.Services.AddSingleton<ContentStore>();
 builder.Services.AddSingleton<AccountService>();
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
