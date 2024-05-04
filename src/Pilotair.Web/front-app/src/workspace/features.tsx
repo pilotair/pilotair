@@ -43,7 +43,6 @@ const features: Feature[] = [
         name: 'Contents',
         icon: <FormOutlined />,
         label: <MoreBtn label="Contents" menu={codeFolderMenu} />,
-        tab: () => import("../code/page")
     },
     {
         name: 'Options',

@@ -16,7 +16,7 @@ export function Header() {
     function onMenuClick({ key }: { key: string }) {
         switch (key) {
             case "logout":
-                nav("login", {
+                nav("account/login", {
                     replace: true,
                     relative: "route"
                 })
