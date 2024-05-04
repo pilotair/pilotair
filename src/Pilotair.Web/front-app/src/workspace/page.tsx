@@ -1,17 +1,15 @@
 import SiderLayout from "../common/layout/sider-layout"
-import { Empty, Menu } from "antd"
+import { Menu } from "antd"
 import { Header } from "./header"
-import { useWorkspaceStore } from "./workspace-store";
-import { useEffect, useMemo } from "react";
+import { useWorkspace } from "./workspace-store";
+import { useMemo } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
+import Empty from "../common/empty";
+import Loading from "../common/loading";
 
 export default function Workspace() {
-    const { menus, tabs, openTab, closeTab, setActiveName, activeName, loadMenus } = useWorkspaceStore();
-
-    useEffect(() => {
-        loadMenus()
-    }, [loadMenus])
+    const { menus, tabs, openTab, closeTab, setActiveName, activeName, loading } = useWorkspace();
 
     const expandMenus = useMemo(() => {
         const result: typeof menus = []
@@ -35,7 +33,7 @@ export default function Workspace() {
         openTab(key, menu.label, <AsyncComponent component={menu.feature.tab} />, menu.icon)
     }
 
-    const sider = <Menu
+    const sider = loading ? <Loading  className="!bg-transparent"/> : <Menu
         mode="inline"
         items={menus}
         onClick={({ key }) => onMenuItemClick(key)}
@@ -46,7 +44,7 @@ export default function Workspace() {
 
     function Content() {
         if (!tabs.length) {
-            return <Empty className="h-full flex items-center justify-center" description={false} />
+            return <Empty />
         }
 
         return <Tabs items={tabs} activeName={activeName} onTabClose={closeTab} onTabClick={setActiveName} />

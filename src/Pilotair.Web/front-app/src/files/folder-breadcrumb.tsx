@@ -1,6 +1,6 @@
 import { Breadcrumb, BreadcrumbProps } from "antd"
 import { useMemo } from "react"
-import { useFileStore } from "./files-store"
+import { useFile } from "./files-store"
 import { HomeTwoTone } from "@ant-design/icons"
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function FolderBreadcrumb({ path, className }: Props) {
-    const { goTo } = useFileStore();
+    const { goTo } = useFile();
     const Items = useMemo(() => {
         const items: BreadcrumbProps["items"] = [];
         const fragments = path.split('/').filter(f => f)

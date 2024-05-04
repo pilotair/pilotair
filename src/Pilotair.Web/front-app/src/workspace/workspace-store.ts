@@ -1,9 +1,10 @@
-import { create } from "zustand"
 import { TabItem } from "../common/tab/tabs"
 import { getFeature } from "./features"
-import { ReactNode } from "react"
-import { httpClient } from "../utils/request"
+import { ReactNode, useMemo } from "react"
+import { fetcher } from "../utils/request"
 import { combine } from "../utils/path"
+import { atom, useAtom } from "jotai"
+import useSWR from "swr"
 
 type MenuItem = {
     key: string,
@@ -16,25 +17,22 @@ type MenuItem = {
 
 type ApiMenuItem = { order: number, name: string, type: string, children?: ApiMenuItem[] }
 
-interface Store {
-    activeName: string,
-    tabs: TabItem[],
-    menus: MenuItem[],
-    setActiveName: (name: string) => void,
-    closeTab: (name: string) => void,
-    openTab: (name: string, label: ReactNode, panel: ReactNode, icon?: ReactNode) => void,
-    loadMenus: () => void
-}
+const activeNameAtom = atom("")
+const tabsAtom = atom<TabItem[]>([])
 
-export const useWorkspaceStore = create<Store>((set, get) => ({
-    activeName: "",
-    tabs: [],
-    menus: [],
-    setActiveName(name: string) {
-        set({ activeName: name })
-    },
-    closeTab(name: string) {
-        const { tabs, activeName } = get();
+export function useWorkspace() {
+    const [activeName, setActiveName] = useAtom(activeNameAtom);
+    const [tabs, setTabs] = useAtom(tabsAtom);
+
+    const menusResponse = useSWR("/__api__/menu", fetcher);
+
+    const menus = useMemo(() => {
+        if (!menusResponse.data) return [];
+        return mapMenuItem(menusResponse.data, '') ?? []
+    }, [menusResponse.data])
+
+
+    function closeTab(name: string) {
         const tab = tabs.find(f => f.name == name);
         if (!tab) return;
 
@@ -46,17 +44,17 @@ export const useWorkspaceStore = create<Store>((set, get) => ({
             } else if (tabs[currentTabIndex + 1]) {
                 activeName = tabs[currentTabIndex + 1]?.name
             }
-            set({ activeName })
+            setActiveName(activeName)
         }
 
-        set({ tabs: tabs.filter(f => f != tab) })
-    },
-    openTab(name: string, label: ReactNode, panel: ReactNode, icon?: ReactNode) {
-        const { tabs } = get();
+        setTabs(tabs.filter(f => f != tab))
+    }
+
+    function openTab(name: string, label: ReactNode, panel: ReactNode, icon?: ReactNode) {
         let tab = tabs.find(f => f.name == name);
 
         if (tab) {
-            set({ activeName: tab.name });
+            setActiveName(tab.name);
             return;
         }
 
@@ -67,16 +65,20 @@ export const useWorkspaceStore = create<Store>((set, get) => ({
             panel
         }
 
-        set({ tabs: [...tabs, tab], activeName: tab.name })
-    },
-    async loadMenus() {
-        const menus = await httpClient.get<ApiMenuItem[]>("/__api__/menu");
-        if (!menus) return;
-        set({
-            menus: mapMenuItem(menus, '')
-        })
+        setActiveName(tab.name);
+        setTabs([...tabs, tab]);
     }
-}));
+
+    return {
+        activeName,
+        tabs,
+        setActiveName,
+        closeTab,
+        openTab,
+        menus,
+        loading: menusResponse.isLoading
+    }
+}
 
 function mapMenuItem(items: ApiMenuItem[], currentPath: string) {
     const result: MenuItem[] = [];

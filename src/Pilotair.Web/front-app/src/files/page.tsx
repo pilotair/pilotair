@@ -1,28 +1,39 @@
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react"
 import { Button, Checkbox, Divider } from "antd"
 import EntryItem from "./entry-item"
-import { Entry, useFileStore } from "./files-store"
+import { Entry, useFile } from "./files-store"
 import CreateFolderBtn from "./create-folder-btn"
 import UploadFilesBtn from "./upload-files-btn"
 import { DeleteOutlined } from "@ant-design/icons"
 import FolderBreadcrumb from "./folder-breadcrumb"
 import { httpClient } from "../utils/request"
 import { TabContext } from "../common/tab/tab-panel"
+import Empty from "../common/empty"
 
 export default function File() {
-    const { path, loadFiles, files, openFolder } = useFileStore();
+    const { path, files, openFolder, loading, reload } = useFile();
     const [selectedFiles, setSelectedFiles] = useState<Entry[]>([])
-    const { openConfirm, loading } = useContext(TabContext)
-
-    useEffect(() => {
-        loading(async () => {
-            await loadFiles()
-        })
-    }, [path]);
+    const { openConfirm, showLoading } = useContext(TabContext)
 
     useEffect(() => {
         setSelectedFiles([])
     }, [path, files])
+
+    useEffect(() => {
+        showLoading(loading);
+    }, [loading, showLoading])
+
+    const indeterminate = useMemo(() => {
+        return !!selectedFiles.length && selectedFiles.length !== files?.length;
+    }, [files, selectedFiles.length])
+
+    const checkAll = useMemo(() => {
+        return !!selectedFiles.length && selectedFiles.length === files?.length
+    }, [files, selectedFiles.length])
+
+    if (!files) {
+        return ""
+    }
 
     const entries: ReactNode[] = [];
 
@@ -39,19 +50,11 @@ export default function File() {
         />)
     }
 
-    const indeterminate = useMemo(() => {
-        return !!selectedFiles.length && selectedFiles.length !== files.length;
-    }, [files.length, selectedFiles.length])
-
-    const checkAll = useMemo(() => {
-        return !!selectedFiles.length && selectedFiles.length === files.length
-    }, [files.length, selectedFiles.length])
-
     function onCheckAllClick() {
         if (checkAll) {
             setSelectedFiles([])
         } else {
-            setSelectedFiles(files)
+            setSelectedFiles(files ?? [])
         }
     }
 
@@ -61,7 +64,7 @@ export default function File() {
         })
         const entries = selectedFiles.map(m => m.name);
         await httpClient.delete("/__api__/file", { entries, path });
-        loadFiles()
+        reload();
     }
 
     return (
@@ -81,9 +84,12 @@ export default function File() {
             </div>
 
             <div className="flex-1 overflow-auto">
-                <div className="flex flex-wrap gap-1">
-                    {entries}
-                </div>
+                {entries.length
+                    ? <div className="flex flex-wrap gap-1">
+                        {entries}
+                    </div>
+                    : <Empty />
+                }
             </div>
             {!!path && <FolderBreadcrumb path={path} className="flex-shrink-0" />}
         </div>

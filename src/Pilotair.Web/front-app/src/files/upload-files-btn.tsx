@@ -2,14 +2,14 @@ import { FileZipOutlined, FolderOpenOutlined, UploadOutlined } from "@ant-design
 import { Button, Dropdown, Progress, Segmented, Upload, UploadFile, UploadProps } from "antd";
 import { ReactNode, createRef, useState } from "react";
 import TabModal from "../common/tab/tab-modal"
-import { useFileStore } from "./files-store";
+import { useFile } from "./files-store";
 import { combine } from "../utils/path";
 import upload from "rc-upload/es/request"
 
 export default function UploadFilesBtn() {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [status, setStatus] = useState('all');
-    const fileStore = useFileStore()
+    const fileStore = useFile()
     const folderUpload = createRef<HTMLSpanElement>()
     const zipUpload = createRef<HTMLSpanElement>()
 
@@ -45,7 +45,7 @@ export default function UploadFilesBtn() {
 
     function onClose() {
         setFileList([]);
-        fileStore.loadFiles();
+        fileStore.files.mutate()
     }
 
     for (const file of fileList) {

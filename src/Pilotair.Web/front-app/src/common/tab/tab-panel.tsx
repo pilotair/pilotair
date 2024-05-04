@@ -1,5 +1,5 @@
 import { Modal, ModalFuncProps, ModalProps } from "antd";
-import { ReactNode, createContext, createRef, forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { ReactNode, createContext, createRef, forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react";
 import Loading from "../loading";
 
 interface TabContextValue {
@@ -7,6 +7,7 @@ interface TabContextValue {
     openModal: (props: ModalProps) => () => void;
     openConfirm: (props: ModalFuncProps) => Promise<void>;
     loading: (action: () => Promise<void>) => Promise<void>;
+    showLoading: (show: boolean) => void;
 }
 
 export const TabContext = createContext<TabContextValue>({} as TabContextValue)
@@ -23,9 +24,9 @@ interface ModalHandle {
 
 export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     const [modals, setModals] = useState<ReactNode[]>([]);
-    const loadStack = useRef(0)
-    const [showLoading, setShowLoading] = useState(false)
+    const loadingStack = useRef(0)
     const modalContainer = createRef<HTMLDivElement>()
+    const isLoading = useMemo(() => loadingStack.current > 0, [loadingStack])
 
     function openModal(props: ModalProps) {
         const TabModal = forwardRef<ModalHandle>((_, ref) => {
@@ -86,14 +87,22 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     }
 
     async function loading(action: () => Promise<void>) {
-        setShowLoading(true)
-        loadStack.current++;
+        showLoading(true);
         try {
             await action()
         } finally {
-            loadStack.current--;
-            if (!loadStack.current) setShowLoading(false)
+            showLoading(false);
         }
+    }
+
+    function showLoading(show: boolean = true) {
+        if (show) {
+            loadingStack.current++;
+        } else {
+            loadingStack.current--;
+            if (loadingStack.current < 0) loadingStack.current = 0;
+        }
+        console.log(loadingStack.current)
     }
 
     return (
@@ -101,7 +110,8 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
             modalContainer: modalContainer.current,
             openModal,
             openConfirm,
-            loading: loading,
+            loading,
+            showLoading
         }}>
             <div
                 className={"bg-white rounded-md h-full overflow-auto relative" + ` tab-panel-${name}`}
@@ -111,7 +121,7 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
                     {children}
                 </div>
                 <div ref={modalContainer}>{modals}</div>
-                {showLoading && <Loading className="absolute inset-0" />}
+                {isLoading && <Loading className="absolute inset-0" />}
             </div>
 
         </TabContext.Provider >

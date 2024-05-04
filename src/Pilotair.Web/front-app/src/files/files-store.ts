@@ -1,6 +1,7 @@
-import { create } from "zustand";
-import { httpClient } from "../utils/request";
 import { combine } from "../utils/path";
+import { atom, useAtom } from "jotai";
+import useSWR from "swr";
+import { fetcher } from "../utils/request";
 
 export interface Entry {
     name: string;
@@ -11,27 +12,18 @@ export interface Entry {
     extension: string
 }
 
-interface Store {
-    path: string,
-    files: Entry[],
-    loadFiles: () => Promise<void>,
-    openFolder: (folder: string) => void;
-    goTo: (folder: string) => void;
-}
+const pathAtom = atom("")
 
-export const useFileStore = create<Store>((set, get) => ({
-    path: '',
-    files: [],
-    async loadFiles() {
-        const { path } = get();
-        const files = await httpClient.get<Entry[]>("/__api__/file", { path });
-        if (files) set({ files })
-    },
-    openFolder(folder: string) {
-        const { path } = get();
-        set({ path: combine(path, folder) })
-    },
-    goTo(path: string) {
-        set({ path: path })
+export function useFile() {
+    const [path, setPath] = useAtom(pathAtom);
+    const filesResponse = useSWR<Entry[]>(`/__api__/file?path=${path}`, fetcher)
+
+    return {
+        path,
+        goTo: setPath,
+        files: filesResponse.data,
+        loading: filesResponse.isLoading,
+        reload: () => filesResponse.mutate(),
+        openFolder: (folder: string) => setPath(() => combine(path, folder))
     }
-}))
+}
