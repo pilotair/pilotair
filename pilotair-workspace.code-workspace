@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "root",
+			"path": "."
+		},
+		{
+			"name": "front",
+			"path": "src/Pilotair.Web/front-app"
+		},
+		{
+			"name": "backend",
+			"path": "src"
+		}
+	],
+	"settings": {}
+}
