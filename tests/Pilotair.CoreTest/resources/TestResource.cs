@@ -13,4 +13,9 @@ public static class TestResource
     {
         return Path.Combine(basePath, name);
     }
+
+    public static string GetPath(params string[] fragments)
+    {
+        return Path.Combine([basePath, .. fragments]);
+    }
 }

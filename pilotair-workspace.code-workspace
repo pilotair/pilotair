@@ -11,6 +11,13 @@
 		{
 			"name": "backend",
 			"path": "src"
+		},
+		{
+			"name": "core test",
+			"path": "tests/Pilotair.CoreTest"
+		},
+		{
+			"path": "src/Pilotair.Web/data"
 		}
 	],
 	"settings": {}

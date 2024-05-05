@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Pilotair.Core;
@@ -27,6 +28,12 @@ builder.Services.AddCodesRouting();
 builder.Services.AddSingleton<PilotairStore>();
 builder.Services.AddSingleton<ContentStore>();
 builder.Services.AddSingleton<AccountService>();
+
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNameCaseInsensitive = true;

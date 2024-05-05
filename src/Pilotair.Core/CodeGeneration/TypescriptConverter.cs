@@ -32,7 +32,7 @@ public class TypescriptConverter(IEnumerable<Schema> schemas)
             var groupItems = group.Select(s => s.Value).ToArray();
             if (string.IsNullOrWhiteSpace(group.Key))
             {
-                HandleInterfaces(builder, groupItems);
+                HandleSchemas(builder, groupItems);
             }
             else
             {
@@ -43,13 +43,22 @@ public class TypescriptConverter(IEnumerable<Schema> schemas)
         }
     }
 
-    private static void HandleInterfaces(StringBuilder builder, IEnumerable<Schema> schemas)
+    private static void HandleSchemas(StringBuilder builder, IEnumerable<Schema> schemas)
     {
         foreach (var item in schemas)
         {
-            builder.Append($"interface {item.Name}{{");
-            HandleProperties(builder, item.Properties);
-            builder.Append('}');
+            if (item.Enums.Any())
+            {
+                builder.Append($"type {item.Name} = ");
+                HandleEnums(builder, item.Enums);
+                builder.Append(';');
+            }
+            else
+            {
+                builder.Append($"interface {item.Name}{{");
+                HandleProperties(builder, item.Properties);
+                builder.Append('}');
+            }
         }
     }
 
@@ -62,5 +71,20 @@ public class TypescriptConverter(IEnumerable<Schema> schemas)
             builder.Append(property.Type);
             builder.Append(';');
         }
+    }
+
+    private static void HandleEnums(StringBuilder builder, IEnumerable<object> enums)
+    {
+        var items = enums.Select(s =>
+        {
+            if (s is string str)
+            {
+                return '"' + str + '"';
+            }
+            else return s;
+
+        });
+
+        builder.Append(string.Join('|', items));
     }
 }

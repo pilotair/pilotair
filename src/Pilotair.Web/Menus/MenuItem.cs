@@ -17,7 +17,6 @@ public class MenuItem
     }
     public required uint Order { get; init; }
 
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required Types Type { get; set; }
 
     public required string Name { get; init; }

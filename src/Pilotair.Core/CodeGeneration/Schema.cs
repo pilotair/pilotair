@@ -9,7 +9,6 @@ public class Schema
     public string Namespace { get; set; } = string.Empty;
     public required string Name { get; set; }
     public IEnumerable<Property> Properties { get; set; } = [];
+    public IEnumerable<object> Enums { get; set; } = [];
     public IEnumerable<Method> Methods { get; set; } = [];
-
-
 }
