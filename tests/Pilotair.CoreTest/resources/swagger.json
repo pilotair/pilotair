@@ -14,17 +14,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Pilotair.Web.Account.User"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Pilotair.Web.Account.User"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/Pilotair.Web.Account.User"
               }
             }
           }
@@ -55,17 +55,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddCodeModel"
+                "$ref": "#/components/schemas/Pilotair.Web.AddCodeModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddCodeModel"
+                "$ref": "#/components/schemas/Pilotair.Web.AddCodeModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddCodeModel"
+                "$ref": "#/components/schemas/Pilotair.Web.AddCodeModel"
               }
             }
           }
@@ -148,7 +148,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Entry"
+                    "$ref": "#/components/schemas/Pilotair.Web.Files.Entry"
                   }
                 }
               },
@@ -156,7 +156,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Entry"
+                    "$ref": "#/components/schemas/Pilotair.Web.Files.Entry"
                   }
                 }
               },
@@ -164,7 +164,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Entry"
+                    "$ref": "#/components/schemas/Pilotair.Web.Files.Entry"
                   }
                 }
               }
@@ -301,7 +301,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MenuItem"
+                    "$ref": "#/components/schemas/Pilotair.Web.MenuItem"
                   }
                 }
               },
@@ -309,7 +309,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MenuItem"
+                    "$ref": "#/components/schemas/Pilotair.Web.MenuItem"
                   }
                 }
               },
@@ -317,7 +317,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MenuItem"
+                    "$ref": "#/components/schemas/Pilotair.Web.MenuItem"
                   }
                 }
               }
@@ -329,7 +329,21 @@
   },
   "components": {
     "schemas": {
-      "AddCodeModel": {
+      "Pilotair.Web.Account.User": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Pilotair.Web.AddCodeModel": {
         "type": "object",
         "properties": {
           "name": {
@@ -339,7 +353,7 @@
         },
         "additionalProperties": false
       },
-      "Entry": {
+      "Pilotair.Web.Files.Entry": {
         "type": "object",
         "properties": {
           "name": {
@@ -369,7 +383,7 @@
         },
         "additionalProperties": false
       },
-      "MenuItem": {
+      "Pilotair.Web.MenuItem": {
         "type": "object",
         "properties": {
           "order": {
@@ -377,7 +391,7 @@
             "format": "int32"
           },
           "type": {
-            "$ref": "#/components/schemas/Types"
+            "$ref": "#/components/schemas/Pilotair.Web.MenuItem+Types"
           },
           "name": {
             "type": "string",
@@ -386,14 +400,14 @@
           "children": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MenuItem"
+              "$ref": "#/components/schemas/Pilotair.Web.MenuItem"
             },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "Types": {
+      "Pilotair.Web.MenuItem+Types": {
         "enum": [
           "Unknown",
           "Features",
@@ -405,20 +419,6 @@
           "Options"
         ],
         "type": "string"
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       }
     }
   }

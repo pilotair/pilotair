@@ -14,10 +14,20 @@ public class OpenApiAdapter(OpenApiDocument document) : ISourceAdapter
         {
             var properties = GetProperties(item.Value);
             var enums = GetEnums(item.Value);
+            var name = item.Key;
+            var splitIndex = name.LastIndexOf('.');
+            var @namespace = string.Empty;
+
+            if (splitIndex > -1)
+            {
+                @namespace = name[..splitIndex];
+                name = name[(splitIndex + 1)..];
+            }
 
             var schema = new Schema
             {
-                Name = item.Key,
+                Name = name,
+                Namespace = @namespace,
                 Properties = properties,
                 Enums = enums
             };
@@ -43,7 +53,7 @@ public class OpenApiAdapter(OpenApiDocument document) : ISourceAdapter
                 "boolean" => "boolean",
                 "string" => item.Value.Reference?.Id ?? type,
                 "object" => item.Value.Reference?.Id ?? type,
-                "array" => item.Value.Items.Reference?.Id ?? type,
+                "array" => (item.Value.Items.Reference?.Id ?? type) + "[]",
                 _ => item.Value.Reference?.Id,
             };
 

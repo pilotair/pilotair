@@ -5,6 +5,7 @@ import { fetcher } from "../utils/request"
 import { combine } from "../utils/path"
 import { atom, useAtom } from "jotai"
 import useSWR from "swr"
+import { Pilotair } from "../schema"
 
 type MenuItem = {
     key: string,
@@ -15,7 +16,6 @@ type MenuItem = {
     className?: string
 }
 
-type ApiMenuItem = { order: number, name: string, type: string, children?: ApiMenuItem[] }
 
 const activeNameAtom = atom("")
 const tabsAtom = atom<TabItem[]>([])
@@ -80,7 +80,7 @@ export function useWorkspace() {
     }
 }
 
-function mapMenuItem(items: ApiMenuItem[], currentPath: string) {
+function mapMenuItem(items: Pilotair.Web.MenuItem[], currentPath: string) {
     const result: MenuItem[] = [];
 
     for (const item of items) {

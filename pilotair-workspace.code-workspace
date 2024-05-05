@@ -20,5 +20,9 @@
 			"path": "src/Pilotair.Web/data"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"Swashbuckle"
+		]
+	}
 }

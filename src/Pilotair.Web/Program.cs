@@ -23,7 +23,10 @@ builder.Services.AddSingleton<FrontApp>();
 builder.Services.AddOptions<PilotairOptions>().Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.CustomSchemaIds(schema => schema.FullName);
+});
 builder.Services.AddCodesRouting();
 builder.Services.AddSingleton<PilotairStore>();
 builder.Services.AddSingleton<ContentStore>();

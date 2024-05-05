@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Pilotair.Web;
@@ -19,6 +20,7 @@ public class MenuItem
 
     public required Types Type { get; set; }
 
+    [Required]
     public required string Name { get; init; }
 
     public IEnumerable<MenuItem>? Children { get; set; }
