@@ -88,11 +88,11 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append($"SELECT Id,CreationTime,LastWriteTime,");
 
-        if (exclude is null || exclude.Length == 0) sqlBuilder.Append("Data");
+        if (exclude is null || exclude.Length == 0) sqlBuilder.Append("json(Data) as Data");
         else
         {
             var data = string.Join(',', exclude.Select(s => $"'{s}'"));
-            sqlBuilder.Append($"json_remove(Data,{data}) as Data");
+            sqlBuilder.Append($"json(jsonb_remove(Data,{data})) as Data");
         }
 
         sqlBuilder.AppendLine();
@@ -107,7 +107,7 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
         {
             var orders = order.Select(s =>
             {
-                var result = $"json_extract(Data,'{s.Selector}')";
+                var result = $"jsonb_extract(Data,'{s.Selector}')";
 
                 if (s.Descending)
                 {
@@ -154,7 +154,7 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
     private static string? GetCondition(string selector, Comparison comparison, object value)
     {
         string? condition = null;
-        selector = $"json_extract(Data,'{selector}')";
+        selector = $"jsonb_extract(Data,'{selector}')";
         var valueInfo = GetValue(value);
 
         switch (comparison)

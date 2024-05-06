@@ -22,13 +22,13 @@ public class Collection<T> where T : new()
     public async Task<Document<T>> GetAsync(string id)
     {
         using var connection = Connection;
-        
+
         var result = await connection.QueryFirstOrDefaultAsync<DocumentModel>($"""
         SELECT 
             Id,
             CreationTime,
             LastWriteTime,
-            Data 
+            json(Data) as Data 
         FROM {Name} WHERE Id=@Id LIMIT 1
         """, new { Id = id });
 
@@ -68,7 +68,7 @@ public class Collection<T> where T : new()
             @Id, 
             @CreationTime,
             @LastWriteTime,
-            @Data
+            jsonb(@Data)
         )
         """, new
         {
@@ -89,7 +89,7 @@ public class Collection<T> where T : new()
         using var connection = Connection;
         await connection.ExecuteAsync($"""
         UPDATE {Name} 
-        SET Data = @Data
+        SET Data = jsonb(@Data)
         WHERE
             Id = @Id
         """, new
@@ -121,7 +121,7 @@ public class Collection<T> where T : new()
             Id TEXT PRIMARY KEY,
             CreationTime INTEGER NOT NULL,
             LastWriteTime INTEGER NOT NULL,
-            Data TEXT NOT NULL CHECK(json_valid(Data))
+            Data BLOB NOT NULL CHECK(json_valid(Data,8))
         );
 
         CREATE TRIGGER IF NOT EXISTS {Name}_TRIGGER
