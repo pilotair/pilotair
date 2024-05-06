@@ -29,6 +29,7 @@ public class QueryTest
             });
         }
     }
+
     [TestMethod]
     public async Task TakeAsync()
     {
@@ -36,5 +37,14 @@ public class QueryTest
         var collection = store.GetOrCreate<User>();
         var users = await collection.Query.Where("$.name", "Alex").TakeAsync();
         Assert.AreEqual(users.Length, 1);
+    }
+
+    [TestMethod]
+    public async Task ExcludeAsync()
+    {
+        var store = new Store("query_test.db");
+        var collection = store.GetOrCreate<User>();
+        var user = await collection.Query.Where("$.name", "Alex").Exclude("$.tags").FirstOrDefaultAsync();
+        Assert.IsNull(user!.Data.Tags);
     }
 }

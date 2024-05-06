@@ -8,7 +8,7 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
 {
     record OrderItem(string Selector, bool Descending);
     private long skip;
-    private string[]? select;
+    private string[]? exclude;
     private readonly List<OrderItem> order = [];
     private string? where;
 
@@ -77,9 +77,9 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
         return this;
     }
 
-    public Query<T> Select(params string[] selectors)
+    public Query<T> Exclude(params string[] selectors)
     {
-        select = selectors;
+        exclude = selectors;
         return this;
     }
 
@@ -88,11 +88,11 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append($"SELECT Id,CreationTime,LastWriteTime,");
 
-        if (select is null || select.Length == 0) sqlBuilder.Append("Data");
+        if (exclude is null || exclude.Length == 0) sqlBuilder.Append("Data");
         else
         {
-            var data = string.Join(',', select.Select(s => $"'{s}'"));
-            sqlBuilder.Append($"json_extract(Data,{data})");
+            var data = string.Join(',', exclude.Select(s => $"'{s}'"));
+            sqlBuilder.Append($"json_remove(Data,{data}) as Data");
         }
 
         sqlBuilder.AppendLine();
@@ -129,6 +129,10 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
         return result.Select(s => s.ToDocument<T>()).ToArray();
     }
 
+    public async Task<Document<T>?> FirstOrDefaultAsync()
+    {
+        return (await TakeAsync(1)).FirstOrDefault();
+    }
     public async Task<long> CountAsync()
     {
         var sqlBuilder = new StringBuilder();

@@ -4,6 +4,7 @@ public static class IoHelper
 {
     public static void EnsureDirectoryExist(string path)
     {
+        if (string.IsNullOrWhiteSpace(path)) return;
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
