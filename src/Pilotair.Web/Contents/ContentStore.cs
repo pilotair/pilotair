@@ -6,8 +6,8 @@ namespace Pilotair.Web;
 public class ContentStore : Store
 {
     public ContentStore(IOptions<PilotairOptions> options)
-        : base(Path.Combine(options.Value.DataPath, "content.db"))
+        : base(Path.Combine(options.Value.DataPath, Constants.STORES_FOLDER, "content.db"))
     {
-        
+
     }
 }

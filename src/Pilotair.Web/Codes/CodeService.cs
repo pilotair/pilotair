@@ -6,7 +6,7 @@ namespace Pilotair.Web.Codes;
 
 public class CodeService : FileService
 {
-    protected override string Folder => "codes";
+    protected override string Folder => Constants.CODES_FOLDER;
 
     public CodeService(IOptions<PilotairOptions> options) : base(options)
     {

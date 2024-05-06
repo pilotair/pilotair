@@ -11,7 +11,7 @@ public class ContentService
 
     public ContentService(IOptions<PilotairOptions> options, ContentStore store)
     {
-        basePath = Path.Combine(options.Value.DataPath, "contents");
+        basePath = Path.Combine(options.Value.DataPath, Constants.CONTENTS_FOLDER);
         IoHelper.EnsureDirectoryExist(basePath);
         var files = Directory.GetFiles(basePath, "*.json");
 

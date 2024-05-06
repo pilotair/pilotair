@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Data.Sqlite;
+using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Stores;
 
@@ -10,11 +11,18 @@ public class Store
 
     public Store(string path)
     {
+        var dir = Path.GetDirectoryName(path);
+        
+        if (dir is not null)
+        {
+            IoHelper.EnsureDirectoryExist(dir);
+        }
+
         var builder = new SqliteConnectionStringBuilder
         {
             DataSource = path,
             Cache = SqliteCacheMode.Shared,
-            Pooling = true
+            Pooling = true,
         };
 
         connectionString = builder.ToString();

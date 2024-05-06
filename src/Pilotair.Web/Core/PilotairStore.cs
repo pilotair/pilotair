@@ -7,7 +7,7 @@ namespace Pilotair.Web;
 public class PilotairStore : Store
 {
     public PilotairStore(IOptions<PilotairOptions> options)
-        : base(Path.Combine(options.Value.DataPath, "pilotair.db"))
+        : base(Path.Combine(options.Value.DataPath, Constants.STORES_FOLDER, "pilotair.db"))
     {
         User = GetOrCreate<User>();
     }
