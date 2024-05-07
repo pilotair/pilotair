@@ -12,4 +12,5 @@
 - [ ] pilotair cloud
 - [ ] Use http3 proxy
 - [ ] project settings
+- [ ] cert automation renew
 

@@ -1,4 +1,4 @@
-namespace Pilotair.Web.Files;
+namespace Pilotair.Core.Stores.Files;
 
 public class File(FileInfo fileInfo) : Entry(fileInfo)
 {

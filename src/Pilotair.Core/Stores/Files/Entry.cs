@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Pilotair.Web.Files;
+namespace Pilotair.Core.Stores.Files;
 
 public abstract class Entry(FileSystemInfo fileSystemInfo)
 {

@@ -1,6 +1,4 @@
-using Pilotair.Core;
-
-namespace Pilotair.Web.Files;
+namespace Pilotair.Core.Stores.Files;
 
 public class FileNotFoundException : PilotairException
 {

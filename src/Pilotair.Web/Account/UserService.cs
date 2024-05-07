@@ -1,5 +1,3 @@
-
-
 using Pilotair.Core.Stores.NoSqlite;
 using Pilotair.Web.Models;
 

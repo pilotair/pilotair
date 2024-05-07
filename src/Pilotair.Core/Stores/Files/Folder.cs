@@ -1,4 +1,4 @@
-namespace Pilotair.Web.Files;
+namespace Pilotair.Core.Stores.Files;
 
 public class Folder(DirectoryInfo directoryInfo) : Entry(directoryInfo)
 {

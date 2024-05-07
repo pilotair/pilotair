@@ -1,7 +1,7 @@
 
 namespace Pilotair.Web.Codes;
 
-public class Code : Files.File
+public class Code : Core.Stores.Files.File
 {
     public Code(FileInfo fileInfo, string basePath) : base(fileInfo)
     {

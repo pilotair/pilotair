@@ -5,7 +5,7 @@
 			"path": "."
 		},
 		{
-			"name": "front",
+			"name": "frontend",
 			"path": "src/Pilotair.Web/front-app"
 		},
 		{
