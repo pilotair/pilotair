@@ -6,8 +6,8 @@ public class RouteContext(Code code)
 {
     public async Task HandleAsync(HttpContext context)
     {
-        var engine = context.RequestServices.GetRequiredService<Core.Runtime.JsEngine>();
-        var module = await engine.ExecuteAsync("./" + code.RelationPath);
+        var engineAccessor = context.RequestServices.GetRequiredService<EngineAccessor>();
+        var module = await engineAccessor.Engine.ExecuteAsync("./" + code.RelationPath);
         var handler = module.Get(context.Request.Method);
         var result = handler.Call().UnwrapIfPromise();
         await context.Response.WriteAsync(result.ToString());

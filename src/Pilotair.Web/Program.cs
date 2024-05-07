@@ -6,14 +6,10 @@ using Pilotair.Core.Runtime;
 using Pilotair.Web.Account;
 using Pilotair.Web.Codes;
 using Pilotair.Web.Files;
+using Pilotair.Web.Modules.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOptions<EngineOptions>().Configure<CodeService>((options, codeService) =>
-{
-    options.RootPath = codeService.BasePath;
-});
-builder.Services.AddScoped<JsEngine>();
 builder.Services.AddSingleton<MenuService>();
 builder.Services.AddSingleton<FileService>();
 builder.Services.AddSingleton<CodeService>();
@@ -21,6 +17,10 @@ builder.Services.AddSingleton<FrontApp>();
 builder.Services.AddOptions<PilotairOptions>().Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
+builder.Services.AddScoped<Request>();
+builder.Services.AddScoped<IModule, HttpModule>();
+builder.Services.AddScoped<EngineAccessor>();
+builder.Services.AddHttpContextAccessor();
 
 string GetName(Type schema)
 {

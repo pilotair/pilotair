@@ -23,6 +23,11 @@ public static class JsonHelper
     public static async ValueTask<T?> DeserializeAsync<T>(string path, CancellationToken token = default)
     {
         using var stream = new FileStream(path, FileMode.Open);
+        return await DeserializeAsync<T>(stream, token);
+    }
+
+    public static async ValueTask<T?> DeserializeAsync<T>(Stream stream, CancellationToken token = default)
+    {
         return await JsonSerializer.DeserializeAsync<T>(stream, defaultOptions, token);
     }
 
