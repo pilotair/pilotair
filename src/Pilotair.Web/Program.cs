@@ -2,7 +2,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using Pilotair.Core;
 using Pilotair.Core.Runtime;
 using Pilotair.Web.Account;
 using Pilotair.Web.Codes;
@@ -10,12 +9,11 @@ using Pilotair.Web.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddPilotairEngine();
 builder.Services.AddOptions<EngineOptions>().Configure<CodeService>((options, codeService) =>
 {
     options.RootPath = codeService.BasePath;
 });
-builder.Services.AddScoped<Engine>();
+builder.Services.AddScoped<JsEngine>();
 builder.Services.AddSingleton<MenuService>();
 builder.Services.AddSingleton<FileService>();
 builder.Services.AddSingleton<CodeService>();

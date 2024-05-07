@@ -1,9 +1,10 @@
 using Jint;
 using Jint.Native;
+using Pilotair.Core.Runtime.ModuleResolvers;
 
 namespace Pilotair.Core.Runtime;
 
-public class Engine(ModuleLoader moduleLoader)
+public class JsEngine(EngineOptions options)
 {
     public Task<JsValue> ExecuteAsync(string specifier)
     {
@@ -11,7 +12,9 @@ public class Engine(ModuleLoader moduleLoader)
         {
             var engine = new Jint.Engine(o =>
             {
-                o.Modules.ModuleLoader = moduleLoader;
+                o.Modules.ModuleLoader = new ModuleLoader([
+                    new FileModuleResolver(options)
+                ]);
             });
 
             var result = engine.Modules.Import(specifier);

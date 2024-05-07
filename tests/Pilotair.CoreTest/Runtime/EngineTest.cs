@@ -1,6 +1,4 @@
-using Microsoft.Extensions.Options;
 using Pilotair.Core.Runtime;
-using Pilotair.Core.Runtime.ModuleResolvers;
 
 namespace Pilotair.CoreTest;
 
@@ -26,15 +24,15 @@ public class EngineTest
         Assert.AreEqual(result.ToString(), "hello world!");
     }
 
-    private static Engine CreateEngine()
+    private static JsEngine CreateEngine()
     {
-        var mock = new Moq.Mock<IOptions<EngineOptions>>();
         var src = TestResource.GetFolder("src");
-        mock.SetupGet(s => s.Value).Returns(new EngineOptions
+      
+        var engine = new JsEngine(new EngineOptions
         {
             RootPath = src
         });
-        var engine = new Engine(new ModuleLoader([new FileModuleResolver(mock.Object)]));
+
         return engine;
     }
 }

@@ -1,10 +1,9 @@
 using Esprima;
 using Jint.Runtime.Modules;
-using Microsoft.Extensions.Options;
 
 namespace Pilotair.Core.Runtime.ModuleResolvers;
 
-public class FileModuleResolver(IOptions<EngineOptions> codeOptions) : IModuleResolver
+public class FileModuleResolver(EngineOptions codeOptions) : IModuleResolver
 {
     public string Scheme => Uri.UriSchemeFile;
 
@@ -24,7 +23,7 @@ public class FileModuleResolver(IOptions<EngineOptions> codeOptions) : IModuleRe
     public ResolvedSpecifier Resolved(string? referencingModuleLocation, ModuleRequest moduleRequest)
     {
         var path = referencingModuleLocation == default
-        ? Path.Combine(Path.GetFullPath(codeOptions.Value.RootPath), moduleRequest.Specifier) :
+        ? Path.Combine(Path.GetFullPath(codeOptions.RootPath), moduleRequest.Specifier) :
         Path.Combine(Path.GetDirectoryName(referencingModuleLocation), moduleRequest.Specifier);
         var uri = new Uri($"{Uri.UriSchemeFile}://{path}");
         if (!File.Exists(uri.AbsolutePath)) uri = new Uri($"{Uri.UriSchemeFile}://{path}");
