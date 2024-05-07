@@ -2,7 +2,7 @@ using Dapper;
 using Microsoft.Data.Sqlite;
 using Pilotair.Core.Helpers;
 
-namespace Pilotair.Core.Stores;
+namespace Pilotair.Core.Stores.NoSqlite;
 
 public class Collection<T> where T : new()
 {

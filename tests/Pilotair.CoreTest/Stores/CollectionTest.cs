@@ -1,4 +1,4 @@
-using Pilotair.Core.Stores;
+using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.CoreTest.Stores;
 
@@ -8,7 +8,7 @@ public class CollectionTest
     [TestMethod]
     public async Task Document_CRUD_Async()
     {
-        var store = new Store("test.db");
+        var store = new NoSqliteStore("test.db");
         var userCollection = store.GetOrCreate<User>();
 
         var doc = new Document<User>

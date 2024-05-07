@@ -2,7 +2,7 @@ using System.Text;
 using Dapper;
 using Microsoft.Data.Sqlite;
 
-namespace Pilotair.Core.Stores;
+namespace Pilotair.Core.Stores.NoSqlite;
 
 public class Query<T>(SqliteConnection connection, string name) where T : new()
 {

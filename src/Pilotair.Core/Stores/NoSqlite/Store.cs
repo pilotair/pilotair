@@ -2,14 +2,14 @@ using System.Collections.Concurrent;
 using Microsoft.Data.Sqlite;
 using Pilotair.Core.Helpers;
 
-namespace Pilotair.Core.Stores;
+namespace Pilotair.Core.Stores.NoSqlite;
 
-public class Store
+public class NoSqliteStore
 {
     private readonly string connectionString;
     private readonly ConcurrentDictionary<string, dynamic> collections = [];
 
-    public Store(string path)
+    public NoSqliteStore(string path)
     {
         var dir = Path.GetDirectoryName(path);
         

@@ -1,6 +1,6 @@
 using Pilotair.Core.Helpers;
 
-namespace Pilotair.Core.Stores;
+namespace Pilotair.Core.Stores.NoSqlite;
 
 public class DocumentModel
 {

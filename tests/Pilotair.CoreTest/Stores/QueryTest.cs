@@ -1,4 +1,4 @@
-using Pilotair.Core.Stores;
+using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.CoreTest.Stores;
 
@@ -9,7 +9,7 @@ public class QueryTest
     [TestInitialize]
     public async Task InitAsync()
     {
-        var store = new Store("query_test.db");
+        var store = new NoSqliteStore("query_test.db");
         var collection = store.GetOrCreate<User>();
         var count = await collection.Query.CountAsync();
         if (count == 0)
@@ -33,7 +33,7 @@ public class QueryTest
     [TestMethod]
     public async Task TakeAsync()
     {
-        var store = new Store("query_test.db");
+        var store = new NoSqliteStore("query_test.db");
         var collection = store.GetOrCreate<User>();
         var users = await collection.Query.Where("$.name", "Alex").TakeAsync();
         Assert.AreEqual(users.Length, 1);
@@ -42,7 +42,7 @@ public class QueryTest
     [TestMethod]
     public async Task ExcludeAsync()
     {
-        var store = new Store("query_test.db");
+        var store = new NoSqliteStore("query_test.db");
         var collection = store.GetOrCreate<User>();
         var user = await collection.Query.Where("$.name", "Alex").Exclude("$.tags").FirstOrDefaultAsync();
         Assert.IsNull(user!.Data.Tags);

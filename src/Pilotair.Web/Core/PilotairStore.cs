@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Options;
-using Pilotair.Core.Stores;
+using Pilotair.Core.Stores.NoSqlite;
 using Pilotair.Web.Account;
 
 namespace Pilotair.Web;
 
-public class PilotairStore : Store
+public class PilotairStore : NoSqliteStore
 {
     public PilotairStore(IOptions<PilotairOptions> options)
         : base(Path.Combine(options.Value.DataPath, Constants.STORES_FOLDER, "pilotair.db"))
