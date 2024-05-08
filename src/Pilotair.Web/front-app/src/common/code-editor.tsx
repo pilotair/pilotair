@@ -26,7 +26,11 @@ self.MonacoEnvironment = {
 
 monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
 
-export default function CodeEditor() {
+interface Props {
+    value: string
+}
+
+export default function CodeEditor(props: Props) {
     const ref = createRef<HTMLDivElement>();
     const init = useRef(false)
 
@@ -34,11 +38,13 @@ export default function CodeEditor() {
         if (!ref.current || init.current) return
         init.current = true;
 
-        monaco.editor.create(ref.current, {
+        const editor = monaco.editor.create(ref.current, {
             language: "html",
             fixedOverflowWidgets: true
         })
 
+        const model = monaco.editor.createModel(props.value, "javascript")
+        editor.setModel(model);
     }, [ref]);
 
     return <div ref={ref} className="w-full h-full overflow-hidden"></div>

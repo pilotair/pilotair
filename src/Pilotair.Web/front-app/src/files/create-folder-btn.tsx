@@ -13,7 +13,7 @@ export default function CreateFolderBtn() {
     let closeModal: () => void
 
     async function onFinish(value: { name: string }) {
-        const path = combine(fileStore.path, value.name);
+        const path = combine(fileStore.folder, value.name);
         
         await loading(async () => {
             await httpClient.post("/__api__/file", undefined, {

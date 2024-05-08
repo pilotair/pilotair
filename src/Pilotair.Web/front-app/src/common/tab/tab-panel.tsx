@@ -8,6 +8,7 @@ interface TabContextValue {
     openConfirm: (props: ModalFuncProps) => Promise<void>;
     loading: (action: () => Promise<void>) => Promise<void>;
     showLoading: (show: boolean) => void;
+    name: string
 }
 
 export const TabContext = createContext<TabContextValue>({} as TabContextValue)
@@ -102,7 +103,6 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
             loadingStack.current--;
             if (loadingStack.current < 0) loadingStack.current = 0;
         }
-        console.log(loadingStack.current)
     }
 
     return (
@@ -111,7 +111,8 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
             openModal,
             openConfirm,
             loading,
-            showLoading
+            showLoading,
+            name
         }}>
             <div
                 className={"bg-white rounded-md h-full overflow-auto relative" + ` tab-panel-${name}`}

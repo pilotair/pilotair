@@ -7,9 +7,9 @@ namespace Pilotair.Web.Controllers;
 public class CodeController(CodeService codeService) : ApiController
 {
     [HttpGet]
-    public async Task<Code> GetAsync(string folder, string name)
+    public async Task<Code> GetAsync(string path)
     {
-        return await codeService.GetCodeAsync(folder, name);
+        return await codeService.GetCodeAsync(path);
     }
 
     [HttpPost]

@@ -1,7 +1,7 @@
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react"
 import { Button, Checkbox, Divider } from "antd"
 import EntryItem from "./entry-item"
-import { Entry, useFile } from "./files-store"
+import { useFile } from "./files-store"
 import CreateFolderBtn from "./create-folder-btn"
 import UploadFilesBtn from "./upload-files-btn"
 import { DeleteOutlined } from "@ant-design/icons"
@@ -9,15 +9,16 @@ import FolderBreadcrumb from "./folder-breadcrumb"
 import { httpClient } from "../utils/request"
 import { TabContext } from "../common/tab/tab-panel"
 import Empty from "../common/empty"
+import { Pilotair} from "../schema"
 
 export default function File() {
-    const { path, files, openFolder, loading, reload } = useFile();
-    const [selectedFiles, setSelectedFiles] = useState<Entry[]>([])
+    const { folder, files, openFolder, loading, reload } = useFile();
+    const [selectedFiles, setSelectedFiles] = useState<Pilotair.Core.Stores.Files.Entry[]>([])
     const { openConfirm, showLoading } = useContext(TabContext)
 
     useEffect(() => {
         setSelectedFiles([])
-    }, [path, files])
+    }, [folder, files])
 
     useEffect(() => {
         showLoading(loading);
@@ -63,7 +64,7 @@ export default function File() {
             title: "Are you sure delete?"
         })
         const entries = selectedFiles.map(m => m.name);
-        await httpClient.delete("/__api__/file", { entries, path });
+        await httpClient.delete("/__api__/file", { entries, folder });
         reload();
     }
 
@@ -91,7 +92,7 @@ export default function File() {
                     : <Empty />
                 }
             </div>
-            {!!path && <FolderBreadcrumb path={path} className="flex-shrink-0" />}
+            {!!folder && <FolderBreadcrumb path={folder} className="flex-shrink-0" />}
         </div>
     )
 }

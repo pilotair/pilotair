@@ -29,14 +29,14 @@ export default function UploadFilesBtn() {
         customRequest(options) {
             const file = options.file as File;
             const webkitRelativePath = file.webkitRelativePath;
-            let path = fileStore.path;
+            let folder = fileStore.folder;
             if (webkitRelativePath) {
                 const fragments = webkitRelativePath.split("/");
                 fragments.shift();
                 fragments.pop();
-                path = combine(path, ...fragments);
+                folder = combine(folder, ...fragments);
             }
-            options.action += `?path=${path}`
+            options.action += `?folder=${folder}`
             upload(options);
         }
     }
@@ -45,7 +45,7 @@ export default function UploadFilesBtn() {
 
     function onClose() {
         setFileList([]);
-        fileStore.files.mutate()
+        fileStore.reload()
     }
 
     for (const file of fileList) {

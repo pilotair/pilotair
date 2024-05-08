@@ -4,18 +4,18 @@ import useSWR from "swr";
 import { fetcher } from "../utils/request";
 import { Pilotair } from '../schema'
 
-const pathAtom = atom("")
+const folderAtom = atom("")
 
 export function useFile() {
-    const [path, setPath] = useAtom(pathAtom);
-    const filesResponse = useSWR<Pilotair.Web.Files.Entry[]>(`/__api__/file?path=${path}`, fetcher)
+    const [folder, setFolder] = useAtom(folderAtom);
+    const filesResponse = useSWR<Pilotair.Core.Stores.Files.Entry[]>(`/__api__/file?folder=${folder}`, fetcher)
 
     return {
-        path,
-        goTo: setPath,
+        folder,
+        goTo: setFolder,
         files: filesResponse.data,
         loading: filesResponse.isLoading,
         reload: () => filesResponse.mutate(),
-        openFolder: (folder: string) => setPath(() => combine(path, folder))
+        openFolder: (name: string) => setFolder(() => combine(folder, name))
     }
 }

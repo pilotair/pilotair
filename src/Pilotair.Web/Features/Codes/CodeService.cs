@@ -15,10 +15,10 @@ public class CodeService
         store = new FileStore(root);
     }
 
-    public async Task<Code> GetCodeAsync(string folder, string name)
+    public async Task<Code> GetCodeAsync(string path)
     {
-        var fileInfo = store.GetFile(folder, name);
-        var content = await store.ReadTextAsync(folder, name);
+        var fileInfo = store.GetFile(path);
+        var content = await store.ReadTextAsync(path);
         return new Code(fileInfo, content, store.Root);
     }
 

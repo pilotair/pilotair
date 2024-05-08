@@ -64,12 +64,17 @@ public class FileStore
 
     public File GetFile(string folder, string name)
     {
-        var path = Path.Combine(root, folder, name);
+        var path = Path.Combine(folder, name);
         return GetFile(path);
     }
 
     public File GetFile(string path)
     {
+        if (!Path.IsPathRooted(path))
+        {
+            path = Path.Combine(root, path);
+        }
+
         if (!System.IO.File.Exists(path))
         {
             throw new FileNotFoundException();
@@ -81,7 +86,13 @@ public class FileStore
 
     public async Task<string> ReadTextAsync(string folder, string name)
     {
-        var path = Path.Combine(root, folder, name);
+        var path = Path.Combine(folder, name);
+        return await ReadTextAsync(path);
+    }
+
+    public async Task<string> ReadTextAsync(string path)
+    {
+        path = Path.Combine(root, path);
         if (!System.IO.File.Exists(path))
         {
             throw new FileNotFoundException();

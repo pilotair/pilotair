@@ -7,33 +7,33 @@ namespace Pilotair.Web.Controllers;
 public class FileController(FileService fileService) : ApiController
 {
     [HttpGet]
-    public IEnumerable<Entry> Get(string? path = "")
+    public IEnumerable<Entry> Get(string? folder = "")
     {
-        return fileService.GetFolder(path!);
+        return fileService.GetFolder(folder!);
     }
 
     [HttpPost]
-    public async Task PostAsync(IEnumerable<IFormFile> files, string? path = "")
+    public async Task PostAsync(IEnumerable<IFormFile> files, string? folder = "")
     {
-        if (path != default) fileService.CreateFolder(path);
+        if (folder != default) fileService.CreateFolder(folder);
         foreach (var file in files)
         {
             using var stream = file.OpenReadStream();
-            await fileService.SaveFileAsync(path!, stream, file.FileName);
+            await fileService.SaveFileAsync(folder!, stream, file.FileName);
         }
     }
 
     [HttpPost("zip")]
-    public void ImportZip(IFormFile file, string? path = "")
+    public void ImportZip(IFormFile file, string? folder = "")
     {
-        if (path != default) fileService.CreateFolder(path);
+        if (folder != default) fileService.CreateFolder(folder);
         using var stream = file.OpenReadStream();
-        fileService.ImportFromZip(path!, stream);
+        fileService.ImportFromZip(folder!, stream);
     }
 
     [HttpDelete]
-    public void Delete([FromQuery] string[] entries, string? path = "")
+    public void Delete([FromQuery] string[] entries, string? folder = "")
     {
-        fileService.Delete(path!, entries);
+        fileService.Delete(folder!, entries);
     }
 }
