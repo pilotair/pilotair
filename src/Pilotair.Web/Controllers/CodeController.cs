@@ -6,20 +6,26 @@ namespace Pilotair.Web.Controllers;
 
 public class CodeController(CodeService codeService) : ApiController
 {
+    [HttpGet]
+    public async Task<Code> GetAsync(string folder, string name)
+    {
+        return await codeService.GetCodeAsync(folder, name);
+    }
+
     [HttpPost]
-    public async Task PostAsync([FromBody] AddCodeModel model, string path = "")
+    public async Task PostAsync([FromBody] AddCodeModel model, string folder = "")
     {
         string content = @$"
 export function GET(){{
-    return ""Get from route '{path}'"";
+    return ""Get from route '{folder}'"";
 }}        
 ";
-        await codeService.SaveFileAsync(path, content, model.Name);
+        await codeService.Store.SaveFileAsync(folder, content, model.Name);
     }
 
     [HttpDelete]
-    public void Delete(string[] entries, string path = "")
+    public void Delete(string[] entries, string folder = "")
     {
-        codeService.Delete(path, entries);
+        codeService.Store.Delete(folder, entries);
     }
 }

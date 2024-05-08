@@ -1,12 +1,10 @@
+using File = Pilotair.Core.Stores.Files.File;
 
 namespace Pilotair.Web.Codes;
 
-public class Code : Core.Stores.Files.File
+public class Code(File file, string content, string root)
 {
-    public Code(FileInfo fileInfo, string basePath) : base(fileInfo)
-    {
-        RelationPath = System.IO.Path.GetRelativePath(basePath, Path);
-    }
-
-    public string RelationPath { get; init; }
+    public File File { get; init; } = file;
+    public string RelationPath { get; init; } = Path.GetRelativePath(root, file.Path);
+    public string Content { get; init; } = content;
 }

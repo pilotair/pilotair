@@ -5,25 +5,27 @@ namespace Pilotair.Core.Stores.Files;
 
 public class FileStore
 {
-    private readonly string basePath;
-    
-    public FileStore(string path)
+    private readonly string root;
+
+    public string Root => root;
+
+    public FileStore(string root)
     {
-        IoHelper.EnsureDirectoryExist(path);
-        basePath = path;
+        IoHelper.EnsureDirectoryExist(root);
+        this.root = root;
     }
 
     public IEnumerable<Entry> GetFolder(string path)
     {
         var result = new List<Entry>();
         IoHelper.ShouldBeRelative(path);
-        path = Path.Combine(basePath, path);
+        path = Path.Combine(root, path);
         var directories = Directory.GetDirectories(path);
 
         foreach (var directory in directories)
         {
             var directoryInfo = new DirectoryInfo(directory);
-            result.Add(new Folder(directoryInfo));
+            result.Add(new Folder(directoryInfo, root));
         }
 
         var files = Directory.GetFiles(path);
@@ -31,7 +33,7 @@ public class FileStore
         foreach (var file in files)
         {
             var fileInfo = new FileInfo(file);
-            result.Add(new File(fileInfo));
+            result.Add(new File(fileInfo, root));
         }
 
         return result;
@@ -40,45 +42,62 @@ public class FileStore
     public string CreateFolder(string path)
     {
         IoHelper.ShouldBeRelative(path);
-        path = Path.Combine(basePath, path);
+        path = Path.Combine(root, path);
         IoHelper.EnsureDirectoryExist(path);
         return path;
     }
 
-    public async Task SaveFileAsync(string path, Stream stream, string fileName)
+    public async Task SaveFileAsync(string folder, Stream stream, string name)
     {
-        path = CreateFolder(path);
-        path = Path.Combine(path, fileName);
-        using var fs = System.IO.File.OpenWrite(path);
+        folder = CreateFolder(folder);
+        folder = Path.Combine(folder, name);
+        using var fs = System.IO.File.OpenWrite(folder);
         await stream.CopyToAsync(fs);
     }
 
-    public async Task SaveFileAsync(string path, string content, string fileName)
+    public async Task SaveFileAsync(string folder, string content, string fileName)
     {
-        path = CreateFolder(path);
-        path = Path.Combine(path, fileName);
-        await System.IO.File.WriteAllTextAsync(path, content);
+        folder = CreateFolder(folder);
+        folder = Path.Combine(folder, fileName);
+        await System.IO.File.WriteAllTextAsync(folder, content);
     }
 
-    public Stream GetFile(string path, string name)
+    public File GetFile(string folder, string name)
     {
-        IoHelper.ShouldBeRelative(path);
-        path = Path.Combine(path, name);
+        var path = Path.Combine(root, folder, name);
+        return GetFile(path);
+    }
+
+    public File GetFile(string path)
+    {
         if (!System.IO.File.Exists(path))
         {
             throw new FileNotFoundException();
         }
-        return System.IO.File.OpenRead(path);
+
+        var fileInfo = new FileInfo(path);
+        return new File(fileInfo, root);
     }
 
-    public void Delete(string path, string[] entries)
+    public async Task<string> ReadTextAsync(string folder, string name)
     {
-        path = Path.Combine(basePath, path);
-        if (!Directory.Exists(path)) return;
+        var path = Path.Combine(root, folder, name);
+        if (!System.IO.File.Exists(path))
+        {
+            throw new FileNotFoundException();
+        }
+
+        return await System.IO.File.ReadAllTextAsync(path);
+    }
+
+    public void Delete(string folder, string[] entries)
+    {
+        folder = Path.Combine(root, folder);
+        if (!Directory.Exists(folder)) return;
 
         foreach (var item in entries)
         {
-            var entryPath = Path.Combine(path, item);
+            var entryPath = Path.Combine(folder, item);
             var isFolder = Directory.Exists(entryPath);
             if (isFolder)
             {
@@ -91,11 +110,11 @@ public class FileStore
         }
     }
 
-    public void ImportFromZip(string path, Stream stream)
+    public void ImportFromZip(string folder, Stream stream)
     {
-        IoHelper.ShouldBeRelative(path);
+        IoHelper.ShouldBeRelative(folder);
         using var zipArchive = new ZipArchive(stream);
-        path = Path.Combine(basePath, path);
-        zipArchive.ExtractToDirectory(path, true);
+        folder = Path.Combine(root, folder);
+        zipArchive.ExtractToDirectory(folder, true);
     }
 }

@@ -38,11 +38,6 @@ public class FileService
         await store.SaveFileAsync(path, content, fileName);
     }
 
-    public Stream GetFile(string path, string name)
-    {
-        return store.GetFile(path, name);
-    }
-
     public void Delete(string path, string[] entries)
     {
         store.Delete(path, entries);
