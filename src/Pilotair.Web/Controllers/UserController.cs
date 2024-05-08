@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Pilotair.Core.Stores.NoSqlite;
 using Pilotair.Web.Account;
-using Pilotair.Web.Models;
+using Pilotair.Web.ViewModels;
 
 namespace Pilotair.Web.Controllers;
 

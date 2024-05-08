@@ -1,5 +1,5 @@
 using Pilotair.Core.Stores.NoSqlite;
-using Pilotair.Web.Models;
+using Pilotair.Web.ViewModels;
 
 namespace Pilotair.Web.Account;
 

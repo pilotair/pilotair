@@ -1,4 +1,4 @@
-namespace Pilotair.Web.Models;
+namespace Pilotair.Web.ViewModels;
 
 public class PagingResult<T>
 {
