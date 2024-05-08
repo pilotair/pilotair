@@ -22,6 +22,11 @@ public class JsEngine(EngineOptions options)
             {
                 builder.ExportObject(item.Key, item.Value);
             }
+
+            foreach (var item in module.Types)
+            {
+                builder.ExportType(item.Key, item.Value);
+            }
         });
     }
 
@@ -35,4 +40,5 @@ public class JsEngine(EngineOptions options)
         task.Start();
         return task;
     }
+
 }

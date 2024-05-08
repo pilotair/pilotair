@@ -5,11 +5,16 @@ namespace Pilotair.Web.Modules.Http;
 public class HttpModule : IModule
 {
     private readonly Dictionary<string, object> exports = [];
-    public string Name => "pilotairhttp";
+    private readonly Dictionary<string, Type> types = [];
+    public string Name => "pilotair:http";
     public IDictionary<string, object> Exports => exports;
+
+    public IDictionary<string, Type> Types => types;
 
     public HttpModule(Request request)
     {
         exports.Add("request", request);
+        types.Add("TextResponse", typeof(TextResponse));
+        types.Add("JsonResponse", typeof(JsonResponse));
     }
 }

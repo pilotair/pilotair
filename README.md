@@ -4,7 +4,7 @@
 - [x] deploy and docker build
 - [x] code generation
 - [x] sqlite jsonb
-- [ ] FileStore
+- [x] FileStore
 - [ ] JsonStore
 - [ ] user system
 - [ ] typescript support
@@ -13,4 +13,5 @@
 - [ ] Use http3 proxy
 - [ ] project settings
 - [ ] cert automation renew
+- [ ] JaValueConverter
 
