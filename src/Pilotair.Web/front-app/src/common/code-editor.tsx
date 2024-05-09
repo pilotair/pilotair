@@ -40,7 +40,8 @@ export default function CodeEditor(props: Props) {
 
         const editor = monaco.editor.create(ref.current, {
             language: "html",
-            fixedOverflowWidgets: true
+            fixedOverflowWidgets: true,
+            automaticLayout:true
         })
 
         const model = monaco.editor.createModel(props.value, "javascript")
