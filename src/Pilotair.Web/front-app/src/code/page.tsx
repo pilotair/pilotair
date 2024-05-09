@@ -6,6 +6,8 @@ import { removeFragment } from "../utils/path";
 import { Pilotair } from "../schema"
 import { fetcher } from "../utils/request";
 import Loading from "../common/loading";
+import { Breadcrumb } from "antd"
+import { ReloadOutlined, RightOutlined, SaveOutlined } from "@ant-design/icons";
 
 export default function Code() {
     const { name } = useContext(TabContext);
@@ -14,7 +16,14 @@ export default function Code() {
 
     if (isLoading) return <Loading />
     return <div className="h-full flex flex-col">
-        <div> path: {path}</div>
+        <div className="px-2 flex" >
+            <Breadcrumb className="flex-1" separator={<RightOutlined className="transform scale-75" />} items={name.split("/").map(m => ({ title: m, key: m, className: "text-slate-500" }))} />
+            <div className="flex-shrink-0 flex gap-2 text-slate-500">
+                <SaveOutlined />
+                <ReloadOutlined />
+            </div>
+        </div>
+
         <CodeEditor value={data?.content ?? ''} />
     </div>
 }
