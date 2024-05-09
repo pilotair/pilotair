@@ -1,5 +1,5 @@
 import { Modal, ModalFuncProps, ModalProps } from "antd";
-import { ReactNode, createContext, createRef, forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { ReactNode, createContext, createRef, forwardRef, useImperativeHandle,  useRef, useState } from "react";
 import Loading from "../loading";
 
 interface TabContextValue {
@@ -27,7 +27,7 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     const [modals, setModals] = useState<ReactNode[]>([]);
     const loadingStack = useRef(0)
     const modalContainer = createRef<HTMLDivElement>()
-    const isLoading = useMemo(() => loadingStack.current > 0, [loadingStack])
+    const [isLoading, setIsLoading] = useState(false)
 
     function openModal(props: ModalProps) {
         const TabModal = forwardRef<ModalHandle>((_, ref) => {
@@ -99,9 +99,11 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     function showLoading(show: boolean = true) {
         if (show) {
             loadingStack.current++;
+            setIsLoading(true)
         } else {
             loadingStack.current--;
             if (loadingStack.current < 0) loadingStack.current = 0;
+            if(loadingStack.current==0) setIsLoading(false)
         }
     }
 

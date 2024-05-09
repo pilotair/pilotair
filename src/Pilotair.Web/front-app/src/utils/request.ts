@@ -27,7 +27,7 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
     let body: string | FormData | undefined;
 
     if (!(sendParams?.body instanceof FormData)) {
-        if (!("contentType" in headers)) headers.contentType = "application/json"
+        if (!("Content-Type" in headers)) headers["Content-Type"] = "application/json"
         body = bodyStringify(headers.contentType, sendParams?.body)
     } else {
         body = sendParams?.body

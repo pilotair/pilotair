@@ -25,9 +25,11 @@ self.MonacoEnvironment = {
 };
 
 monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
+enableZoomShortcuts();
 
 interface Props {
-    value: string
+    value: string,
+    onChange?: (value: string) => void,
 }
 
 export default function CodeEditor(props: Props) {
@@ -41,12 +43,53 @@ export default function CodeEditor(props: Props) {
         const editor = monaco.editor.create(ref.current, {
             language: "html",
             fixedOverflowWidgets: true,
-            automaticLayout:true
-        })
+            automaticLayout: true,
+        });
+
+        if (props.onChange) {
+            editor.onDidChangeModelContent(() => {
+                props.onChange?.(editor.getValue());
+            })
+        }
+
 
         const model = monaco.editor.createModel(props.value, "javascript")
         editor.setModel(model);
     }, [ref]);
 
     return <div ref={ref} className="w-full h-full overflow-hidden"></div>
+}
+
+function enableZoomShortcuts() {
+    const zoomKey = "monaco-editor-zoom-level";
+
+    const zoomLevel = localStorage.getItem(zoomKey);
+
+    if (!zoomLevel) {
+        localStorage.setItem(
+            zoomKey,
+            monaco.editor.EditorZoom.getZoomLevel().toString()
+        );
+    } else {
+        monaco.editor.EditorZoom.setZoomLevel(parseInt(zoomLevel));
+    }
+
+    monaco.editor.EditorZoom.onDidChangeZoomLevel((e) => {
+        localStorage.setItem(zoomKey, e.toString());
+    });
+
+    monaco.editor.addKeybindingRules([
+        {
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.Equal,
+            command: "editor.action.fontZoomIn",
+        },
+        {
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.Minus,
+            command: "editor.action.fontZoomOut",
+        },
+        {
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.Digit0,
+            command: "editor.action.fontZoomReset",
+        },
+    ]);
 }

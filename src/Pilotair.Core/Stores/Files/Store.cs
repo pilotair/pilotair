@@ -62,6 +62,12 @@ public class FileStore
         await System.IO.File.WriteAllTextAsync(folder, content);
     }
 
+    public async Task SaveFileAsync(string path, string content)
+    {
+        if (!Path.IsPathRooted(path)) path = Path.Combine(root, path);
+        await System.IO.File.WriteAllTextAsync(path, content);
+    }
+
     public File GetFile(string folder, string name)
     {
         var path = Path.Combine(folder, name);
