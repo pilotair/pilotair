@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Readers;
 using Pilotair.Core.CodeGeneration;
 
-namespace Pilotair.CoreTest;
+namespace Pilotair.CoreTest.CodeGeneration;
 
 [TestClass]
 public class TypescriptConverterTest

@@ -3,30 +3,39 @@ using System.Text;
 using Esprima.Ast;
 using Jint;
 using Jint.Native;
+using Jint.Native.Function;
+using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Runtime.Compilers;
 
 public class Babel
 {
     private readonly Script script;
+    private readonly (Function func, Engine engine) env;
 
     public Babel()
     {
-        var assembly = Assembly.GetExecutingAssembly();
         var fileName = "Pilotair.Core.Runtime.Compilers.babel.min.js";
-        using var stream = assembly.GetManifestResourceStream(fileName);
-
-        if (stream == default)
-        {
-            throw new FileNotFoundException(fileName);
-        }
-
-        var code = new StreamReader(stream).ReadToEnd();
+        var code = AssemblyHelper.GetEmbeddedResource<Babel>(fileName);
         var parser = new Esprima.JavaScriptParser();
         script = parser.ParseScript(code, null, true);
+        env = GetEnv();
     }
 
     public string Compile(string code)
+    {
+        var options = new Dictionary<string, object> {
+            {"presets", new []{ "typescript"} },
+            {"filename", "example.ts" },
+        };
+        var result = env.func.Call([
+            JsValue.FromObject(env.engine, code),
+             JsValue.FromObject(env.engine, options)
+        ]);
+        return result.Get("code").AsString();
+    }
+
+    private (Function func, Engine engine) GetEnv()
     {
         var engine = new Engine(options =>
         {
@@ -37,15 +46,7 @@ public class Babel
         engine.Execute(script);
         var babel = engine.GetValue("Babel");
         var transform = babel.Get("transform").AsFunctionInstance();
-        var options = new Dictionary<string, object> {
-            {"presets", new []{ "typescript"} },
-            {"filename", "example.ts" },
-        };
-        var result = transform.Call([
-            JsValue.FromObject(engine, code),
-             JsValue.FromObject(engine, options)
-        ]);
-        return result.Get("code").AsString();
+        return (transform, engine);
     }
 }
 
