@@ -5,6 +5,7 @@
 - [x] code generation
 - [x] sqlite jsonb
 - [x] FileStore
+- [ ] ContextMenu
 - [ ] JsonStore
 - [ ] user system
 - [ ] typescript support

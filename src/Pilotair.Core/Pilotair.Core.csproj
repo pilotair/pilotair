@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.14" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.8" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Runtime\Compilers\babel.min.js" />
+  </ItemGroup>
 </Project>
