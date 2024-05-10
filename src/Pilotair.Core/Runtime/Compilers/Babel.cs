@@ -18,21 +18,24 @@ public class Babel
         var fileName = "Pilotair.Core.Runtime.Compilers.babel.min.js";
         var code = AssemblyHelper.GetEmbeddedResource<Babel>(fileName);
         var parser = new Esprima.JavaScriptParser();
-        script = parser.ParseScript(code, null, true);
+        script = parser.ParseScript(code, "babel.min.js", true);
         env = GetEnv();
     }
 
-    public string Compile(string code)
+    public string Compile(string code, string name = "default.tsx")
     {
-        var options = new Dictionary<string, object> {
-            {"presets", new []{ "typescript"} },
-            {"filename", "example.ts" },
-        };
-        var result = env.func.Call([
-            JsValue.FromObject(env.engine, code),
+        lock (this)
+        {
+            var options = new Dictionary<string, object> {
+                {"presets", new []{ "typescript","react"} },
+                {"filename", name },
+            };
+            var result = env.func.Call([
+                JsValue.FromObject(env.engine, code),
              JsValue.FromObject(env.engine, options)
-        ]);
-        return result.Get("code").AsString();
+            ]);
+            return result.Get("code").AsString();
+        }
     }
 
     private (Function func, Engine engine) GetEnv()
