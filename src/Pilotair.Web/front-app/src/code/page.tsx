@@ -1,39 +1,43 @@
-import useSWR from "swr"
 import CodeEditor from "../common/code-editor"
-import { useContext, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { TabContext } from "../common/tab/tab-panel"
 import { removeFragment } from "../utils/path";
 import { Pilotair } from "../schema"
-import { fetcher, httpClient } from "../utils/request";
-import Loading from "../common/loading";
+import { httpClient } from "../utils/request";
 import { Breadcrumb } from "antd"
 import { ReloadOutlined, RightOutlined, SaveOutlined } from "@ant-design/icons";
+import { useShortcut } from "../utils/shortcuts";
 
 export default function Code() {
     const { name, loading } = useContext(TabContext);
     const path = removeFragment(name, 1);
-    const { data, isLoading } = useSWR<Pilotair.Web.Codes.Code>(`/__api__/code/?path=${path}`, fetcher);
-    const content = useRef(data?.content)
+    const [content, setContent] = useState("");
+    const newContent = useRef<string>()
     const [isChange, setIsChange] = useState(false)
+    const shortcutRef = useShortcut({ ctrlOrMeta: true, key: "s" }, onSave);
+
+    useEffect(() => {
+        loading(async () => {
+            const response = await httpClient.get<Pilotair.Web.Codes.Code>("/__api__/code/", { path });
+            if (response?.content) setContent(response.content)
+        })
+    }, [])
 
     async function onSave() {
-        if (!content.current) return;
-        await loading(async () => {
+        loading(async () => {
             await httpClient.put("/__api__/code", {
                 path,
-                content: content.current
+                content: newContent.current
             })
         })
     }
 
-    function onChange(value: string) {
-        content.current = value;
-        setIsChange(content.current != data?.content)
-    }
+    const onChange = useCallback((value: string) => {
+        newContent.current = value;
+        setIsChange(content != newContent.current)
+    }, [content])
 
-
-    if (isLoading) return <Loading />
-    return <div className="h-full flex flex-col">
+    return <div className="h-full flex flex-col" ref={shortcutRef}>
         <div className="px-2 flex" >
             <Breadcrumb className="flex-1" separator={<RightOutlined className="transform scale-75" />} items={name.split("/").map(m => ({ title: m, key: m, className: "text-slate-500" }))} />
             <div className="flex-shrink-0 flex gap-2 text-slate-500">
@@ -44,6 +48,6 @@ export default function Code() {
             </div>
         </div>
 
-        <CodeEditor value={data?.content ?? ''} onChange={onChange} />
+        <CodeEditor value={content} onChange={onChange} />
     </div>
 }

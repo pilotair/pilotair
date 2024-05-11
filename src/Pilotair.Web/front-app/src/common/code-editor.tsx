@@ -4,7 +4,8 @@ import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
 import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
 import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
-import { createRef, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { type editor } from "monaco-editor"
 
 self.MonacoEnvironment = {
     getWorker(_, label: string) {
@@ -32,32 +33,38 @@ interface Props {
     onChange?: (value: string) => void,
 }
 
-export default function CodeEditor(props: Props) {
-    const ref = createRef<HTMLDivElement>();
-    const init = useRef(false)
+export default function CodeEditor({ value, onChange }: Props) {
+    const [element, setElement] = useState<HTMLDivElement | null>();
+    const editor = useRef<editor.IStandaloneCodeEditor>();
+    const model = useRef<editor.ITextModel>()
+    const valueRef = useRef("");
+    valueRef.current = value;
 
     useEffect(() => {
-        if (!ref.current || init.current) return
-        init.current = true;
+        if (!element || editor.current) return
 
-        const editor = monaco.editor.create(ref.current, {
-            language: "html",
-            fixedOverflowWidgets: true,
-            automaticLayout: true,
-        });
-
-        if (props.onChange) {
-            editor.onDidChangeModelContent(() => {
-                props.onChange?.(editor.getValue());
+        if (!editor.current) {
+            editor.current = monaco.editor.create(element, {
+                fixedOverflowWidgets: true,
+                automaticLayout: true,
+            });
+            model.current = monaco.editor.createModel('', "javascript")
+            editor.current.setModel(model.current);
+            editor.current.onDidChangeModelContent(() => {
+                onChange?.(editor.current!.getValue());
             })
+            editor.current.setValue(valueRef.current)
         }
+    }, [element, onChange])
 
 
-        const model = monaco.editor.createModel(props.value, "javascript")
-        editor.setModel(model);
-    }, [ref]);
+    useEffect(() => {
+        if (editor.current) {
+            editor.current.setValue(valueRef.current)
+        }
+    }, [value]);
 
-    return <div ref={ref} className="w-full h-full overflow-hidden"></div>
+    return <div ref={e => setElement(e)} className="w-full h-full overflow-hidden"></div>
 }
 
 function enableZoomShortcuts() {
