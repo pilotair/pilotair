@@ -6,10 +6,9 @@ import { useMemo } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
 import Empty from "../common/empty";
-import Loading from "../common/loading";
 
 export default function Workspace() {
-    const { menus, tabs, openTab, closeTab, setActiveName, activeName, loading } = useWorkspace();
+    const { menus, tabs, openTab, closeTab, setActiveName, activeName } = useWorkspace();
 
     const expandMenus = useMemo(() => {
         const result: typeof menus = []
@@ -33,7 +32,7 @@ export default function Workspace() {
         openTab(key, menu.label, <AsyncComponent component={menu.feature.tab} />, menu.icon)
     }
 
-    const sider = loading ? <Loading  className="!bg-transparent"/> : <Menu
+    const sider = <Menu
         mode="inline"
         items={menus}
         onClick={({ key }) => onMenuItemClick(key)}

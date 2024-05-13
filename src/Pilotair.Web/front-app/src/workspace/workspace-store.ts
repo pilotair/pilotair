@@ -1,10 +1,9 @@
 import { TabItem } from "../common/tab/tabs"
 import { getFeature } from "./features"
-import { ReactNode, useMemo } from "react"
-import { fetcher } from "../utils/request"
+import { ReactNode, useEffect } from "react"
+import { httpClient } from "../utils/request"
 import { combine } from "../utils/path"
 import { atom, useAtom } from "jotai"
-import useSWR from "swr"
 import { Pilotair } from "../schema"
 
 type MenuItem = {
@@ -19,18 +18,22 @@ type MenuItem = {
 
 const activeNameAtom = atom("")
 const tabsAtom = atom<TabItem[]>([])
+const menusAtom = atom<MenuItem[]>([])
 
 export function useWorkspace() {
     const [activeName, setActiveName] = useAtom(activeNameAtom);
     const [tabs, setTabs] = useAtom(tabsAtom);
+    const [menus, setMenus] = useAtom(menusAtom)
 
-    const menusResponse = useSWR("/__api__/menu", fetcher);
+    async function loadMenus() {
+        const response = await httpClient.get<Pilotair.Web.MenuItem[]>("/__api__/menu");
+        setMenus(mapMenuItem(response ?? [], '') ?? []);
 
-    const menus = useMemo(() => {
-        if (!menusResponse.data) return [];
-        return mapMenuItem(menusResponse.data, '') ?? []
-    }, [menusResponse.data])
+    }
 
+    useEffect(() => {
+        loadMenus();
+    }, [])
 
     function closeTab(name: string) {
         const tab = tabs.find(f => f.name == name);
@@ -76,7 +79,7 @@ export function useWorkspace() {
         closeTab,
         openTab,
         menus,
-        loading: menusResponse.isLoading
+        loadMenus
     }
 }
 

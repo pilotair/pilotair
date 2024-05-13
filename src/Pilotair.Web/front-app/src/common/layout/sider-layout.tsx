@@ -48,7 +48,7 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
 
             <Layout>
                 <div className="flex flex-col h-full">
-                    <div className="h-12 bg-white shadow-sm flex flex-shrink-0 items-center px-4 relative">
+                    <div className="h-12 bg-white shadow-sm flex flex-shrink-0 items-center px-2 relative">
                         {collapsed && <MenuUnfoldOutlined onClick={() => setCollapsed(false)} className="hover:text-blue-400" />}
                         <div className="flex-1 flex">
                             {header}

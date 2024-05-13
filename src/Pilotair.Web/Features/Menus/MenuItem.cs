@@ -8,6 +8,7 @@ public class MenuItem
     public enum Types
     {
         Unknown,
+        Features,
         Files,
         Codes,
         Code,

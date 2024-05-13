@@ -1,9 +1,7 @@
-import { CodepenOutlined, ControlOutlined, FileOutlined, FolderOutlined, FormOutlined } from "@ant-design/icons"
+import { AppstoreOutlined, CodepenOutlined, ControlOutlined, FileOutlined, FolderOutlined, FormOutlined } from "@ant-design/icons"
 import { ReactNode } from "react";
-import MoreBtn from "../common/menu/more-btn";
-import { menu as codeFolderMenu } from "../code/folder-more-menu"
+import CodeFolderContextMenu from "../code/folder-context-menu"
 import OptionsFolderLabel from "../options/folder-label"
-import { Dropdown } from "antd";
 
 interface Feature {
     name: string;
@@ -14,6 +12,12 @@ interface Feature {
 
 const features: Feature[] = [
     {
+        name: 'Features',
+        label: "Features",
+        icon: <AppstoreOutlined />,
+        tab: () => import("../feature/page")
+    },
+    {
         name: 'Files',
         label: "Files",
         icon: <FolderOutlined />,
@@ -21,12 +25,12 @@ const features: Feature[] = [
     },
     {
         name: 'Codes',
-        label: <Dropdown trigger={["contextMenu"]} menu={codeFolderMenu}><div>Codes</div></Dropdown>,
-        icon: <CodepenOutlined />,
+        label: <CodeFolderContextMenu>Codes</CodeFolderContextMenu>,
+        icon: <CodepenOutlined /> ,
     },
     {
         name: 'CodeFolder',
-        label: (value) => <Dropdown trigger={["contextMenu"]} menu={codeFolderMenu}><div>{value}</div></Dropdown>,
+        label: (value) => <CodeFolderContextMenu>{value}</CodeFolderContextMenu>,
     },
     {
         name: 'Code',
@@ -37,7 +41,7 @@ const features: Feature[] = [
     {
         name: 'Contents',
         icon: <FormOutlined />,
-        label: <MoreBtn label="Contents" menu={codeFolderMenu} />,
+        label: <div>Contents</div>,
     },
     {
         name: 'Options',

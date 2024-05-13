@@ -23,6 +23,12 @@ export function GET(){{
         await codeService.Store.SaveFileAsync(folder, content, model.Name);
     }
 
+    [HttpPost("folder")]
+    public void Post(string path)
+    {
+        codeService.Store.CreateFolder(path);
+    }
+
     [HttpPut]
     public async Task PutAsync([FromBody] UpdateCodeModel model)
     {

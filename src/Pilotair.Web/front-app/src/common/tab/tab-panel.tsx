@@ -1,8 +1,8 @@
 import { Modal, ModalFuncProps, ModalProps } from "antd";
-import { ReactNode, createContext, createRef} from "react";
+import { ReactNode, createContext, createRef } from "react";
 import Loading from "../loading";
-import { useTabModal } from "./use-tab-modal";
 import { useTabLoading } from "./use-tab-loading";
+import { useModal } from "../use-modal";
 
 interface TabContextValue {
     modalContainer: HTMLDivElement | null,
@@ -23,7 +23,13 @@ interface TabPanelProps {
 
 export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     const modalContainer = createRef<HTMLDivElement>()
-    const { modals, openModal } = useTabModal();
+    const { modals, openModal } = useModal({
+        wrapClassName: "!absolute",
+        styles: {
+            mask: { position: "absolute" }
+        },
+        getContainer: false
+    });
     const { isLoading, loading, showLoading } = useTabLoading()
 
     function openConfirm(props: ModalFuncProps) {

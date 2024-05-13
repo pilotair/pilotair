@@ -27,7 +27,7 @@ export default function CreateFolderBtn() {
 
     function onCreateFolder() {
         closeModal = openModal({
-            title: "Create folder",
+            title: "New Folder",
             children: <>
                 <Form form={form} onFinish={onFinish} preserve={false}>
                     <Form.Item
