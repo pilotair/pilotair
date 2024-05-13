@@ -1,4 +1,5 @@
 import { MenuProps } from "antd";
+import { PlusOutlined } from "@ant-design/icons"
 
 function onItemClick({ key }: { key: string }) {
     switch (key) {
@@ -13,7 +14,9 @@ function onItemClick({ key }: { key: string }) {
 export const menu: MenuProps = {
     items: [{
         key: "file",
-        label: "Add file"
+        label: <div>Add file</div>,
+        icon: <PlusOutlined />,
+        title: ""
     }, {
         key: "folder",
         label: "Add folder"

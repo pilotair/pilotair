@@ -86,13 +86,11 @@ function mapMenuItem(items: Pilotair.Web.MenuItem[], currentPath: string) {
     for (const item of items) {
         const feature = getFeature(item.type);
         let label: ReactNode = item.name;
-        if (feature) {
-            if (feature.label) {
-                if (typeof feature.label === "function") {
-                    label = feature.label(item.name)
-                } else {
-                    label = feature.label
-                }
+        if (feature?.label) {
+            if (typeof feature.label === "function") {
+                label = feature.label(item.name)
+            } else {
+                label = feature.label
             }
         }
 

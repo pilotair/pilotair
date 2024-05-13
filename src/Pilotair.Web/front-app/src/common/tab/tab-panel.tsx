@@ -1,12 +1,14 @@
 import { Modal, ModalFuncProps, ModalProps } from "antd";
-import { ReactNode, createContext, createRef, forwardRef, useImperativeHandle,  useRef, useState } from "react";
+import { ReactNode, createContext, createRef} from "react";
 import Loading from "../loading";
+import { useTabModal } from "./use-tab-modal";
+import { useTabLoading } from "./use-tab-loading";
 
 interface TabContextValue {
     modalContainer: HTMLDivElement | null,
     openModal: (props: ModalProps) => () => void;
     openConfirm: (props: ModalFuncProps) => Promise<void>;
-    loading: (action: () => Promise<void>) => Promise<void>;
+    loading: (action: () => Promise<void>) => void;
     showLoading: (show: boolean) => void;
     name: string
 }
@@ -19,52 +21,10 @@ interface TabPanelProps {
     isActive: boolean
 }
 
-interface ModalHandle {
-    close: () => void
-}
-
 export default function TabPanel({ children, name, isActive }: TabPanelProps) {
-    const [modals, setModals] = useState<ReactNode[]>([]);
-    const loadingStack = useRef(0)
     const modalContainer = createRef<HTMLDivElement>()
-    const [isLoading, setIsLoading] = useState(false)
-
-    function openModal(props: ModalProps) {
-        const TabModal = forwardRef<ModalHandle>((_, ref) => {
-            const [open, setOpen] = useState(true);
-
-            useImperativeHandle(ref, () => ({
-                close() {
-                    setOpen(false);
-                }
-            }))
-
-            function onCancel(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-                setOpen(false);
-                props.onCancel?.(e)
-            }
-
-            return <Modal
-                wrapClassName="!absolute"
-                styles={{
-                    mask: { position: "absolute" }
-                }}
-                getContainer={false}
-                open={open}
-                {...props}
-                onCancel={onCancel}
-                maskClosable={false}
-                destroyOnClose={true}
-                afterClose={() => {
-                    setModals(modals.filter(f => f != modal))
-                }} />
-        })
-        const ref = createRef<ModalHandle>()
-        const modal = <TabModal key={new Date().getTime()} ref={ref} />
-        setModals([...modals, modal]);
-
-        return () => ref.current?.close();
-    }
+    const { modals, openModal } = useTabModal();
+    const { isLoading, loading, showLoading } = useTabLoading()
 
     function openConfirm(props: ModalFuncProps) {
         return new Promise<void>((rs, rj) => {
@@ -85,26 +45,6 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
                 }
             })
         })
-    }
-
-    async function loading(action: () => Promise<void>) {
-        showLoading(true);
-        try {
-            await action()
-        } finally {
-            showLoading(false);
-        }
-    }
-
-    function showLoading(show: boolean = true) {
-        if (show) {
-            loadingStack.current++;
-            setIsLoading(true)
-        } else {
-            loadingStack.current--;
-            if (loadingStack.current < 0) loadingStack.current = 0;
-            if(loadingStack.current==0) setIsLoading(false)
-        }
     }
 
     return (

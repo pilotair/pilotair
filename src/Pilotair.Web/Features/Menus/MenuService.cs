@@ -8,11 +8,6 @@ public class MenuService(CodeService codeService)
     {
         var items = new List<MenuItem> {
             new() {
-                Order = 1,
-                Name="features",
-                Type=MenuItem.Types.Features
-            },
-            new() {
                 Order = 2,
                 Name="files",
                 Type=MenuItem.Types.Files
