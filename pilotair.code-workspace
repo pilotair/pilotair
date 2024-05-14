@@ -13,7 +13,7 @@
 			"path": "src"
 		},
 		{
-			"name": "core test",
+			"name": "test",
 			"path": "tests/Pilotair.CoreTest"
 		},
 		{

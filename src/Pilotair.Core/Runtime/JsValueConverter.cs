@@ -38,6 +38,11 @@ public class JsValueConverter(Engine engine) : JsonConverter<JsValue>
                 var jsObject = new JsObject(engine);
                 while (reader.Read())
                 {
+                    if (reader.TokenType == JsonTokenType.EndObject)
+                    {
+                        return jsObject;
+                    }
+
                     if (reader.TokenType != JsonTokenType.PropertyName)
                     {
                         throw new JsonException();
@@ -45,13 +50,11 @@ public class JsValueConverter(Engine engine) : JsonConverter<JsValue>
 
                     var propertyName = reader.GetString() ?? throw new JsonException();
 
-                    if (reader.TokenType == JsonTokenType.EndObject)
+                    if (reader.Read())
                     {
-                        return jsObject;
+                        var item = Read(ref reader, typeToConvert, options);
+                        jsObject.Set(propertyName, item ?? JsValue.Undefined);
                     }
-
-                    var item = Read(ref reader, typeToConvert, options);
-                    jsObject.Set(propertyName, item ?? JsValue.Undefined);
                 }
                 return default;
             default:

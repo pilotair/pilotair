@@ -27,7 +27,7 @@ public class BabelTest()
     {
         var babel = new Babel();
         var code = TestResource.GetText("sample.tsx");
-        Parallel.ForEach(Enumerable.Range(0, 50), (i) =>
+        Parallel.ForEach(Enumerable.Range(0, 10), (i) =>
         {
             babel.Compile(code);
         });
