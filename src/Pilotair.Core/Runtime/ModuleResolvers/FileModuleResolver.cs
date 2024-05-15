@@ -16,6 +16,15 @@ public class FileModuleResolver(EngineOptions codeOptions) : IModuleResolver
     {
         var javaScriptParser = new JavaScriptParser();
         var code = File.ReadAllText(resolved.Uri.AbsolutePath);
+        
+        if (Path.GetExtension(resolved.Uri.AbsolutePath) == ".ts")
+        {
+            code = Esbuild.Bundler.TransformAsync(code, new Esbuild.TransformOptions
+            {
+                Loader = Esbuild.Loader.Ts
+            }).Result;
+        }
+
         var module = javaScriptParser.ParseModule(code, resolved.Uri.AbsolutePath);
         return ModuleFactory.BuildSourceTextModule(engine, module);
     }

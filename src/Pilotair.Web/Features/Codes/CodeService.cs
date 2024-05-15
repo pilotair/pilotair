@@ -50,7 +50,7 @@ public class CodeService
 
     public IEnumerable<Core.Stores.Files.File> GetRoutes()
     {
-        var paths = Directory.GetFiles(store.Root, "route.js", SearchOption.AllDirectories);
+        var paths = Directory.GetFiles(store.Root, "route.ts", SearchOption.AllDirectories);
         var files = new List<Core.Stores.Files.File>();
 
         foreach (var item in paths)
