@@ -5,7 +5,8 @@
 - [x] code generation
 - [x] sqlite jsonb
 - [x] FileStore
-- [ ] ContextMenu
+- [x] ContextMenu
+- [ ] esbuild sync api 
 - [ ] JsonStore
 - [ ] user system
 - [ ] typescript support

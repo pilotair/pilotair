@@ -36,13 +36,17 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
     return (
         <Layout className="absolute inset-0 min-h-[800px] min-w-[1280px]">
             <Resizable className={resizing ? "!transition-none" : ""} width={resizableWidth} onResize={onResize} axis="x" handle={<div className="absolute w-1 top-0 bottom-0 right-[-2px] cursor-ew-resize hover:bg-sky-500 z-50" />} onResizeStart={onResizeStart} onResizeStop={onResizeStop}>
-                <Sider collapsible theme="dark" trigger={null} collapsed={collapsed} width={siderWidth < 200 ? 200 : siderWidth > 480 ? 480 : siderWidth}>
-                    <div className={(collapsed ? "px-5" : "px-3") + " h-12 flex flex-shrink-0 items-center shadow-md relative bg-slate-800 transition-all duration-300"}>
-                        <img className="w-10 h-10 cursor-default" src={LogoIcon} alt="pilotair" />
-                        <div className="flex-1"></div>
-                        <MenuFoldOutlined onClick={() => setCollapsed(true)} className={"transition-all duration-300 text-white hover:text-blue-400 " + (collapsed ? "opacity-0 pointer-events-none" : "opacity-100")} />
+                <Sider collapsible theme="dark" trigger={null} collapsed={collapsed} width={siderWidth < 200 ? 200 : siderWidth > 480 ? 480 : siderWidth} >
+                    <div className="flex flex-col h-full">
+                        <div className={(collapsed ? "px-5" : "px-3") + " h-12 flex flex-shrink-0 items-center shadow-md relative bg-slate-800 transition-all duration-300"}>
+                            <img className="w-10 h-10 cursor-default" src={LogoIcon} alt="pilotair" />
+                            <div className="flex-1"></div>
+                            <MenuFoldOutlined onClick={() => setCollapsed(true)} className={"transition-all duration-300 text-white hover:text-blue-400 " + (collapsed ? "opacity-0 pointer-events-none" : "opacity-100")} />
+                        </div>
+                        <div className="flex-1 overflow-y-hidden">
+                            {sider}
+                        </div>
                     </div>
-                    {sider}
                 </Sider>
             </Resizable>
 

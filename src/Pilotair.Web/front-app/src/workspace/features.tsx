@@ -10,7 +10,7 @@ interface Feature {
     tab?: () => Promise<{ default: React.ComponentType<unknown>; }>
 }
 
-const features: Feature[] = [
+export const features: Feature[] = [
     {
         name: 'Features',
         label: "Features",
