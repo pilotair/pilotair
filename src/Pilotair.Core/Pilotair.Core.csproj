@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
-    <PackageReference Include="Esbuild" Version="0.0.1" />
+    <PackageReference Include="Esbuild" Version="0.0.4" />
     <PackageReference Include="Esbuild.Native.linux-x64" Version="0.21.2" />
     <PackageReference Include="Esbuild.Native.osx-arm64" Version="0.21.2" />
     <PackageReference Include="Jint" Version="3.0.1" />

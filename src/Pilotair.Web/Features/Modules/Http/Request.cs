@@ -7,6 +7,7 @@ using Pilotair.Core.Runtime;
 
 namespace Pilotair.Web.Modules.Http;
 
+[Scoped]
 public class Request
 {
     private readonly HttpContext httpContext;

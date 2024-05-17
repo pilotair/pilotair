@@ -17,12 +17,12 @@ public class FileModuleResolver(EngineOptions codeOptions) : IModuleResolver
         var javaScriptParser = new JavaScriptParser();
         var code = File.ReadAllText(resolved.Uri.AbsolutePath);
         
-        if (Path.GetExtension(resolved.Uri.AbsolutePath) == ".ts")
+        if (Path.GetExtension(resolved.Uri.AbsolutePath) == ".tsx")
         {
-            code = Esbuild.Bundler.TransformAsync(code, new Esbuild.TransformOptions
+            code = Esbuild.Bundler.Transform(code, new Esbuild.TransformOptions
             {
-                Loader = Esbuild.Loader.Ts
-            }).Result;
+                Loader = Esbuild.Loader.Tsx
+            });
         }
 
         var module = javaScriptParser.ParseModule(code, resolved.Uri.AbsolutePath);

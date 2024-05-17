@@ -2,6 +2,7 @@ using Pilotair.Web.Codes;
 
 namespace Pilotair.Web;
 
+[Scoped]
 public class MenuService(CodeService codeService)
 {
     public IEnumerable<MenuItem> GetMainMenu()

@@ -14,13 +14,16 @@ public static class PilotairExtensions
     {
         var dataSource = app.Services.GetRequiredService<CodeEndpointDataSource>();
         var codeService = app.Services.GetRequiredService<CodeService>();
-        var codes = codeService.GetRoutes();
+        var routeHandlers = app.Services.GetRequiredService<IEnumerable<IRouteHandler>>();
+        var routeHandlerMap = routeHandlers.ToDictionary(r => r.Name, r => r);
+        var routes = codeService.GetRoutes();
 
-        foreach (var code in codes)
+        foreach (var route in routes)
         {
-            var pattern = "/" + Path.GetDirectoryName(code.RelationPath);
-            var context = new RouteContext(code);
-            dataSource.AddEndpoint(code.RelationPath, pattern, context.HandleAsync);
+            var relationPath = route.File.RelationPath;
+            var pattern = "/" + Path.GetDirectoryName(relationPath);
+            var context = new RouteContext(route);
+            dataSource.AddEndpoint(relationPath, pattern, context.HandleAsync);
         }
 
         dataSource.Reload();
@@ -32,6 +35,4 @@ public static class PilotairExtensions
 
         return app;
     }
-
-
 }

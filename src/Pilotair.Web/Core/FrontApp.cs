@@ -7,6 +7,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Pilotair.Web;
 
+[Singleton]
 public class FrontApp(ISwaggerProvider swaggerProvider)
 {
 	public void GenerateApiSchema()

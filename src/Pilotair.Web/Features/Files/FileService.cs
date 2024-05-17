@@ -3,6 +3,7 @@ using Pilotair.Core.Stores.Files;
 
 namespace Pilotair.Web.Files;
 
+[Singleton]
 public class FileService
 {
     private readonly string basePath;

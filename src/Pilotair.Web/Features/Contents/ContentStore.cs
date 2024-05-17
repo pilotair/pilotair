@@ -3,6 +3,7 @@ using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.Web;
 
+[Singleton]
 public class ContentStore : NoSqliteStore
 {
     public ContentStore(IOptions<PilotairOptions> options)

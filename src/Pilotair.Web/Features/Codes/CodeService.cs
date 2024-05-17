@@ -3,14 +3,17 @@ using Pilotair.Core.Stores.Files;
 
 namespace Pilotair.Web.Codes;
 
+[Singleton]
 public class CodeService
 {
     private readonly FileStore store;
+    private readonly IEnumerable<IRouteHandler> routeHandlers;
 
     public FileStore Store => store;
-    
-    public CodeService(IOptions<PilotairOptions> options)
+
+    public CodeService(IOptions<PilotairOptions> options, IEnumerable<IRouteHandler> routeHandlers)
     {
+        this.routeHandlers = routeHandlers;
         var root = Path.Combine(options.Value.DataPath, Constants.CODES_FOLDER);
         store = new FileStore(root);
     }
@@ -48,17 +51,21 @@ public class CodeService
         return items;
     }
 
-    public IEnumerable<Core.Stores.Files.File> GetRoutes()
+    public record Route(Core.Stores.Files.File File, IRouteHandler Handler);
+    public IEnumerable<Route> GetRoutes()
     {
-        var paths = Directory.GetFiles(store.Root, "route.ts", SearchOption.AllDirectories);
-        var files = new List<Core.Stores.Files.File>();
+        var result = new List<Route>();
 
-        foreach (var item in paths)
+        foreach (var handler in routeHandlers)
         {
-            var file = store.GetFile(item);
-            files.Add(file);
+            var paths = Directory.GetFiles(store.Root, $"{handler.Name}.tsx", SearchOption.AllDirectories);
+            foreach (var path in paths)
+            {
+                var file = store.GetFile(path);
+                result.Add(new Route(file, handler));
+            }
         }
 
-        return files;
+        return result;
     }
 }

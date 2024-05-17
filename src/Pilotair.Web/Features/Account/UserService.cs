@@ -3,6 +3,7 @@ using Pilotair.Web.ViewModels;
 
 namespace Pilotair.Web.Account;
 
+[Singleton]
 public class UserService(PilotairStore store)
 {
     internal async Task AddAsync(User user)

@@ -1,26 +1,18 @@
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using Pilotair.Core.Runtime;
-using Pilotair.Web.Account;
 using Pilotair.Web.Codes;
 using Pilotair.Web.Files;
-using Pilotair.Web.Modules.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<MenuService>();
-builder.Services.AddSingleton<FileService>();
-builder.Services.AddSingleton<CodeService>();
-builder.Services.AddSingleton<FrontApp>();
 builder.Services.AddOptions<PilotairOptions>().Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
-builder.Services.AddScoped<Request>();
-builder.Services.AddScoped<IModule, HttpModule>();
-builder.Services.AddScoped<EngineAccessor>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddFromAssemblies(Assembly.GetExecutingAssembly());
 
 string GetName(Type schema)
 {
@@ -51,9 +43,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 builder.Services.AddCodesRouting();
-builder.Services.AddSingleton<PilotairStore>();
-builder.Services.AddSingleton<ContentStore>();
-builder.Services.AddSingleton<UserService>();
 
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
 {

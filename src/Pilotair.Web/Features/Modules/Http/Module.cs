@@ -2,6 +2,7 @@ using Pilotair.Core.Runtime;
 
 namespace Pilotair.Web.Modules.Http;
 
+[Scoped(typeof(IModule))]
 public class HttpModule : IModule
 {
     private readonly Dictionary<string, object> exports = [];

@@ -4,6 +4,7 @@ using Pilotair.Core.Helpers;
 
 namespace Pilotair.Web.Contents;
 
+[Singleton]
 public class ContentService
 {
     private readonly string basePath;

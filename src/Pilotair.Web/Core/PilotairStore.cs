@@ -4,6 +4,7 @@ using Pilotair.Web.Account;
 
 namespace Pilotair.Web;
 
+[Singleton]
 public class PilotairStore : NoSqliteStore
 {
     public PilotairStore(IOptions<PilotairOptions> options)
