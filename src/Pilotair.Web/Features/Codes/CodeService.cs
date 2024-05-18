@@ -51,7 +51,6 @@ public class CodeService
         return items;
     }
 
-    public record Route(Core.Stores.Files.File File, IRouteHandler Handler);
     public IEnumerable<Route> GetRoutes()
     {
         var result = new List<Route>();

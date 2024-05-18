@@ -18,7 +18,7 @@ public class ContentService
 
         foreach (var file in files)
         {
-            var content = File.ReadAllText(file);
+            var content = System.IO.File.ReadAllText(file);
             var collection = JsonHelper.Deserialize<ContentCollection>(content);
             if (collection is not null)
             {

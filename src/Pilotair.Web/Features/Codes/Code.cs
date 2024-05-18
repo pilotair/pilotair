@@ -1,5 +1,3 @@
-using File = Pilotair.Core.Stores.Files.File;
-
 namespace Pilotair.Web.Codes;
 
 public class Code(File file, string content, string root)

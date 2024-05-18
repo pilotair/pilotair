@@ -1,22 +1,21 @@
 using Jint;
-using Jint.Native;
 using Pilotair.Core.Helpers;
 using Pilotair.Web.Modules.Http;
 
 namespace Pilotair.Web.Codes.RouteHandlers;
 
 [Singleton(typeof(IRouteHandler))]
-public class PageHandler(IHttpContextAccessor httpContextAccessor) : IRouteHandler
+public class PageHandler() : IRouteHandler
 {
     public string Name => "page";
 
     public int Order => 100;
 
-    public async Task HandleAsync(JsValue jsValue)
+    public async Task HandleAsync(HttpContext context, File file)
     {
-        var context = httpContextAccessor.HttpContext;
         if (context == default) return;
-        var function = jsValue.Get("default");
+        var module = await context.GetEngine().ExecuteAsync("./" + file.RelationPath);
+        var function = module.Get("default");
         var result = function.Call().UnwrapIfPromise();
         string? body;
 

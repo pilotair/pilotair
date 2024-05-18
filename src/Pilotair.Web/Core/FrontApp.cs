@@ -17,6 +17,6 @@ public class FrontApp(ISwaggerProvider swaggerProvider)
 		var schemas = openApiAdapter.Mapping();
 		var typescriptConverter = new TypescriptConverter(schemas);
 		var result = typescriptConverter.Convert();
-		File.WriteAllText("./front-app/src/schema.d.ts", result);
+		System.IO.File.WriteAllText("./front-app/src/schema.d.ts", result);
 	}
 }

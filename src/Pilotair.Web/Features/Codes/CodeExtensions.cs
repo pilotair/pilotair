@@ -20,10 +20,12 @@ public static class PilotairExtensions
 
         foreach (var route in routes)
         {
-            var relationPath = route.File.RelationPath;
-            var pattern = "/" + Path.GetDirectoryName(relationPath);
-            var context = new RouteContext(route);
-            dataSource.AddEndpoint(relationPath, pattern, context.HandleAsync);
+            dataSource.AddEndpoint(
+                route.Name,
+                 route.Pattern,
+                 route.RequestDelegate,
+                 route.Order
+            );
         }
 
         dataSource.Reload();
