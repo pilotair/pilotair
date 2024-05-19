@@ -4,3 +4,8 @@ public class ModuleNotFoundException : Exception
 {
 
 }
+
+public class ModulePathOutOfRangeException : Exception
+{
+
+}

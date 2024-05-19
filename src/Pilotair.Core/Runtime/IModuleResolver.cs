@@ -5,7 +5,7 @@ namespace Pilotair.Core.Runtime;
 public interface IModuleResolver
 {
     string Scheme { get; }
-    bool IsMatch(string referencingModuleLocation);
+    bool IsMatch(string specifier);
 
     ResolvedSpecifier Resolved(string? referencingModuleLocation, ModuleRequest moduleRequest);
 
