@@ -1,5 +1,6 @@
 using Esprima;
 using Jint.Runtime.Modules;
+using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Runtime.ModuleResolvers;
 
@@ -18,11 +19,6 @@ public class FileModuleResolver : IModuleResolver
 
     public string Scheme => Uri.UriSchemeFile;
 
-    public bool IsMatch(string specifier)
-    {
-        return specifier.StartsWith("./") || specifier.StartsWith("../");
-    }
-
     public Module Load(Jint.Engine engine, ResolvedSpecifier resolved)
     {
         if (resolved.Uri == default) throw new ModuleNotFoundException();
@@ -33,22 +29,44 @@ public class FileModuleResolver : IModuleResolver
         {
             code = Esbuild.Bundler.Transform(code, new Esbuild.TransformOptions
             {
-                Loader = Esbuild.Loader.Tsx
+                Loader = Esbuild.Loader.Tsx,
+                JsxImportSource = "https://esm.sh/preact@10.22.0",
+                Jsx = Esbuild.Jsx.Automatic
             });
         }
 
-        var module = javaScriptParser.ParseModule(code, resolved.Uri.AbsolutePath);
+        var module = javaScriptParser.ParseModule(code, resolved.Uri.ToString());
         return ModuleFactory.BuildSourceTextModule(engine, module);
     }
 
-    public ResolvedSpecifier Resolved(string? referencingModuleLocation, ModuleRequest moduleRequest)
+    public ResolvedSpecifier? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
     {
-        var basePath = referencingModuleLocation == default ? rootPath : Path.GetDirectoryName(referencingModuleLocation)!;
+        if (!PathHelper.IsRelative(moduleRequest.Specifier))
+        {
+            return null;
+        }
+
+        var basePath = rootPath;
+
+        if (referencingModuleLocation != default)
+        {
+            if (referencingModuleLocation.StartsWith("file://", true, default))
+            {
+                basePath = Path.GetDirectoryName(referencingModuleLocation)!;
+            }
+            else
+            {
+                return default;
+            }
+        }
+
         var path = Path.GetFullPath(moduleRequest.Specifier, basePath);
+
         if (!path.StartsWith(rootPath))
         {
             throw new ModulePathOutOfRangeException();
         }
+
         var uri = new Uri($"{Scheme}://{path}");
         return new ResolvedSpecifier(moduleRequest, uri.ToString(), uri, SpecifierType.RelativeOrAbsolute);
     }

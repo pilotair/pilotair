@@ -14,20 +14,13 @@ public class PageHandler() : IRouteHandler
     public async Task HandleAsync(HttpContext context, File file)
     {
         if (context == default) return;
-        var module = await context.GetEngine().ExecuteAsync("./" + file.RelationPath);
+        var engine = context.GetEngine();
+        var module = await engine.ExecuteAsync("./" + file.RelationPath);
         var function = module.Get("default");
         var result = function.Call().UnwrapIfPromise();
-        string? body;
-
-        if (result.IsObject() && result.ToObject() is JsonResponse response)
-        {
-            body = JsonHelper.Serialize(response.Body);
-        }
-        else
-        {
-            body = result.ToString();
-        }
-
+        module = await engine.ExecuteAsync("https://esm.sh/preact-render-to-string@6.4.2");
+        var render = module.Get("render");
+        var body = render.Call(result).AsString();
         await context.Response.WriteAsync(body);
     }
 }

@@ -1,16 +1,12 @@
 using Esprima;
 using Jint.Runtime.Modules;
+using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Runtime.ModuleResolvers;
 
 public class HttpModuleResolver(HttpClient httpClient) : IModuleResolver
 {
     public virtual string Scheme => Uri.UriSchemeHttp;
-
-    public bool IsMatch(string specifier)
-    {
-        return specifier.StartsWith($"{Scheme}://", true, null);
-    }
 
     public Module Load(Jint.Engine engine, ResolvedSpecifier resolved)
     {
@@ -29,14 +25,35 @@ public class HttpModuleResolver(HttpClient httpClient) : IModuleResolver
             });
         }
 
-        var module = javaScriptParser.ParseModule(code, resolved.Uri.AbsolutePath);
+        var module = javaScriptParser.ParseModule(code, resolved.Uri.ToString());
         return ModuleFactory.BuildSourceTextModule(engine, module);
     }
 
-    public ResolvedSpecifier Resolved(string? referencingModuleLocation, ModuleRequest moduleRequest)
+    public ResolvedSpecifier? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
     {
-        var uri = new Uri(moduleRequest.Specifier);
+        Uri? uri;
+        if (IsUrl(moduleRequest.Specifier))
+        {
+            uri = new Uri(moduleRequest.Specifier);
+        }
+        else if (IsUrl(referencingModuleLocation) && PathHelper.IsRelativeOrAbsolute(moduleRequest.Specifier))
+        {
+            var uriBuilder = new UriBuilder(referencingModuleLocation!);
+            uriBuilder.Path = Path.GetFullPath(moduleRequest.Specifier, uriBuilder.Path);
+            uri = uriBuilder.Uri;
+        }
+        else
+        {
+            return default;
+        }
+       
         return new ResolvedSpecifier(moduleRequest, uri.ToString(), uri, SpecifierType.RelativeOrAbsolute);
+    }
+
+    private static bool IsUrl(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        return value.StartsWith("http://", true, default) || value.StartsWith("https://", true, default);
     }
 }
 

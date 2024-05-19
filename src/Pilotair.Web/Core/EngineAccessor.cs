@@ -1,10 +1,11 @@
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Runtime;
+using Pilotair.Core.Runtime.ModuleResolvers;
 
 namespace Pilotair.Web;
 
 [Singleton]
-public class EngineAccessor(IHttpContextAccessor contextAccessor, IOptions<PilotairOptions> options)
+public class EngineAccessor(IHttpContextAccessor contextAccessor, IOptions<PilotairOptions> options, IHttpClientFactory httpClientFactory)
 {
     public JsEngine RequestEngine => GetRequestEngine();
     private readonly string engineName = "request_engine";
@@ -41,7 +42,8 @@ public class EngineAccessor(IHttpContextAccessor contextAccessor, IOptions<Pilot
     {
         var engine = new JsEngine(new EngineOptions
         {
-            RootPath = Path.Combine(options.Value.DataPath, Constants.CODES_FOLDER)
+            RootPath = Path.Combine(options.Value.DataPath, Constants.CODES_FOLDER),
+            ModuleResolvers = [new HttpsModuleResolver(httpClientFactory.CreateClient())]
         });
         return engine;
     }

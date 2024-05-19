@@ -23,11 +23,8 @@ public class ModuleLoader(IEnumerable<IModuleResolver> moduleResolvers) : IModul
     {
         foreach (var moduleResolver in moduleResolvers)
         {
-            var isMatch = moduleResolver.IsMatch(moduleRequest.Specifier);
-            if (isMatch)
-            {
-                return moduleResolver.Resolved(referencingModuleLocation, moduleRequest);
-            }
+            var resolvedSpecifier = moduleResolver.TryResolve(referencingModuleLocation, moduleRequest);
+            if (resolvedSpecifier != default) return resolvedSpecifier;
         }
 
         return new ResolvedSpecifier(moduleRequest, moduleRequest.Specifier, null, SpecifierType.Bare);
