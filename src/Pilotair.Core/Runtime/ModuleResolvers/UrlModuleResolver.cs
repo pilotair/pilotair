@@ -4,21 +4,26 @@ using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Runtime.ModuleResolvers;
 
-public class HttpModuleResolver(HttpClient httpClient) : IModuleResolver
+public class HttpModuleResolver(HttpClient httpClient, IUrlModuleCacheStore? store = null) : IModuleResolver
 {
     public virtual string Scheme => Uri.UriSchemeHttp;
 
-    public string Load(Jint.Engine engine, ResolvedSpecifier resolved)
+    public string Load(Jint.Engine engine, Uri uri)
     {
-        if (resolved.Uri == default) throw new ModuleNotFoundException();
-        var response = httpClient.Send(new HttpRequestMessage(HttpMethod.Get, resolved.Uri));
+        if (store?.TryGetCode(uri, out string code) ?? false)
+        {
+            return code;
+        }
+
+        var response = httpClient.Send(new HttpRequestMessage(HttpMethod.Get, uri));
         using var stream = response.Content.ReadAsStream();
         using var reader = new StreamReader(stream);
-        var code = reader.ReadToEnd();
+        code = reader.ReadToEnd();
+        store?.AddCode(uri, code);
         return code;
     }
 
-    public ResolvedSpecifier? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
+    public ModuleResolved? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
     {
         Uri? uri;
         if (IsUrl(moduleRequest.Specifier))
@@ -36,7 +41,7 @@ public class HttpModuleResolver(HttpClient httpClient) : IModuleResolver
             return default;
         }
 
-        return new ResolvedSpecifier(moduleRequest, uri.ToString(), uri, SpecifierType.RelativeOrAbsolute);
+        return new ModuleResolved(uri, SpecifierType.RelativeOrAbsolute);
     }
 
     private static bool IsUrl(string? value)
@@ -46,7 +51,13 @@ public class HttpModuleResolver(HttpClient httpClient) : IModuleResolver
     }
 }
 
-public class HttpsModuleResolver(HttpClient httpClient) : HttpModuleResolver(httpClient)
+public class HttpsModuleResolver(HttpClient httpClient, IUrlModuleCacheStore? store = null) : HttpModuleResolver(httpClient, store)
 {
     public override string Scheme => Uri.UriSchemeHttps;
+}
+
+public interface IUrlModuleCacheStore
+{
+    bool TryGetCode(Uri uri, out string code);
+    void AddCode(Uri uri, string code);
 }

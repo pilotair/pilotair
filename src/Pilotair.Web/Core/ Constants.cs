@@ -7,4 +7,5 @@ public class Constants
     public const string FILES_FOLDER = "files";
     public const string CONTENTS_FOLDER = "contents";
     public const string STORES_FOLDER = "stores";
+    public const string URL_MODULES_CACHE = "url-modules-cache";
 }

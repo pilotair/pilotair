@@ -1,4 +1,3 @@
-using Esprima;
 using Jint.Runtime.Modules;
 using Pilotair.Core.Helpers;
 
@@ -19,14 +18,13 @@ public class FileModuleResolver : IModuleResolver
 
     public string Scheme => Uri.UriSchemeFile;
 
-    public string Load(Jint.Engine engine, ResolvedSpecifier resolved)
+    public string Load(Jint.Engine engine, Uri uri)
     {
-        if (resolved.Uri == default) throw new ModuleNotFoundException();
-        var code = File.ReadAllText(resolved.Uri.AbsolutePath);
+        var code = File.ReadAllText(uri.AbsolutePath);
         return code;
     }
 
-    public ResolvedSpecifier? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
+    public ModuleResolved? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
     {
         if (!PathHelper.IsRelative(moduleRequest.Specifier))
         {
@@ -37,9 +35,9 @@ public class FileModuleResolver : IModuleResolver
 
         if (referencingModuleLocation != default)
         {
-            if (referencingModuleLocation.StartsWith("file://", true, default))
+            if (referencingModuleLocation.StartsWith(Scheme + "://", true, default))
             {
-                basePath = Path.GetDirectoryName(referencingModuleLocation)!;
+                basePath = Path.GetDirectoryName(new Uri(referencingModuleLocation).AbsolutePath)!;
             }
             else
             {
@@ -54,7 +52,6 @@ public class FileModuleResolver : IModuleResolver
             throw new ModulePathOutOfRangeException();
         }
 
-        var uri = new Uri($"{Scheme}://{path}");
-        return new ResolvedSpecifier(moduleRequest, uri.ToString(), uri, SpecifierType.RelativeOrAbsolute);
+        return new ModuleResolved(new Uri($"{Scheme}://{path}"), SpecifierType.RelativeOrAbsolute);
     }
 }

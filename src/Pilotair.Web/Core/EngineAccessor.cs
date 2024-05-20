@@ -5,7 +5,11 @@ using Pilotair.Core.Runtime.ModuleResolvers;
 namespace Pilotair.Web;
 
 [Singleton]
-public class EngineAccessor(IHttpContextAccessor contextAccessor, IOptions<PilotairOptions> options, IHttpClientFactory httpClientFactory)
+public class EngineAccessor(
+    IHttpContextAccessor contextAccessor,
+    IOptions<PilotairOptions> options,
+    IHttpClientFactory httpClientFactory,
+    IUrlModuleCacheStore moduleCacheStore)
 {
     public JsEngine RequestEngine => GetRequestEngine();
     private readonly string engineName = "request_engine";
@@ -43,7 +47,11 @@ public class EngineAccessor(IHttpContextAccessor contextAccessor, IOptions<Pilot
         var engine = new JsEngine(new EngineOptions
         {
             RootPath = Path.Combine(options.Value.DataPath, Constants.CODES_FOLDER),
-            ModuleResolvers = [new HttpsModuleResolver(httpClientFactory.CreateClient())]
+            ModuleResolvers = [
+                new HttpModuleResolver(httpClientFactory.CreateClient(), moduleCacheStore),
+                new HttpsModuleResolver(httpClientFactory.CreateClient(), moduleCacheStore)
+            ],
+            ModuleTransformers = [new TsxModuleTransformer()]
         });
         return engine;
     }

@@ -1,7 +1,6 @@
 using Jint;
 using Jint.Native;
 using Pilotair.Core.Runtime.ModuleResolvers;
-using Pilotair.Core.Runtime.ModuleTransformers;
 
 namespace Pilotair.Core.Runtime;
 
@@ -10,7 +9,6 @@ public class JsEngine(EngineOptions? options = null)
     private readonly Engine engine = new(o =>
     {
         var moduleResolvers = new List<IModuleResolver>();
-        List<IModuleTransformer> moduleTransformers = [new TsxModuleTransformer()];
 
         if (options?.RootPath != default)
         {
@@ -22,7 +20,11 @@ public class JsEngine(EngineOptions? options = null)
             moduleResolvers.AddRange(options.ModuleResolvers);
         }
 
-        o.Modules.ModuleLoader = new ModuleLoader(moduleResolvers, moduleTransformers);
+        o.Modules.ModuleLoader = new ModuleLoader
+        {
+            ModuleResolvers = moduleResolvers,
+            ModuleTransformers = options?.ModuleTransformers
+        };
     });
 
     public void AddModule(IModule module)
