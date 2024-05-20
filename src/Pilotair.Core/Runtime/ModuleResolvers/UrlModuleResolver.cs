@@ -8,25 +8,14 @@ public class HttpModuleResolver(HttpClient httpClient) : IModuleResolver
 {
     public virtual string Scheme => Uri.UriSchemeHttp;
 
-    public Module Load(Jint.Engine engine, ResolvedSpecifier resolved)
+    public string Load(Jint.Engine engine, ResolvedSpecifier resolved)
     {
         if (resolved.Uri == default) throw new ModuleNotFoundException();
         var response = httpClient.Send(new HttpRequestMessage(HttpMethod.Get, resolved.Uri));
         using var stream = response.Content.ReadAsStream();
         using var reader = new StreamReader(stream);
-        var javaScriptParser = new JavaScriptParser();
         var code = reader.ReadToEnd();
-
-        if (Path.GetExtension(resolved.Uri.AbsolutePath) == ".tsx")
-        {
-            code = Esbuild.Bundler.Transform(code, new Esbuild.TransformOptions
-            {
-                Loader = Esbuild.Loader.Tsx
-            });
-        }
-
-        var module = javaScriptParser.ParseModule(code, resolved.Uri.ToString());
-        return ModuleFactory.BuildSourceTextModule(engine, module);
+        return code;
     }
 
     public ResolvedSpecifier? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
@@ -46,7 +35,7 @@ public class HttpModuleResolver(HttpClient httpClient) : IModuleResolver
         {
             return default;
         }
-       
+
         return new ResolvedSpecifier(moduleRequest, uri.ToString(), uri, SpecifierType.RelativeOrAbsolute);
     }
 

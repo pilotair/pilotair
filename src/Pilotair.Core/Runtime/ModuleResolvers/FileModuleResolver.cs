@@ -19,24 +19,11 @@ public class FileModuleResolver : IModuleResolver
 
     public string Scheme => Uri.UriSchemeFile;
 
-    public Module Load(Jint.Engine engine, ResolvedSpecifier resolved)
+    public string Load(Jint.Engine engine, ResolvedSpecifier resolved)
     {
         if (resolved.Uri == default) throw new ModuleNotFoundException();
-        var javaScriptParser = new JavaScriptParser();
         var code = File.ReadAllText(resolved.Uri.AbsolutePath);
-
-        if (Path.GetExtension(resolved.Uri.AbsolutePath) == ".tsx")
-        {
-            code = Esbuild.Bundler.Transform(code, new Esbuild.TransformOptions
-            {
-                Loader = Esbuild.Loader.Tsx,
-                JsxImportSource = "https://esm.sh/preact@10.22.0",
-                Jsx = Esbuild.Jsx.Automatic
-            });
-        }
-
-        var module = javaScriptParser.ParseModule(code, resolved.Uri.ToString());
-        return ModuleFactory.BuildSourceTextModule(engine, module);
+        return code;
     }
 
     public ResolvedSpecifier? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)

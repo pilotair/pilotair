@@ -1,9 +1,10 @@
+using Esprima;
 using Jint;
 using Jint.Runtime.Modules;
 
 namespace Pilotair.Core.Runtime;
 
-public class ModuleLoader(IEnumerable<IModuleResolver> moduleResolvers) : IModuleLoader
+public class ModuleLoader(IEnumerable<IModuleResolver> moduleResolvers, IEnumerable<IModuleTransformer> moduleTransformers) : IModuleLoader
 {
     public Module LoadModule(Engine engine, ResolvedSpecifier resolved)
     {
@@ -12,7 +13,19 @@ public class ModuleLoader(IEnumerable<IModuleResolver> moduleResolvers) : IModul
             var isMatch = moduleResolver.Scheme == resolved.Uri?.Scheme;
             if (isMatch)
             {
-                return moduleResolver.Load(engine, resolved);
+                var code = moduleResolver.Load(engine, resolved);
+
+                foreach (var moduleTransformer in moduleTransformers)
+                {
+                    if (resolved.Uri != default && moduleTransformer.Match(resolved.Uri))
+                    {
+                        code = moduleTransformer.Transform(code);
+                    }
+                }
+
+                var javaScriptParser = new JavaScriptParser();
+                var module = javaScriptParser.ParseModule(code, resolved.Uri.ToString());
+                return ModuleFactory.BuildSourceTextModule(engine, module);
             }
         }
 
