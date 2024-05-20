@@ -1,4 +1,5 @@
 using Esprima;
+using Jint;
 using Jint.Runtime.Modules;
 using Pilotair.Core.Helpers;
 
@@ -8,7 +9,7 @@ public class HttpModuleResolver(HttpClient httpClient, IUrlModuleCacheStore? sto
 {
     public virtual string Scheme => Uri.UriSchemeHttp;
 
-    public string Load(Jint.Engine engine, Uri uri)
+    public string Load(Engine engine, Uri uri)
     {
         if (store?.TryGetCode(uri, out string code) ?? false)
         {
@@ -23,17 +24,17 @@ public class HttpModuleResolver(HttpClient httpClient, IUrlModuleCacheStore? sto
         return code;
     }
 
-    public ModuleResolved? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
+    public ModuleResolved? TryResolve(string? reference, string specifier, JsEngine engine)
     {
         Uri? uri;
-        if (IsUrl(moduleRequest.Specifier))
+        if (IsUrl(specifier))
         {
-            uri = new Uri(moduleRequest.Specifier);
+            uri = new Uri(specifier);
         }
-        else if (IsUrl(referencingModuleLocation) && PathHelper.IsRelativeOrAbsolute(moduleRequest.Specifier))
+        else if (IsUrl(reference) && PathHelper.IsRelativeOrAbsolute(specifier))
         {
-            var uriBuilder = new UriBuilder(referencingModuleLocation!);
-            uriBuilder.Path = Path.GetFullPath(moduleRequest.Specifier, uriBuilder.Path);
+            var uriBuilder = new UriBuilder(reference!);
+            uriBuilder.Path = Path.GetFullPath(specifier, uriBuilder.Path);
             uri = uriBuilder.Uri;
         }
         else

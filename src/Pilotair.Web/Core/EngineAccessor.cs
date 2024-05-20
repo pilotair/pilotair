@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Runtime;
 using Pilotair.Core.Runtime.ModuleResolvers;
+using Pilotair.Web.Modules;
 
 namespace Pilotair.Web;
 
@@ -9,7 +10,8 @@ public class EngineAccessor(
     IHttpContextAccessor contextAccessor,
     IOptions<PilotairOptions> options,
     IHttpClientFactory httpClientFactory,
-    IUrlModuleCacheStore moduleCacheStore)
+    IUrlModuleCacheStore moduleCacheStore,
+    BuiltInModuleResolver builtInModuleResolver)
 {
     public JsEngine RequestEngine => GetRequestEngine();
     private readonly string engineName = "request_engine";
@@ -30,13 +32,6 @@ public class EngineAccessor(
             }
 
             var result = CreateEngine();
-            var modules = contextAccessor.HttpContext.RequestServices.GetRequiredService<IEnumerable<IModule>>();
-
-            foreach (var module in modules)
-            {
-                result.AddModule(module);
-            }
-
             contextAccessor.HttpContext.Items.Add(engineName, result);
             return result;
         }
@@ -49,10 +44,12 @@ public class EngineAccessor(
             RootPath = Path.Combine(options.Value.DataPath, Constants.CODES_FOLDER),
             ModuleResolvers = [
                 new HttpModuleResolver(httpClientFactory.CreateClient(), moduleCacheStore),
-                new HttpsModuleResolver(httpClientFactory.CreateClient(), moduleCacheStore)
+                new HttpsModuleResolver(httpClientFactory.CreateClient(), moduleCacheStore),
+                builtInModuleResolver
             ],
             ModuleTransformers = [new TsxModuleTransformer()]
         });
+
         return engine;
     }
 }

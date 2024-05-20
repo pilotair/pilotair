@@ -1,46 +1,20 @@
 using Jint;
 using Jint.Native;
+using Jint.Runtime.Modules;
 using Pilotair.Core.Runtime.ModuleResolvers;
 
 namespace Pilotair.Core.Runtime;
 
-public class JsEngine(EngineOptions? options = null)
+public class JsEngine
 {
-    private readonly Engine engine = new(o =>
+    private readonly Engine engine;
+    private readonly EngineOptions? engineOptions;
+    private readonly HashSet<Uri> modules = [];
+
+    public JsEngine(EngineOptions? options = null)
     {
-        var moduleResolvers = new List<IModuleResolver>();
-
-        if (options?.RootPath != default)
-        {
-            moduleResolvers.Add(new FileModuleResolver(options.RootPath));
-        }
-
-        if (options?.ModuleResolvers != default)
-        {
-            moduleResolvers.AddRange(options.ModuleResolvers);
-        }
-
-        o.Modules.ModuleLoader = new ModuleLoader
-        {
-            ModuleResolvers = moduleResolvers,
-            ModuleTransformers = options?.ModuleTransformers
-        };
-    });
-
-    public void AddModule(IModule module)
-    {
-        engine.Modules.Add(module.Name, builder =>
-        {
-            foreach (var item in module.Exports)
-            {
-                builder.ExportObject(item.Key, item.Value);
-            }
-
-            foreach (var item in module.Types)
-            {
-                builder.ExportType(item.Key, item.Value);
-            }
-        });
+        engineOptions = options;
+        engine = new(Config);
     }
 
     public Task<JsValue> ExecuteAsync(string specifier)
@@ -54,4 +28,32 @@ public class JsEngine(EngineOptions? options = null)
         return task;
     }
 
+    public void AddModule(Uri uri, Action<ModuleBuilder> action)
+    {
+        if (modules.Contains(uri)) return;
+        modules.Add(uri);
+        engine.Modules.Add(uri.ToString(), action);
+    }
+
+    private void Config(Options options)
+    {
+        var moduleResolvers = new List<IModuleResolver>();
+
+        if (engineOptions?.RootPath != default)
+        {
+            moduleResolvers.Add(new FileModuleResolver(engineOptions.RootPath));
+        }
+
+        if (engineOptions?.ModuleResolvers != default)
+        {
+            moduleResolvers.AddRange(engineOptions.ModuleResolvers);
+        }
+
+        options.Modules.ModuleLoader = new ModuleLoader
+        {
+            ModuleResolvers = moduleResolvers,
+            ModuleTransformers = engineOptions?.ModuleTransformers,
+            Engine = this
+        };
+    }
 }

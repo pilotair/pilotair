@@ -1,11 +1,10 @@
 namespace Pilotair.Core.Runtime;
 
-public class ModuleNotFoundException : Exception
+public class ModuleNotFoundException : PilotairException
 {
-
 }
 
-public class ModulePathOutOfRangeException : Exception
+public class ModulePathOutOfRangeException : PilotairException
 {
 
 }

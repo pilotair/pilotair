@@ -1,3 +1,4 @@
+using Jint;
 using Jint.Runtime.Modules;
 using Pilotair.Core.Helpers;
 
@@ -18,26 +19,26 @@ public class FileModuleResolver : IModuleResolver
 
     public string Scheme => Uri.UriSchemeFile;
 
-    public string Load(Jint.Engine engine, Uri uri)
+    public string Load(Engine engine, Uri uri)
     {
         var code = File.ReadAllText(uri.AbsolutePath);
         return code;
     }
 
-    public ModuleResolved? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
+    public ModuleResolved? TryResolve(string? reference, string specifier, JsEngine engine)
     {
-        if (!PathHelper.IsRelative(moduleRequest.Specifier))
+        if (!PathHelper.IsRelative(specifier))
         {
             return null;
         }
 
         var basePath = rootPath;
 
-        if (referencingModuleLocation != default)
+        if (reference != default)
         {
-            if (referencingModuleLocation.StartsWith(Scheme + "://", true, default))
+            if (reference.StartsWith(Scheme + "://", true, default))
             {
-                basePath = Path.GetDirectoryName(new Uri(referencingModuleLocation).AbsolutePath)!;
+                basePath = Path.GetDirectoryName(new Uri(reference).AbsolutePath)!;
             }
             else
             {
@@ -45,7 +46,7 @@ public class FileModuleResolver : IModuleResolver
             }
         }
 
-        var path = Path.GetFullPath(moduleRequest.Specifier, basePath);
+        var path = Path.GetFullPath(specifier, basePath);
 
         if (!path.StartsWith(rootPath))
         {

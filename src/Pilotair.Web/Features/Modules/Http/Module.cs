@@ -2,12 +2,12 @@ using Pilotair.Core.Runtime;
 
 namespace Pilotair.Web.Modules.Http;
 
-[Scoped(typeof(IModule))]
-public class HttpModule : IModule
+[Scoped]
+public class HttpModule
 {
     private readonly Dictionary<string, object> exports = [];
     private readonly Dictionary<string, Type> types = [];
-    public string Name => "pilotair:http";
+    public string Name => "pilotair://http/";
     public IDictionary<string, object> Exports => exports;
 
     public IDictionary<string, Type> Types => types;

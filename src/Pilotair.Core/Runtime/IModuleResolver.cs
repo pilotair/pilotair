@@ -5,7 +5,7 @@ namespace Pilotair.Core.Runtime;
 public interface IModuleResolver
 {
     string Scheme { get; }
-    ModuleResolved? TryResolve(string? referencingModuleLocation, ModuleRequest moduleRequest);
+    ModuleResolved? TryResolve(string? reference, string specifier, JsEngine engine);
 
     string Load(Jint.Engine engine, Uri uri);
 }

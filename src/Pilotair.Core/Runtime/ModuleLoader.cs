@@ -4,10 +4,11 @@ using Jint.Runtime.Modules;
 
 namespace Pilotair.Core.Runtime;
 
-public class ModuleLoader : IModuleLoader
+public class ModuleLoader() : IModuleLoader
 {
     public required IEnumerable<IModuleResolver> ModuleResolvers { get; init; }
     public required IEnumerable<IModuleTransformer>? ModuleTransformers { get; init; }
+    public required JsEngine Engine { get; init; }
 
     public Module LoadModule(Engine engine, ResolvedSpecifier resolved)
     {
@@ -45,7 +46,8 @@ public class ModuleLoader : IModuleLoader
     {
         foreach (var moduleResolver in ModuleResolvers)
         {
-            var resolved = moduleResolver.TryResolve(referencingModuleLocation, moduleRequest);
+
+            var resolved = moduleResolver.TryResolve(referencingModuleLocation, moduleRequest.Specifier, Engine);
 
             if (resolved != default)
             {
