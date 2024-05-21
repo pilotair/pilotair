@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Pilotair.Web;
 
@@ -8,7 +7,6 @@ public class MenuItem
     public enum Types
     {
         Unknown,
-        Features,
         Files,
         Codes,
         Code,
@@ -21,6 +19,8 @@ public class MenuItem
     public required Types Type { get; set; }
 
     public required string Name { get; init; }
+    [Required]
+    public string Path { get; init; } = string.Empty;
 
     public IEnumerable<MenuItem>? Children { get; set; }
 }

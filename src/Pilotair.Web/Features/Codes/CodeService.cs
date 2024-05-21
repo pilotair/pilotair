@@ -37,6 +37,7 @@ public class CodeService
                 Name = entry.Name,
                 Order = default,
                 Type = entry.IsFolder ? MenuItem.Types.CodeFolder : MenuItem.Types.Code,
+                Path=entry.RelationPath
             };
 
             items.Add(item);

@@ -8,7 +8,6 @@ import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
 import Empty from "../common/empty";
 import { AppstoreOutlined } from "@ant-design/icons";
-import { features } from "./features";
 
 export default function Workspace() {
     const { menus } = useMenu();
@@ -32,14 +31,17 @@ export default function Workspace() {
 
     function onMenuItemClick(key: string) {
         const menu = expandMenus.find(f => f.key == key);
-        if (!menu || !menu.feature?.tab) return;
-        openTab(key, menu.label, <AsyncComponent component={menu.feature.tab} />, menu.icon)
+        if (!menu || !menu.tab) return;
+        openTab(key, menu.label, menu.tab, menu.icon)
     }
 
     function onMoreClick() {
-        const feature = features.find(f => f.name == "Features");
-        if (!feature) return;
-        openTab(feature.name, feature.label as string, <AsyncComponent component={feature.tab!} />, feature.icon)
+        openTab(
+            "features",
+            "Features",
+            <AsyncComponent component={() => import("../feature/page")} />,
+            <AppstoreOutlined />
+        )
     }
 
     const menu = <Menu

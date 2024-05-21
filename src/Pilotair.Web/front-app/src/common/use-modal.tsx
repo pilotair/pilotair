@@ -1,5 +1,6 @@
 import { Modal, ModalProps } from "antd";
 import { ReactNode, forwardRef, useId, useImperativeHandle, useState } from "react";
+import { ModalContext } from "./modal-context";
 
 interface ModalHandle {
     close: () => void
@@ -37,15 +38,22 @@ export function useModal(props?: ModalProps) {
     function openModal(props: ModalProps) {
         const WrappedModal = createModal();
         let wrappedModal: ModalHandle | null
+        let onOk: () => Promise<void>
 
-        const modal = <WrappedModal
-            afterClose={() => {
-                setModals(modals.filter(f => f != modal))
-            }}
-            {...useModalProps}
-            {...props}
-            key={id}
-            ref={e => wrappedModal = e} />
+        const modal = <ModalContext.Provider value={{ setOk: (e: () => Promise<void>) => onOk = e }} key={id}>
+            <WrappedModal
+                afterClose={() => {
+                    setModals(modals.filter(f => f != modal))
+                }}
+                onOk={async () => {
+                    await onOk?.();
+                    wrappedModal?.close()
+                }}
+                {...useModalProps}
+                {...props}
+
+                ref={e => wrappedModal = e} />
+        </ModalContext.Provider>
 
         setModals([...modals, modal]);
         return () => wrappedModal?.close();

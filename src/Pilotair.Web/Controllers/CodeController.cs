@@ -36,8 +36,8 @@ export function GET(){{
     }
 
     [HttpDelete]
-    public void Delete(string[] entries, string folder = "")
+    public void Delete([FromQuery] string[] paths)
     {
-        codeService.Store.Delete(folder, entries);
+        codeService.Store.Delete(paths);
     }
 }

@@ -4,14 +4,18 @@ import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "../common/global-modal";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
+import { httpClient } from "../utils/request";
+import { useMenu } from "../workspace/menu";
 
 interface Props {
-    children: ReactNode
+    children: ReactNode,
+    path: string
 }
 
-export default function FolderContextMenu({ children }: Props) {
+export default function FolderContextMenu({ children, path }: Props) {
     const { openModal, modal } = useContext(GlobalModalContext)
     const openNewFolderModal = useNewFolderModal();
+    const { loadMenus } = useMenu()
 
     function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();
@@ -20,7 +24,7 @@ export default function FolderContextMenu({ children }: Props) {
             case "file":
                 openModal({
                     title: "Create file",
-                    children: <CreateFileForm />
+                    children: <CreateFileForm path={path} />,
                 })
                 break;
             case "folder":
@@ -29,8 +33,11 @@ export default function FolderContextMenu({ children }: Props) {
             case "delete":
                 modal.confirm({
                     title: "Are you sure delete?",
-                    onOk: () => {
-
+                    onOk: async () => {
+                        await httpClient.delete("/__api__/code", {
+                            paths: [path]
+                        });
+                        loadMenus();
                     }
                 })
                 break;
@@ -61,10 +68,10 @@ export default function FolderContextMenu({ children }: Props) {
     }
 
     return (
-            <Dropdown trigger={["contextMenu"]} menu={menu}>
-                <div>
-                    {children}
-                </div>
-            </Dropdown>
+        <Dropdown trigger={["contextMenu"]} menu={menu}>
+            <div>
+                {children}
+            </div>
+        </Dropdown>
     )
 }

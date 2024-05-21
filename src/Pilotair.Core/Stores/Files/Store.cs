@@ -127,6 +127,23 @@ public class FileStore
         }
     }
 
+    public void Delete(string[] paths)
+    {
+        foreach (var item in paths)
+        {
+            var entryPath = Path.Combine(root, item);
+            var isFolder = Directory.Exists(entryPath);
+            if (isFolder)
+            {
+                Directory.Delete(entryPath, true);
+            }
+            else
+            {
+                System.IO.File.Delete(entryPath);
+            }
+        }
+    }
+
     public void ImportFromZip(string folder, Stream stream)
     {
         IoHelper.ShouldBeRelative(folder);

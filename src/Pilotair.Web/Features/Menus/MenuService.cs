@@ -10,7 +10,7 @@ public class MenuService(CodeService codeService)
         var items = new List<MenuItem> {
             new() {
                 Name="files",
-                Type=MenuItem.Types.Files
+                Type=MenuItem.Types.Files,
             },
             new() {
                 Name="codes",
@@ -19,11 +19,11 @@ public class MenuService(CodeService codeService)
             },
             new(){
                 Name="contents",
-                Type= MenuItem.Types.Contents
+                Type= MenuItem.Types.Contents,
             },
             new(){
                 Name="options",
-                Type= MenuItem.Types.Options
+                Type= MenuItem.Types.Options,
             },
         };
 

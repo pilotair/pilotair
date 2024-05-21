@@ -1,23 +1,31 @@
-import { Form, Input, Select } from "antd"
+import { Form, Input } from "antd"
+import { httpClient } from "../utils/request";
+import { useContext } from "react";
+import { ModalContext } from "../common/modal-context";
+import { useMenu } from "../workspace/menu";
 
-export default function CreateFileForm() {
-    const [form] = Form.useForm();
+interface Props {
+    path: string
+}
 
-    async function onFinish(value: { name: string }) {
-        // const path = combine(fileStore.folder, value.name);
+export default function CreateFileForm({ path }: Props) {
+    const [form] = Form.useForm<{ name: string }>();
+    const { setOk } = useContext(ModalContext)
+    const { loadMenus } = useMenu()
 
-        // await loading(async () => {
-        //     await httpClient.post("/__api__/file", undefined, {
-        //         searchParams: { path }
-        //     });
-        // })
-
-        // await fileStore.reload()
-        // closeModal?.()
-    }
+    setOk(async () => {
+        await form.validateFields();
+        const value = form.getFieldsValue();
+        await httpClient.post("/__api__/code", {
+            name: value.name
+        }, {
+            searchParams: { folder: path }
+        });
+        loadMenus();
+    })
 
     return (
-        <Form form={form} onFinish={onFinish} preserve={false} layout="vertical">
+        <Form form={form} preserve={false} layout="vertical">
             <Form.Item
                 name="name"
                 label="Name"
