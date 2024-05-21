@@ -1,7 +1,8 @@
 import SiderLayout from "../common/layout/sider-layout"
 import { Menu } from "antd"
 import { Header } from "./header"
-import { useWorkspace } from "./workspace-store";
+import { useMenu } from "./menu";
+import { useTabs } from "./tabs";
 import { useMemo } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
@@ -10,7 +11,8 @@ import { AppstoreOutlined } from "@ant-design/icons";
 import { features } from "./features";
 
 export default function Workspace() {
-    const { menus, tabs, openTab, closeTab, setActiveName, activeName } = useWorkspace();
+    const { menus } = useMenu();
+    const { tabs, openTab, closeTab, setActiveName, activeName } = useTabs();
 
     const expandMenus = useMemo(() => {
         const result: typeof menus = []

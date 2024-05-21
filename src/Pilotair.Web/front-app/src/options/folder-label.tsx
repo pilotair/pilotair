@@ -1,11 +1,11 @@
 import { MenuProps } from "antd";
-import { useWorkspace } from "../workspace/workspace-store"
+import { useTabs } from "../workspace/tabs"
 import MoreBtn from "../common/menu/more-btn";
 import AsyncComponent from "../common/async-component";
 import { ControlOutlined } from "@ant-design/icons";
 
 export default function OptionsFolderLabel() {
-    const { openTab } = useWorkspace();
+    const { openTab } = useTabs();
 
     function onItemClick({ key }: { key: string }) {
         switch (key) {
