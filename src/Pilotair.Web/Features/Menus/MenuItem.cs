@@ -16,11 +16,10 @@ public class MenuItem
         Contents,
         Options,
     }
-    public required uint Order { get; init; }
+    public uint Order { get; set; }
 
     public required Types Type { get; set; }
 
-    [Required]
     public required string Name { get; init; }
 
     public IEnumerable<MenuItem>? Children { get; set; }

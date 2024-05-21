@@ -3,6 +3,7 @@ import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "../common/global-modal";
 import { useNewFolderModal } from "./use-new-folder-modal";
+import CreateFileForm from "./create-file-form";
 
 interface Props {
     children: ReactNode
@@ -18,7 +19,8 @@ export default function FolderContextMenu({ children }: Props) {
         switch (key) {
             case "file":
                 openModal({
-                    children: <div>aaa</div>
+                    title: "Create file",
+                    children: <CreateFileForm />
                 })
                 break;
             case "folder":
@@ -28,7 +30,7 @@ export default function FolderContextMenu({ children }: Props) {
                 modal.confirm({
                     title: "Are you sure delete?",
                     onOk: () => {
-                        
+
                     }
                 })
                 break;
@@ -59,10 +61,10 @@ export default function FolderContextMenu({ children }: Props) {
     }
 
     return (
-        <Dropdown trigger={["contextMenu"]} menu={menu}>
-            <div>
-                {children}
-            </div>
-        </Dropdown>
+            <Dropdown trigger={["contextMenu"]} menu={menu}>
+                <div>
+                    {children}
+                </div>
+            </Dropdown>
     )
 }

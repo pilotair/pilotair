@@ -1,16 +1,16 @@
-import { AppstoreOutlined, CodepenOutlined, ControlOutlined, FileOutlined, FolderOutlined, FormOutlined } from "@ant-design/icons"
+import { AppstoreOutlined, ControlOutlined, FolderOutlined, FormOutlined } from "@ant-design/icons"
 import { ReactNode } from "react";
-import CodeFolderContextMenu from "../code/folder-context-menu"
 import OptionsFolderLabel from "../options/folder-label"
+import { codeFeatures } from "../code/code-features";
 
-interface Feature {
+export interface FeatureItem {
     name: string;
     label?: ReactNode | ((value: ReactNode) => ReactNode),
     icon?: ReactNode,
-    tab?: () => Promise<{ default: React.ComponentType<unknown>; }>
+    tab?: () => Promise<{ default: React.ComponentType<unknown>; }>,
 }
 
-export const features: Feature[] = [
+export const features: FeatureItem[] = [
     {
         name: 'Features',
         label: "Features",
@@ -23,21 +23,7 @@ export const features: Feature[] = [
         icon: <FolderOutlined />,
         tab: () => import("../files/page")
     },
-    {
-        name: 'Codes',
-        label: <CodeFolderContextMenu>Codes</CodeFolderContextMenu>,
-        icon: <CodepenOutlined /> ,
-    },
-    {
-        name: 'CodeFolder',
-        label: (value) => <CodeFolderContextMenu>{value}</CodeFolderContextMenu>,
-    },
-    {
-        name: 'Code',
-        icon: <FileOutlined />,
-        label: (value) => value,
-        tab: () => import("../code/page")
-    },
+    ...codeFeatures,
     {
         name: 'Contents',
         icon: <FormOutlined />,
@@ -50,6 +36,10 @@ export const features: Feature[] = [
     }
 ]
 
-export function getFeature(name: string) {
-    return features.find(f => f.name == name);
+export function getFeature(name: string): FeatureItem {
+    const feature = features.find(f => f.name == name);
+    if (!feature) {
+        throw Error(`feature '${name}' not found`)
+    }
+    return feature;
 }
