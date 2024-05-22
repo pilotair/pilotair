@@ -26,6 +26,7 @@ public class Collection<T> where T : new()
         var result = await connection.QueryFirstOrDefaultAsync<DocumentModel>($"""
         SELECT 
             Id,
+            ParentId,
             CreationTime,
             LastWriteTime,
             json(Data) as Data 
@@ -40,10 +41,11 @@ public class Collection<T> where T : new()
         return result.ToDocument<T>();
     }
 
-    public async Task<Document<T>> AddDocumentAsync(T data)
+    public async Task<Document<T>> AddDocumentAsync(T data, string? parentId = default)
     {
         var doc = new Document<T>
         {
+            ParentId = parentId,
             Data = data
         };
         await AddDocumentAsync(doc);
@@ -61,11 +63,13 @@ public class Collection<T> where T : new()
         await connection.ExecuteAsync($"""
         INSERT INTO {Name} (
             Id,
+            ParentId,
             CreationTime,
             LastWriteTime,
             Data
         ) VALUES (
             @Id, 
+            @ParentId,
             @CreationTime,
             @LastWriteTime,
             jsonb(@Data)
@@ -73,6 +77,7 @@ public class Collection<T> where T : new()
         """, new
         {
             document.Id,
+            document.ParentId,
             CreationTime = document.CreationTime.ToUnixTimeMilliseconds(),
             LastWriteTime = document.LastWriteTime.ToUnixTimeMilliseconds(),
             Data = JsonHelper.Serialize(document.Data)
@@ -119,6 +124,7 @@ public class Collection<T> where T : new()
         connection.Execute($"""
         CREATE TABLE IF NOT EXISTS {Name} (
             Id TEXT PRIMARY KEY,
+            ParentId TEXT,
             CreationTime INTEGER NOT NULL,
             LastWriteTime INTEGER NOT NULL,
             Data BLOB NOT NULL CHECK(json_valid(Data,8))
@@ -132,6 +138,9 @@ public class Collection<T> where T : new()
             SET LastWriteTime = unixepoch('subsec') * 1000
             WHERE Id = OLD.Id;
         END;
+
+        CREATE INDEX IF NOT EXISTS {Name}_INDEX
+        ON {Name}(ParentId,CreationTime,LastWriteTime);
         """);
     }
 }

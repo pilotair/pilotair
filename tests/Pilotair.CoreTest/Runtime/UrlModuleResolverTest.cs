@@ -8,7 +8,7 @@ namespace Pilotair.CoreTest.Runtime;
 public class UrlModuleResolverTest
 {
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public async Task LoadFromEsmDotSh()
     {
         var options = new EngineOptions

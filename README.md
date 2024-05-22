@@ -3,6 +3,7 @@
 ## core
 - [ ] JsonStore
 - [ ] sqlite security
+- [ ] sqlite case delete
 
 ## web
 - [ ] project settings

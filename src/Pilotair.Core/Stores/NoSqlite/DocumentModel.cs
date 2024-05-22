@@ -5,6 +5,7 @@ namespace Pilotair.Core.Stores.NoSqlite;
 public class DocumentModel
 {
     public required string Id { get; init; }
+    public string? ParentId { get; set; }
     public required long CreationTime { get; init; }
     public required long LastWriteTime { get; init; }
     public required string Data { get; init; }
@@ -16,6 +17,7 @@ public class DocumentModel
         return new Document<T>
         {
             Id = Id,
+            ParentId = ParentId,
             CreationTime = DateTimeOffset.FromUnixTimeMilliseconds(CreationTime),
             LastWriteTime = DateTimeOffset.FromUnixTimeMilliseconds(LastWriteTime),
             Data = data

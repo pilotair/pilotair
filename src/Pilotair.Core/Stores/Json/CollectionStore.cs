@@ -2,11 +2,11 @@ using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Stores.Json;
 
-public class Collection<T>
+public class JsonStore<T>
 {
     private readonly string folder;
 
-    public Collection(string root)
+    public JsonStore(string root)
     {
         folder = Path.Combine(root, typeof(T).Name);
         IoHelper.EnsureDirectoryExist(folder);
@@ -26,6 +26,7 @@ public class Collection<T>
 
     public async Task SaveAsync(string name, T value, CancellationToken token = default)
     {
+        ArgumentNullException.ThrowIfNull(value);
         var path = Path.Combine(folder, $"{name}.json");
         await JsonHelper.SerializeAsync(value, path, token);
     }
@@ -33,13 +34,13 @@ public class Collection<T>
     public async Task<T> GetAsync(string name, CancellationToken token = default)
     {
         var path = Path.Combine(folder, $"{name}.json");
-        var result = await JsonHelper.DeserializeAsync<T>(path, token);
+        var result = await JsonHelper.DeserializeAsync<T>(path, token) ?? throw new DocumentNotFoundException();
         return result;
     }
 
     public void Delete(string name)
     {
         var path = Path.Combine(folder, $"{name}.json");
-        File.Delete(path);
+        if (File.Exists(path)) File.Delete(path);
     }
 }

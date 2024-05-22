@@ -9,6 +9,7 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
     record OrderItem(string Selector, bool Descending);
     private long skip;
     private string[]? exclude;
+    private string? parent;
     private readonly List<OrderItem> order = [];
     private string? where;
 
@@ -83,6 +84,15 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
         return this;
     }
 
+    public Query<T> ParentIn(params string[] ids)
+    {
+        if (ids != null && ids.Length > 0)
+        {
+            parent = $"ParentId IN ({string.Join(",", ids.Select(s => $"'{s}'"))})";
+        }
+        return this;
+    }
+
     public async Task<Document<T>[]> TakeAsync(long? count = null)
     {
         var sqlBuilder = new StringBuilder();
@@ -97,11 +107,7 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
 
         sqlBuilder.AppendLine();
         sqlBuilder.AppendLine($"FROM {name}");
-
-        if (where is not null)
-        {
-            sqlBuilder.AppendLine($"WHERE {where}");
-        }
+        sqlBuilder.AppendLine(GetWhere());
 
         if (order.Count > 0)
         {
@@ -133,15 +139,12 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
     {
         return (await TakeAsync(1)).FirstOrDefault();
     }
+
     public async Task<long> CountAsync()
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.AppendLine($"SELECT COUNT(1) FROM {name}");
-
-        if (where is not null)
-        {
-            sqlBuilder.AppendLine($"WHERE {where}");
-        }
+        sqlBuilder.AppendLine(GetWhere());
 
         if (skip > 0)
         {
@@ -151,6 +154,23 @@ public class Query<T>(SqliteConnection connection, string name) where T : new()
         return await connection.QueryFirstAsync<long>(sqlBuilder.ToString());
     }
 
+    private string GetWhere()
+    {
+        var conditions = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(where))
+        {
+            conditions.Add($"({where})");
+        }
+
+        if (!string.IsNullOrWhiteSpace(parent))
+        {
+            conditions.Add($"({parent})");
+        }
+
+        if (conditions.Count == 0) return string.Empty;
+        return $"WHERE {string.Join(" AND ", conditions)}";
+    }
     private static string? GetCondition(string selector, Comparison comparison, object value)
     {
         string? condition = null;

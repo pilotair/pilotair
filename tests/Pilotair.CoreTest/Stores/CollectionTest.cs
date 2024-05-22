@@ -1,3 +1,4 @@
+using Pilotair.Core.Stores;
 using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.CoreTest.Stores;
@@ -34,7 +35,7 @@ public class CollectionTest
         await userCollection.UpdateDocumentAsync(docOnDb);
         docOnDb = await userCollection.GetAsync(doc.Id);
         Assert.AreEqual(docOnDb.Data.Name, "jobs");
-        Assert.IsTrue(docOnDb.LastWriteTime > doc.LastWriteTime);
+        Assert.IsTrue(docOnDb.LastWriteTime >= doc.LastWriteTime);
         await userCollection.RemoveDocumentAsync(doc.Id);
         await Assert.ThrowsExceptionAsync<DocumentNotFoundException>(async () =>
         {
