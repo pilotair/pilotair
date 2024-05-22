@@ -1,13 +1,17 @@
 ### TODO
 
+## core
 - [ ] JsonStore
-- [ ] user system
 - [ ] sqlite security
-- [ ] pilotair cloud
-- [ ] Use http3 proxy
+
+## web
 - [ ] project settings
 - [ ] cert automation renew
-- [ ] JaValueConverter
 - [ ] Front Error handle
 - [ ] createRef 
+- [ ] user system
 
+## cloud
+
+- [ ] pilotair cloud
+- [ ] Use http3 proxy

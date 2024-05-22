@@ -12,7 +12,7 @@ public class NoSqliteStore
     public NoSqliteStore(string path)
     {
         var dir = Path.GetDirectoryName(path);
-        
+
         if (dir is not null)
         {
             IoHelper.EnsureDirectoryExist(dir);

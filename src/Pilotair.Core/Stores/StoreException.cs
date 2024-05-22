@@ -1,4 +1,4 @@
-namespace Pilotair.Core.Stores.NoSqlite;
+namespace Pilotair.Core.Stores;
 
 public class DocumentNotFoundException : PilotairException
 {
