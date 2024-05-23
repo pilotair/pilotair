@@ -1,10 +1,11 @@
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.Files;
+using Pilotair.Web.Menus;
 
 namespace Pilotair.Web.Codes;
 
 [Singleton]
-public class CodeService
+public class CodeService : IMenuProvider
 {
     private readonly FileStore store;
     private readonly IEnumerable<IRouteHandler> routeHandlers;
@@ -25,7 +26,7 @@ public class CodeService
         return new Code(fileInfo, content, store.Root);
     }
 
-    public IEnumerable<MenuItem> GetMenuItems(string currentPath = "")
+    public async Task<IEnumerable<MenuItem>> GetMenuItemsAsync(string currentPath = "")
     {
         var items = new List<MenuItem>();
         var entries = store.GetFolder(currentPath);
@@ -37,7 +38,7 @@ public class CodeService
                 Name = entry.Name,
                 Order = default,
                 Type = entry.IsFolder ? MenuItem.Types.CodeFolder : MenuItem.Types.Code,
-                Path=entry.RelationPath
+                Path = entry.RelationPath
             };
 
             items.Add(item);
@@ -45,7 +46,7 @@ public class CodeService
             if (entry.IsFolder)
             {
                 var path = Path.Combine(currentPath, entry.Name);
-                item.Children = GetMenuItems(path);
+                item.Children = await GetMenuItemsAsync(path);
             }
         }
 

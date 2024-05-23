@@ -34,7 +34,7 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
     }
 
     return (
-        <Layout className="absolute inset-0 min-h-[800px] min-w-[1280px]">
+        <Layout className="absolute inset-0 min-h-[500px] min-w-[1280px]">
             <Resizable className={resizing ? "!transition-none" : ""} width={resizableWidth} onResize={onResize} axis="x" handle={<div className="absolute w-1 top-0 bottom-0 right-[-2px] cursor-ew-resize hover:bg-sky-500 z-50" />} onResizeStart={onResizeStart} onResizeStop={onResizeStop}>
                 <Sider collapsible theme="dark" trigger={null} collapsed={collapsed} width={siderWidth < 200 ? 200 : siderWidth > 480 ? 480 : siderWidth} >
                     <div className="flex flex-col h-full">

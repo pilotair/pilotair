@@ -2,7 +2,7 @@ namespace Pilotair.Web.DataModels;
 
 public enum ControlTypes
 {
-    Input,
+    TextBox,
     TextArea,
     RichText,
     Switch,

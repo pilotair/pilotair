@@ -6,10 +6,10 @@ public class JsonStore<T>
 {
     private readonly string folder;
 
-    public JsonStore(string root)
+    public JsonStore(string root, string? folder = default)
     {
-        folder = Path.Combine(root, typeof(T).Name);
-        IoHelper.EnsureDirectoryExist(folder);
+        this.folder = Path.Combine(root, folder ?? typeof(T).Name);
+        IoHelper.EnsureDirectoryExist(this.folder);
     }
 
     public async Task<IEnumerable<T>> ListAsync(CancellationToken token = default)

@@ -5,8 +5,6 @@ namespace Pilotair.Web.Contents;
 
 [Singleton]
 public class ContentCollectionStore(IOptions<PilotairOptions> options)
-    : JsonStore<ContentCollection>(
-        Path.Combine(options.Value.DataPath, Constants.CONTENTS_FOLDER)
-    )
+    : JsonStore<ContentCollection>(options.Value.DataPath, Constants.CONTENT_COLLECTIONS_FOLDER)
 {
 }

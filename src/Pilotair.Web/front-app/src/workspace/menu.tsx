@@ -1,10 +1,11 @@
-import { ReactNode, useEffect } from "react"
+import { ReactNode, useCallback } from "react"
 import { atom, useAtom } from "jotai"
 import { httpClient } from "../utils/request"
 import { Pilotair } from "../schema"
 import { getCodeFolderMenu, getCodeMenu, getCodesMenu } from "../code/code-menu"
-import { ControlOutlined, FolderOutlined, FormOutlined } from "@ant-design/icons"
+import { ControlOutlined, FolderOutlined } from "@ant-design/icons"
 import AsyncComponent from "../common/async-component"
+import { getContentCollectionMenu, getContentsMenu } from "../contents/content-menu"
 
 export type MenuItem = {
     key: string,
@@ -20,14 +21,9 @@ const menusAtom = atom<MenuItem[]>([])
 export function useMenu() {
     const [menus, setMenus] = useAtom(menusAtom)
 
-    async function loadMenus() {
+    const loadMenus = useCallback(async () => {
         const response = await httpClient.get<Pilotair.Web.MenuItem[]>("/__api__/menu");
         setMenus(mapMenuItems(response ?? []) ?? []);
-
-    }
-
-    useEffect(() => {
-        loadMenus();
     }, [])
 
     return {
@@ -67,15 +63,13 @@ function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
                 tab: <AsyncComponent component={() => import("../files/page")} />
             };
         case "Contents":
-            return {
-                key: menu.type,
-                label: "Contents",
-                icon: <FormOutlined />
-            };
+            return getContentsMenu(menu)
+        case "ContentCollection":
+            return getContentCollectionMenu(menu)
         case "Options":
             return {
                 key: menu.type,
-                label: "Contents",
+                label: "Options",
                 icon: <ControlOutlined />
             };
         default:

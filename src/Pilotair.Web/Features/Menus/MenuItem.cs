@@ -12,6 +12,7 @@ public class MenuItem
         Code,
         CodeFolder,
         Contents,
+        ContentCollection,
         Options,
     }
     public uint Order { get; set; }

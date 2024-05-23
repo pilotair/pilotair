@@ -3,15 +3,19 @@ import { Menu } from "antd"
 import { Header } from "./header"
 import { useMenu } from "./menu";
 import { useTabs } from "./tabs";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
 import Empty from "../common/empty";
 import { AppstoreOutlined } from "@ant-design/icons";
 
 export default function Workspace() {
-    const { menus } = useMenu();
+    const { menus, loadMenus } = useMenu();
     const { tabs, openTab, closeTab, setActiveName, activeName } = useTabs();
+
+    useEffect(() => {
+        loadMenus();
+    }, [loadMenus])
 
     const expandMenus = useMemo(() => {
         const result: typeof menus = []
