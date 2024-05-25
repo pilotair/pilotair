@@ -1,4 +1,4 @@
-type SearchParams = Record<string, string | string[]>;
+type SearchParams = Record<string, string | string[] | undefined>;
 
 interface SendParams {
     searchParams?: SearchParams
@@ -13,6 +13,7 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
     if (sendParams?.searchParams) {
         for (const key in sendParams.searchParams) {
             const value = sendParams.searchParams[key];
+            if (!value) continue;
             if (typeof value == "string") {
                 urlObject.searchParams.append(key, value);
             } else {

@@ -1,16 +1,19 @@
 import CodeEditor from "../common/code-editor"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { TabContext } from "../common/tab/tab-panel"
-import { removeFragment } from "../utils/path";
 import { Pilotair } from "../schema"
 import { httpClient } from "../utils/request";
 import { Breadcrumb } from "antd"
 import { ReloadOutlined, RightOutlined, SaveOutlined } from "@ant-design/icons";
 import { useShortcut } from "../utils/shortcuts";
 
-export default function Code() {
-    const { name, loading } = useContext(TabContext);
-    const path = removeFragment(name, 1);
+interface Props {
+    name: string,
+    folder?: string
+}
+
+export default function Code({ name, folder }: Props) {
+    const { loading } = useContext(TabContext);
     const [content, setContent] = useState("");
     const newContent = useRef<string>()
     const [isChange, setIsChange] = useState(false)
@@ -18,7 +21,7 @@ export default function Code() {
 
     useEffect(() => {
         loading(async () => {
-            const response = await httpClient.get<Pilotair.Web.Codes.Code>("/__api__/code/", { path });
+            const response = await httpClient.get<Pilotair.Web.Codes.Code>("/__api__/code/", { name, folder });
             if (response?.content) setContent(response.content)
         })
     }, [])
@@ -26,8 +29,12 @@ export default function Code() {
     async function onSave() {
         loading(async () => {
             await httpClient.put("/__api__/code", {
-                path,
                 content: newContent.current
+            }, {
+                searchParams: {
+                    name,
+                    folder,
+                }
             })
         })
     }
@@ -39,7 +46,7 @@ export default function Code() {
 
     return <div className="h-full flex flex-col" ref={shortcutRef}>
         <div className="px-2 flex" >
-            <Breadcrumb className="flex-1" separator={<RightOutlined className="transform scale-75" />} items={name.split("/").map(m => ({ title: m, key: m, className: "text-slate-500" }))} />
+            <Breadcrumb className="flex-1" separator={<RightOutlined className="transform scale-75" />} items={[...folder?.split("/") ?? [], name].map(m => ({ title: m, key: m, className: "text-slate-500" }))} />
             <div className="flex-shrink-0 flex gap-2 text-slate-500">
                 {isChange && <>
                     <SaveOutlined onClick={onSave} />  <ReloadOutlined />

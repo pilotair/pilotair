@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Pilotair.Core.Stores.NoSqlite;
 
-public class Query<T>(SqliteConnection connection, string name) where T : new()
+public class Query<T>(SqliteConnection connection, string name)
 {
     record OrderItem(string Selector, bool Descending);
     private long skip;

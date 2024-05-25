@@ -6,5 +6,6 @@ public enum ControlTypes
     TextArea,
     RichText,
     Switch,
-    Number
+    Number,
+    Collection
 }

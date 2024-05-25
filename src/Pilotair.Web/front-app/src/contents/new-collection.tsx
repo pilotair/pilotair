@@ -2,14 +2,25 @@ import { PlusOutlined, ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Divider, Form, Input, Tooltip } from "antd"
 import { Field } from "./field"
 import { httpClient } from "../utils/request";
+import { useTabs } from "../workspace/tabs";
+import { useMenu } from "../workspace/menu";
 
-export default function NewCollection() {
+interface Props {
+    name: string
+}
+
+export default function NewCollection({ name }: Props) {
     const [form] = Form.useForm<{ name: string }>();
+    const { closeTab } = useTabs();
+    const { loadMenus } = useMenu();
 
     async function onSave() {
         await form.validateFields();
         const model = form.getFieldsValue();
         await httpClient.post("/__api__/content-collection", model)
+        await loadMenus()
+        closeTab(name);
+
     }
 
     return (

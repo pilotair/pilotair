@@ -15,8 +15,9 @@ public class ContentCollectionService(ContentCollectionStore collectionStore) : 
             result.Add(new MenuItem
             {
                 Type = MenuItem.Types.ContentCollection,
-                Name = collection.Display ?? collection.Name,
-                Path = $"content-collections/{collection.Name}.json"
+                Name = collection.Name,
+                Display = collection.Display,
+                Folder = "content-collections"
             });
         }
         return result;

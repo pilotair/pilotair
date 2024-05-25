@@ -38,8 +38,23 @@ public class NoSqliteStore
         return collection;
     }
 
+    public Collection Get(string name)
+    {
+        if (!collections.TryGetValue(name, out var collection))
+        {
+            throw new CollectionNotFoundException();
+        }
+
+        return collection;
+    }
+
     public Collection<T> GetOrCreate<T>() where T : new()
     {
         return collections.GetOrAdd(typeof(T).Name, (name) => new Collection<T>(connectionString));
+    }
+
+    public Collection GetOrCreate(string name)
+    {
+        return collections.GetOrAdd(name, (name) => new Collection(connectionString, name));
     }
 }

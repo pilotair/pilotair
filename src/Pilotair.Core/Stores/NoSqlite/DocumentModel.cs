@@ -1,3 +1,4 @@
+using Jint.Native;
 using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Stores.NoSqlite;
@@ -10,7 +11,7 @@ public class DocumentModel
     public required long LastWriteTime { get; init; }
     public required string Data { get; init; }
 
-    public Document<T> ToDocument<T>() where T : new()
+    public Document<T> ToDocument<T>()
     {
         var data = JsonHelper.Deserialize<T>(Data) ?? throw new DocumentDataInvalidException();
 

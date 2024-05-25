@@ -55,10 +55,10 @@ public class FileStore
         await stream.CopyToAsync(fs);
     }
 
-    public async Task SaveFileAsync(string folder, string content, string fileName)
+    public async Task SaveFileAsync(string folder, string name,string content)
     {
         folder = CreateFolder(folder);
-        folder = Path.Combine(folder, fileName);
+        folder = Path.Combine(folder, name);
         await System.IO.File.WriteAllTextAsync(folder, content);
     }
 

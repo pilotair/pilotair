@@ -14,15 +14,15 @@ public class MenuController(CodeService codeService, ContentCollectionService co
                 Name="files",
                 Type=MenuItem.Types.Files,
             },
-            new() {
-                Name="codes",
-                Type=MenuItem.Types.Codes,
-                Children=await codeService.GetMenuItemsAsync(),
-            },
             new(){
                 Name="contents",
                 Type= MenuItem.Types.Contents,
                 Children=await collectionService.GetMenuItemsAsync()
+            },
+            new() {
+                Name="codes",
+                Type=MenuItem.Types.Codes,
+                Children=await codeService.GetMenuItemsAsync(),
             },
             new(){
                 Name="options",

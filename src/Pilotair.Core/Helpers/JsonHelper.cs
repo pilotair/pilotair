@@ -1,5 +1,6 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.Core.Helpers;
 
@@ -9,8 +10,13 @@ public static class JsonHelper
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         PropertyNameCaseInsensitive = true,
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
+
+    static JsonHelper()
+    {
+        defaultOptions.Converters.Add(new DictionaryConverter());
+    }
 
     public static T? Deserialize<T>(string json)
     {

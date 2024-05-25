@@ -34,9 +34,9 @@ public class FileService
         await store.SaveFileAsync(path, stream, fileName);
     }
 
-    public async Task SaveFileAsync(string path, string content, string fileName)
+    public async Task SaveFileAsync(string path, string fileName, string content)
     {
-        await store.SaveFileAsync(path, content, fileName);
+        await store.SaveFileAsync(path, fileName, content);
     }
 
     public void Delete(string path, string[] entries)

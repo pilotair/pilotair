@@ -31,13 +31,19 @@ public class JsonStore<T>
         await JsonHelper.SerializeAsync(value, path, token);
     }
 
-    public async Task<T> GetAsync(string name, CancellationToken token = default)
+    public async Task<T?> GetAsync(string name, CancellationToken token = default)
     {
         var path = Path.Combine(folder, $"{name}.json");
-        var result = await JsonHelper.DeserializeAsync<T>(path, token) ?? throw new DocumentNotFoundException();
+        var result = await JsonHelper.DeserializeAsync<T>(path, token);
         return result;
     }
 
+    public bool Exist(string name)
+    {
+        var path = Path.Combine(folder, $"{name}.json");
+        return File.Exists(path);
+    }
+    
     public void Delete(string name)
     {
         var path = Path.Combine(folder, $"{name}.json");

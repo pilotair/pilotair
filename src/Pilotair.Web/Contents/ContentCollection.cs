@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Pilotair.Web.DataModels;
 
 namespace Pilotair.Web.Contents;

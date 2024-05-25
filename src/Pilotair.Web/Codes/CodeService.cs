@@ -19,10 +19,10 @@ public class CodeService : IMenuProvider
         store = new FileStore(root);
     }
 
-    public async Task<Code> GetCodeAsync(string path)
+    public async Task<Code> GetCodeAsync(string folder, string name)
     {
-        var fileInfo = store.GetFile(path);
-        var content = await store.ReadTextAsync(path);
+        var fileInfo = store.GetFile(folder, name);
+        var content = await store.ReadTextAsync(fileInfo.RelationPath);
         return new Code(fileInfo, content, store.Root);
     }
 
@@ -36,9 +36,8 @@ public class CodeService : IMenuProvider
             var item = new MenuItem
             {
                 Name = entry.Name,
-                Order = default,
                 Type = entry.IsFolder ? MenuItem.Types.CodeFolder : MenuItem.Types.Code,
-                Path = entry.RelationPath
+                Folder = Path.GetDirectoryName(entry.RelationPath),
             };
 
             items.Add(item);

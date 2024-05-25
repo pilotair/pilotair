@@ -13,7 +13,9 @@ export type MenuItem = {
     label: ReactNode,
     children?: MenuItem[],
     className?: string,
-    tab?: ReactNode
+    tab?: ReactNode,
+    tabLabel?: ReactNode,
+    tabIcon?: ReactNode,
 }
 
 const menusAtom = atom<MenuItem[]>([])
@@ -60,7 +62,7 @@ function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
                 key: menu.type,
                 label: "Files",
                 icon: <FolderOutlined />,
-                tab: <AsyncComponent component={() => import("../files/page")} />
+                tab: <AsyncComponent component={() => import("../files/page")} />,
             };
         case "Contents":
             return getContentsMenu(menu)
@@ -70,7 +72,7 @@ function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
             return {
                 key: menu.type,
                 label: "Options",
-                icon: <ControlOutlined />
+                icon: <ControlOutlined />,
             };
         default:
             return;

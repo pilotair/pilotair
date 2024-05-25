@@ -36,7 +36,7 @@ export default function Workspace() {
     function onMenuItemClick(key: string) {
         const menu = expandMenus.find(f => f.key == key);
         if (!menu || !menu.tab) return;
-        openTab(key, menu.label, menu.tab, menu.icon)
+        openTab(key, menu.tabLabel ?? menu.label, menu.tab, menu.tabIcon ?? menu.icon)
     }
 
     function onMoreClick() {
