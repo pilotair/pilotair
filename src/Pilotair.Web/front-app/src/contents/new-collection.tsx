@@ -1,9 +1,11 @@
 import { PlusOutlined, ReloadOutlined, SaveOutlined } from "@ant-design/icons"
-import { Button, Divider, Form, Input, Tooltip } from "antd"
-import { Field } from "./field"
+import { Button, Divider, Form, Input } from "antd"
 import { httpClient } from "../utils/request";
 import { useTabs } from "../workspace/tabs";
 import { useMenu } from "../workspace/menu";
+import { useContext } from "react";
+import { TabContext } from "../common/tab/tab-panel";
+import NewFieldForm from "./new-field-form";
 
 interface Props {
     name: string
@@ -13,6 +15,7 @@ export default function NewCollection({ name }: Props) {
     const [form] = Form.useForm<{ name: string }>();
     const { closeTab } = useTabs();
     const { loadMenus } = useMenu();
+    const { openModal } = useContext(TabContext)
 
     async function onSave() {
         await form.validateFields();
@@ -20,7 +23,13 @@ export default function NewCollection({ name }: Props) {
         await httpClient.post("content-collection", model)
         await loadMenus()
         closeTab(name);
+    }
 
+    function addField() {
+        openModal({
+            title: "New field",
+            children: <NewFieldForm />
+        })
     }
 
     return (
@@ -42,20 +51,8 @@ export default function NewCollection({ name }: Props) {
                 <Form.Item label='Display' name="display" wrapperCol={{ span: 8 }}>
                     <Input />
                 </Form.Item>
-                <Divider />
                 <Form.Item label="Fields" rules={[{ required: true }]} wrapperCol={{ span: 18 }}>
-                    <Form.List name="fields">
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map(({ key, name }) => (
-                                    <Field key={key} name={name} remove={remove} />
-                                ))}
-                                <Tooltip placement="left" title="Add field">
-                                    <Button type="primary" shape="circle" icon={<PlusOutlined />} onClick={() => add()} />
-                                </Tooltip>
-                            </>
-                        )}
-                    </Form.List>
+                    <Button type="primary" shape="circle" icon={<PlusOutlined />} onClick={addField} />
                 </Form.Item>
             </Form>
         </div>
