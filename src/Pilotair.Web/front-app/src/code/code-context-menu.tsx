@@ -22,7 +22,7 @@ export default function CodeContextMenu({ children, path }: Props) {
                 modal.confirm({
                     title: "Are you sure delete?",
                     onOk: async () => {
-                        await httpClient.delete("/__api__/code", {
+                        await httpClient.delete("code", {
                             paths: [path]
                         });
                         loadMenus()

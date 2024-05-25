@@ -34,7 +34,7 @@ export default function ContentContextMenu({ children, path, name }: Props) {
                 modal.confirm({
                     title: "Are you sure delete?",
                     onOk: async () => {
-                        await httpClient.delete(`/__api__/content-collection?name=${name}`);
+                        await httpClient.delete(`content-collection?name=${name}`);
                         loadMenus()
                     }
                 })

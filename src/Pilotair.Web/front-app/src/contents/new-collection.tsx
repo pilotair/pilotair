@@ -17,7 +17,7 @@ export default function NewCollection({ name }: Props) {
     async function onSave() {
         await form.validateFields();
         const model = form.getFieldsValue();
-        await httpClient.post("/__api__/content-collection", model)
+        await httpClient.post("content-collection", model)
         await loadMenus()
         closeTab(name);
 
@@ -25,6 +25,12 @@ export default function NewCollection({ name }: Props) {
 
     return (
         <div className="p-4 pt-8 h-full flex flex-col">
+            <div className="flex items-center gap-2 flex-shrink-0">
+                <Button icon={<ReloadOutlined />}>Reset</Button>
+                <div className="flex-1"></div>
+                <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+            </div>
+            <Divider className="flex-shrink-0" />
             <Form
                 className="flex-1"
                 form={form}
@@ -52,13 +58,6 @@ export default function NewCollection({ name }: Props) {
                     </Form.List>
                 </Form.Item>
             </Form>
-            <div className="flex-shrink-0">
-                <Divider />
-                <div className="flex items-center gap-2">
-                    <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
-                    <Button icon={<ReloadOutlined />}>Reset</Button>
-                </div>
-            </div>
         </div>
     )
 }

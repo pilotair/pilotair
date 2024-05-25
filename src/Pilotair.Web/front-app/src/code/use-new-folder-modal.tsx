@@ -12,7 +12,7 @@ export function useNewFolderModal() {
 
     async function onFinish(value: { name: string }) {
 
-        await httpClient.post("/__api__/code/folder", undefined, {
+        await httpClient.post("code/folder", undefined, {
             searchParams: { path: value.name }
         });
 

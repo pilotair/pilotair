@@ -5,7 +5,7 @@ namespace Pilotair.Web.Controllers;
 
 public class ContentCollectionController(ContentCollectionStore collectionStore) : ApiController
 {
-    [HttpGet("/{name}")]
+    [HttpGet]
     public async Task<ContentCollection> GetAsync(string name)
     {
         var collection = await collectionStore.GetAsync(name);

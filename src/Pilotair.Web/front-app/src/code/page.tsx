@@ -21,14 +21,14 @@ export default function Code({ name, folder }: Props) {
 
     useEffect(() => {
         loading(async () => {
-            const response = await httpClient.get<Pilotair.Web.Codes.Code>("/__api__/code/", { name, folder });
+            const response = await httpClient.get<Pilotair.Web.Codes.Code>("code", { name, folder });
             if (response?.content) setContent(response.content)
         })
     }, [])
 
     async function onSave() {
         loading(async () => {
-            await httpClient.put("/__api__/code", {
+            await httpClient.put("code", {
                 content: newContent.current
             }, {
                 searchParams: {

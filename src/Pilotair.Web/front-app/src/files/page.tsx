@@ -64,7 +64,7 @@ export default function File() {
             title: "Are you sure delete?"
         })
         const entries = selectedFiles.map(m => m.name);
-        await httpClient.delete("/__api__/file", { entries, folder });
+        await httpClient.delete("file", { entries, folder });
         reload();
     }
 

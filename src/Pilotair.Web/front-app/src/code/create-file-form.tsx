@@ -16,7 +16,7 @@ export default function CreateFileForm({ path }: Props) {
     setOk(async () => {
         await form.validateFields();
         const value = form.getFieldsValue();
-        await httpClient.post("/__api__/code", {
+        await httpClient.post("code", {
             name: value.name
         }, {
             searchParams: { folder: path }

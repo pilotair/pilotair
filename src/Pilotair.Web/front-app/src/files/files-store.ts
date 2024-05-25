@@ -8,7 +8,7 @@ const folderAtom = atom("")
 
 export function useFile() {
     const [folder, setFolder] = useAtom(folderAtom);
-    const filesResponse = useSWR<Pilotair.Core.Stores.Files.Entry[]>(`/__api__/file?folder=${folder}`, fetcher)
+    const filesResponse = useSWR<Pilotair.Core.Stores.Files.Entry[]>(`file?folder=${folder}`, fetcher)
 
     return {
         folder,

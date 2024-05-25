@@ -1,3 +1,5 @@
+import { combine } from "./path";
+
 type SearchParams = Record<string, string | string[] | undefined>;
 
 interface SendParams {
@@ -67,25 +69,38 @@ function bodyStringify(contentType: string, body: unknown) {
     }
 }
 
-function createClient() {
+interface ClientOptions {
+    prefix?: string
+}
+
+function createClient(options?: ClientOptions) {
+    function wrapSend<T>(url: string, method: SupportMethods, sendParams?: SendParams) {
+        if (options?.prefix) {
+            url = combine(options.prefix, url)
+        }
+        return send<T>(url, method, sendParams)
+    }
+
     return {
         get<T>(url: string, searchParams?: SearchParams, sendParams?: Omit<SendParams, "body" | "searchParams">) {
-            return send<T>(url, "GET", { ...sendParams, searchParams })
+            return wrapSend<T>(url, "GET", { ...sendParams, searchParams })
         },
         post<T>(url: string, body?: unknown, sendParams?: Omit<SendParams, "body">) {
-            return send<T>(url, "POST", { ...sendParams, body })
+            return wrapSend<T>(url, "POST", { ...sendParams, body })
         },
         put<T>(url: string, body?: unknown, sendParams?: Omit<SendParams, "body">) {
-            return send<T>(url, "PUT", { ...sendParams, body })
+            return wrapSend<T>(url, "PUT", { ...sendParams, body })
         },
         delete<T>(url: string, searchParams?: SearchParams, sendParams?: Omit<SendParams, "body" | "searchParams">) {
-            return send<T>(url, "DELETE", { ...sendParams, searchParams })
+            return wrapSend<T>(url, "DELETE", { ...sendParams, searchParams })
         },
-        send
+        send: wrapSend
     }
 }
 
-export const httpClient = createClient();
+export const httpClient = createClient({
+    prefix: "/__api__/"
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const fetcher = (url: string): Promise<any> => httpClient.get(url);

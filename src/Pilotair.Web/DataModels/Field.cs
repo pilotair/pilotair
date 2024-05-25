@@ -6,5 +6,6 @@ public class Field
     public string? Display { get; set; }
     public required ControlTypes ControlType { get; set; }
     public bool IsArray { get; set; } = false;
-    public string? CollectionName { get; set; }
+    public string? Collection { get; set; }
+    public Dictionary<string, string>? Options { get; set; }
 }

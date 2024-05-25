@@ -18,7 +18,7 @@ export default function Contents({ name, display }: Props) {
     const { openTab } = useTabs()
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentPagingResult>("/__api__/content", {
+        httpClient.get<Pilotair.Web.Contents.ContentPagingResult>("content", {
             collection: name,
         }).then(rsp => setData(rsp!))
     }, [])
@@ -27,7 +27,9 @@ export default function Contents({ name, display }: Props) {
         openTab(
             `new-content/${name}`,
             `New ${display || name}`,
-            <AsyncComponent component={() => import("./new-content")} />,
+            <AsyncComponent component={() => import("./new-content")} props={{
+                collection: name
+            }} />,
             <FormOutlined />
         )
     }

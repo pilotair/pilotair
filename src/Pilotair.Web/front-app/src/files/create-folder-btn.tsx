@@ -16,7 +16,7 @@ export default function CreateFolderBtn() {
         const path = combine(fileStore.folder, value.name);
         
         await loading(async () => {
-            await httpClient.post("/__api__/file", undefined, {
+            await httpClient.post("file", undefined, {
                 searchParams: { path }
             });
         })
