@@ -32,7 +32,8 @@ export default function AsyncComponent({ component, props }: Props) {
 
     function wrapErrorBoundary() {
         return new Promise<Module>((resolve) => {
-            component().then(resolve).catch(() => {
+            component().then(resolve).catch((e) => {
+                console.error(e)
                 resolve({
                     default: ErrorFallback
                 })
