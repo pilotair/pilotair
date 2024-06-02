@@ -35,20 +35,19 @@ export default function NewCollection({ name }: Props) {
             </div>
             <Divider className="flex-shrink-0" />
             <Form
-                className="flex-1"
                 form={form}
-                labelCol={{ span: 2 }}
+                layout="vertical"
             >
-                <Form.Item label='Name' name="name" rules={[{ required: true }]} wrapperCol={{ span: 8 }}>
-                    <Input />
-                </Form.Item>
-                <Form.Item label='Display' name="display" wrapperCol={{ span: 8 }}>
-                    <Input />
-                </Form.Item>
-                <Form.Item label="Fields" rules={[{ required: true }]} wrapperCol={{ span: 18 }}>
-                    <Fields list={fields} setList={setFields} />
-                </Form.Item>
+                <div className="grid grid-cols-2 gap-4">
+                    <Form.Item label='Name' name="name" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label='Display' name="display">
+                        <Input />
+                    </Form.Item>
+                </div>
             </Form>
+            <Fields list={fields} setList={setFields} />
         </div>
     )
 }

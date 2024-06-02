@@ -1,4 +1,4 @@
-import { Form, Input, GetProps, Tabs } from "antd";
+import { Form, Input, GetProps, Tabs, Select } from "antd";
 import { useContext } from "react";
 import { ModalContext } from "../common/modal-context";
 import { Pilotair } from "../schema";
@@ -22,22 +22,32 @@ export default function NewFieldForm({ addField }: Props) {
     const items: TabItems = [{
         key: "basic",
         label: "Basic",
-        children: (
-            <Form form={form}>
-                <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Missing field name' }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item label="Display" name="display">
-                    <Input />
-                </Form.Item>
-            </Form>
-        )
+        children: <>
+            <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Missing field name' }]}>
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                label="Control"
+                rules={[{ required: true, message: 'Missing control type name' }]}
+            >
+                <Select placeholder="Control type" options={[{
+                    label: "TextBox",
+                    value: "TextBox"
+                }]} />
+            </Form.Item>
+        </>
     },
     {
         key: "advanced",
-        label: "Advanced"
+        label: "Advanced",
+        children: <>
+            <Form.Item label="Display" name="display">
+                <Input />
+            </Form.Item>
+        </>
     }]
 
 
-    return <Tabs items={items} />
+    return <Form form={form}><Tabs items={items} /></Form>
 }

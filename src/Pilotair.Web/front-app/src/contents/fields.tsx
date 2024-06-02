@@ -30,6 +30,8 @@ export default function Fields({ list, setList }: Props) {
 
     return <Table dataSource={list} size="small" pagination={false} columns={[
         { title: "Name", dataIndex: "name" },
+        { title: "Display", dataIndex: "display" },
+        { title: "Control", dataIndex: "controlType" },
         {
             title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={onAdd} />,
             render(value) {
