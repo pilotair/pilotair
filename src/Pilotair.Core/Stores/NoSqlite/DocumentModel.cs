@@ -10,7 +10,6 @@ public class DocumentModel
     public required long LastWriteTime { get; init; }
     public required string Data { get; init; }
     public required bool Enabled { get; init; }
-    public required bool Deleted { get; init; }
     public required string DataHash { get; init; }
 
     public Document<T> ToDocument<T>()
@@ -25,7 +24,6 @@ public class DocumentModel
             LastWriteTime = DateTimeOffset.FromUnixTimeMilliseconds(LastWriteTime),
             Data = data,
             Enabled = Enabled,
-            Deleted = Deleted,
             DataHash = DataHash,
         };
     }

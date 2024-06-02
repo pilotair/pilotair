@@ -28,7 +28,6 @@ public class Document<T>
         }
     }
     public bool Enabled { get; set; } = true;
-    public bool Deleted { get; set; } = false;
 
     [Range(1, 64)]
     public string DataHash

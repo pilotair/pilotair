@@ -31,7 +31,6 @@ public class Collection<T>
             LastWriteTime,
             json(Data) as Data,
             Enabled,
-            Deleted,
             DataHash,
             Note
         FROM {Name} WHERE Id=@Id LIMIT 1
@@ -72,7 +71,6 @@ public class Collection<T>
             LastWriteTime,
             Data,
             Enabled,
-            Deleted,
             DataHash,
             Note
         ) VALUES (
@@ -82,7 +80,6 @@ public class Collection<T>
             @LastWriteTime,
             jsonb(@Data),
             @Enabled,
-            @Deleted,
             @DataHash,
             @Note
         )
@@ -94,7 +91,6 @@ public class Collection<T>
             LastWriteTime = document.LastWriteTime.ToUnixTimeMilliseconds(),
             Data = JsonHelper.Serialize(document.Data),
             document.Enabled,
-            document.Deleted,
             document.DataHash,
             document.Note
         });
@@ -112,7 +108,6 @@ public class Collection<T>
         UPDATE {Name} 
         SET Data = jsonb(@Data),
             Enabled = @Enabled,
-            Deleted = @Deleted,
             DataHash = @DataHash,
             Note = @Note
         WHERE
@@ -122,7 +117,6 @@ public class Collection<T>
             document.Id,
             Data = JsonHelper.Serialize(document.Data),
             document.Enabled,
-            document.Deleted,
             document.DataHash,
             document.Note
         });
@@ -153,7 +147,6 @@ public class Collection<T>
             LastWriteTime INTEGER NOT NULL,
             Data BLOB NOT NULL CHECK(json_valid(Data,8)),
             Enabled INTEGER NOT NULL CHECK(Enabled IS TRUE OR Enabled IS FALSE),
-            Deleted INTEGER NOT NULL CHECK(Deleted IS TRUE OR Deleted IS FALSE),
             DataHash TEXT NOT NULL,
             Note TEXT
         );
@@ -178,9 +171,6 @@ public class Collection<T>
 
         CREATE INDEX IF NOT EXISTS {Name}_Enabled_INDEX
         ON {Name}(Enabled);
-
-        CREATE INDEX IF NOT EXISTS {Name}_Deleted_INDEX
-        ON {Name}(Deleted);
         """);
     }
 }
