@@ -1,4 +1,3 @@
-using Jint.Native;
 using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Stores.NoSqlite;
@@ -10,6 +9,9 @@ public class DocumentModel
     public required long CreationTime { get; init; }
     public required long LastWriteTime { get; init; }
     public required string Data { get; init; }
+    public required bool Enabled { get; init; }
+    public required bool Deleted { get; init; }
+    public required string DataHash { get; init; }
 
     public Document<T> ToDocument<T>()
     {
@@ -21,7 +23,10 @@ public class DocumentModel
             ParentId = ParentId,
             CreationTime = DateTimeOffset.FromUnixTimeMilliseconds(CreationTime),
             LastWriteTime = DateTimeOffset.FromUnixTimeMilliseconds(LastWriteTime),
-            Data = data
+            Data = data,
+            Enabled = Enabled,
+            Deleted = Deleted,
+            DataHash = DataHash,
         };
     }
 }

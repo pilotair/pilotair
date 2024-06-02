@@ -29,7 +29,11 @@ public class Collection<T>
             ParentId,
             CreationTime,
             LastWriteTime,
-            json(Data) as Data 
+            json(Data) as Data,
+            Enabled,
+            Deleted,
+            DataHash,
+            Note
         FROM {Name} WHERE Id=@Id LIMIT 1
         """, new { Id = id });
 
@@ -66,13 +70,21 @@ public class Collection<T>
             ParentId,
             CreationTime,
             LastWriteTime,
-            Data
+            Data,
+            Enabled,
+            Deleted,
+            DataHash,
+            Note
         ) VALUES (
             @Id, 
             @ParentId,
             @CreationTime,
             @LastWriteTime,
-            jsonb(@Data)
+            jsonb(@Data),
+            @Enabled,
+            @Deleted,
+            @DataHash,
+            @Note
         )
         """, new
         {
@@ -80,7 +92,11 @@ public class Collection<T>
             document.ParentId,
             CreationTime = document.CreationTime.ToUnixTimeMilliseconds(),
             LastWriteTime = document.LastWriteTime.ToUnixTimeMilliseconds(),
-            Data = JsonHelper.Serialize(document.Data)
+            Data = JsonHelper.Serialize(document.Data),
+            document.Enabled,
+            document.Deleted,
+            document.DataHash,
+            document.Note
         });
     }
 
@@ -94,13 +110,21 @@ public class Collection<T>
         using var connection = Connection;
         await connection.ExecuteAsync($"""
         UPDATE {Name} 
-        SET Data = jsonb(@Data)
+        SET Data = jsonb(@Data),
+            Enabled = @Enabled,
+            Deleted = @Deleted,
+            DataHash = @DataHash,
+            Note = @Note
         WHERE
             Id = @Id
         """, new
         {
             document.Id,
-            Data = JsonHelper.Serialize(document.Data)
+            Data = JsonHelper.Serialize(document.Data),
+            document.Enabled,
+            document.Deleted,
+            document.DataHash,
+            document.Note
         });
     }
 
@@ -127,7 +151,11 @@ public class Collection<T>
             ParentId TEXT,
             CreationTime INTEGER NOT NULL,
             LastWriteTime INTEGER NOT NULL,
-            Data BLOB NOT NULL CHECK(json_valid(Data,8))
+            Data BLOB NOT NULL CHECK(json_valid(Data,8)),
+            Enabled INTEGER NOT NULL CHECK(Enabled IS TRUE OR Enabled IS FALSE),
+            Deleted INTEGER NOT NULL CHECK(Deleted IS TRUE OR Deleted IS FALSE),
+            DataHash TEXT NOT NULL,
+            Note TEXT
         );
 
         CREATE TRIGGER IF NOT EXISTS {Name}_TRIGGER
@@ -139,8 +167,20 @@ public class Collection<T>
             WHERE Id = OLD.Id;
         END;
 
-        CREATE INDEX IF NOT EXISTS {Name}_INDEX
-        ON {Name}(ParentId,CreationTime,LastWriteTime);
+        CREATE INDEX IF NOT EXISTS {Name}_ParentId_INDEX
+        ON {Name}(ParentId);
+
+        CREATE INDEX IF NOT EXISTS {Name}_CreationTime_INDEX
+        ON {Name}(CreationTime);
+
+        CREATE INDEX IF NOT EXISTS {Name}_LastWriteTime_INDEX
+        ON {Name}(LastWriteTime);
+
+        CREATE INDEX IF NOT EXISTS {Name}_Enabled_INDEX
+        ON {Name}(Enabled);
+
+        CREATE INDEX IF NOT EXISTS {Name}_Deleted_INDEX
+        ON {Name}(Deleted);
         """);
     }
 }

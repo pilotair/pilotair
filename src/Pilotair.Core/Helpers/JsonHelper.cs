@@ -28,6 +28,11 @@ public static class JsonHelper
         return JsonSerializer.Serialize(value, defaultOptions);
     }
 
+    public static void Serialize(Stream stream, object value)
+    {
+        JsonSerializer.Serialize(stream, value, defaultOptions);
+    }
+
     public static async ValueTask<T?> DeserializeAsync<T>(string path, CancellationToken token = default)
     {
         using var stream = new FileStream(path, FileMode.Open);

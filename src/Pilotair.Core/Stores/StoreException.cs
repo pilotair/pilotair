@@ -1,5 +1,10 @@
 namespace Pilotair.Core.Stores;
 
+public class DataCanNotBeNullException : PilotairException
+{
+
+}
+
 public class DocumentNotFoundException : PilotairException
 {
 
