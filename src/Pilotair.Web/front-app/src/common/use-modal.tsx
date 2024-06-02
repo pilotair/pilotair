@@ -38,9 +38,9 @@ export function useModal(props?: ModalProps) {
     function openModal(props: ModalProps) {
         const WrappedModal = createModal();
         let wrappedModal: ModalHandle | null
-        let onOk: () => Promise<void>
+        let onOk: () => Promise<void> | void
 
-        const modal = <ModalContext.Provider value={{ setOk: (e: () => Promise<void>) => onOk = e }} key={id}>
+        const modal = <ModalContext.Provider value={{ setOk: (e) => onOk = e }} key={id}>
             <WrappedModal
                 afterClose={() => {
                     setModals(modals.filter(f => f != modal))

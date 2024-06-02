@@ -1,11 +1,11 @@
-import { PlusOutlined, ReloadOutlined, SaveOutlined } from "@ant-design/icons"
+import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Divider, Form, Input } from "antd"
 import { httpClient } from "../utils/request";
 import { useTabs } from "../workspace/tabs";
 import { useMenu } from "../workspace/menu";
-import { useContext } from "react";
-import { TabContext } from "../common/tab/tab-panel";
-import NewFieldForm from "./new-field-form";
+import { useState } from "react";
+import { Pilotair } from "../schema";
+import Fields from "./fields";
 
 interface Props {
     name: string
@@ -15,7 +15,8 @@ export default function NewCollection({ name }: Props) {
     const [form] = Form.useForm<{ name: string }>();
     const { closeTab } = useTabs();
     const { loadMenus } = useMenu();
-    const { openModal } = useContext(TabContext)
+
+    const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
 
     async function onSave() {
         await form.validateFields();
@@ -25,15 +26,8 @@ export default function NewCollection({ name }: Props) {
         closeTab(name);
     }
 
-    function addField() {
-        openModal({
-            title: "New field",
-            children: <NewFieldForm />
-        })
-    }
-
     return (
-        <div className="p-4 pt-8 h-full flex flex-col">
+        <div className="p-4 h-full flex flex-col space-y-4">
             <div className="flex items-center gap-2 flex-shrink-0">
                 <Button icon={<ReloadOutlined />}>Reset</Button>
                 <div className="flex-1"></div>
@@ -52,7 +46,7 @@ export default function NewCollection({ name }: Props) {
                     <Input />
                 </Form.Item>
                 <Form.Item label="Fields" rules={[{ required: true }]} wrapperCol={{ span: 18 }}>
-                    <Button type="primary" shape="circle" icon={<PlusOutlined />} onClick={addField} />
+                    <Fields list={fields} setList={setFields} />
                 </Form.Item>
             </Form>
         </div>
