@@ -2,6 +2,7 @@ import { Form, Input, GetProps, Tabs, Select } from "antd";
 import { useContext } from "react";
 import { ModalContext } from "../common/modal-context";
 import { Pilotair } from "../schema";
+import { useControls } from "../common/data-model";
 
 type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>
 
@@ -12,6 +13,7 @@ interface Props {
 export default function NewFieldForm({ addField }: Props) {
     const { setOk } = useContext(ModalContext);
     const [form] = Form.useForm<Pilotair.Web.DataModels.Field>();
+    const { controls } = useControls();
 
     setOk(async () => {
         await form.validateFields();
@@ -29,12 +31,13 @@ export default function NewFieldForm({ addField }: Props) {
 
             <Form.Item
                 label="Control"
+                name="controlType"
                 rules={[{ required: true, message: 'Missing control type name' }]}
             >
-                <Select placeholder="Control type" options={[{
-                    label: "TextBox",
-                    value: "TextBox"
-                }]} />
+                <Select placeholder="Control type" options={controls.map(m => ({
+                    label: m,
+                    value: m
+                }))} />
             </Form.Item>
         </>
     },

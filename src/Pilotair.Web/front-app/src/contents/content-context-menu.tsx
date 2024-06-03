@@ -25,8 +25,8 @@ export default function ContentContextMenu({ children, path, name }: Props) {
             case "edit":
                 openTab(
                     path,
-                    "Edit collection",
-                    <AsyncComponent component={() => import("./new-collection")} />,
+                    `Edit ${name}`,
+                    <AsyncComponent component={() => import("./edit-collection")} props={{ name, path }} />,
                     <FormOutlined />
                 )
                 break;

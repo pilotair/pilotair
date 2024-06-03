@@ -21,7 +21,7 @@ export default function ContentsContextMenu({ children, path }: Props) {
                     path,
                     "New collection",
                     <AsyncComponent component={() => import("./new-collection")} props={{
-                        name: path
+                        path
                     }} />,
                     <FormOutlined />
                 )
