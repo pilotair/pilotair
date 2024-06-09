@@ -1,10 +1,10 @@
-using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.Json;
+using Pilotair.Web.Projects;
 
 namespace Pilotair.Web.Contents;
 
-[Singleton]
-public class ContentCollectionStore(IOptions<PilotairOptions> options)
-    : JsonStore<ContentCollection>(options.Value.DataPath, Constants.CONTENT_COLLECTIONS_FOLDER)
+[Scoped]
+public class ContentCollectionStore(ProjectAccessor projectAccessor)
+    : JsonStore<ContentCollection>(projectAccessor.Path, Constants.CONTENT_COLLECTIONS_FOLDER)
 {
 }

@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function AsyncComponent({ component, props }: Props) {
-    const [Component, setComponent] = useState<LazyComponent>(lazy(wrapErrorBoundary))
+    const [Component, setComponent] = useState<LazyComponent>(lazy(withErrorBoundary))
 
     const ErrorFallback = () => (
         <div className="h-full flex items-center justify-center">
@@ -22,7 +22,11 @@ export default function AsyncComponent({ component, props }: Props) {
                 status="500"
                 title="Sorry, something went wrong."
                 extra={
-                    <Button icon={<ReloadOutlined />} type="primary" onClick={() => setComponent(lazy(wrapErrorBoundary))}>
+                    <Button
+                        icon={<ReloadOutlined />}
+                        type="primary"
+                        onClick={() => setComponent(lazy(withErrorBoundary))}
+                    >
                         Reload
                     </Button>
                 }
@@ -30,15 +34,14 @@ export default function AsyncComponent({ component, props }: Props) {
         </div>
     )
 
-    function wrapErrorBoundary() {
-        return new Promise<Module>((resolve) => {
-            component().then(resolve).catch((e) => {
-                console.error(e)
-                resolve({
-                    default: ErrorFallback
-                })
-            })
-        })
+    async function withErrorBoundary() {
+        try {
+            return await component();
+        } catch (error) {
+            return {
+                default: ErrorFallback
+            }
+        }
     }
 
     return <Suspense fallback={<Loading />} children={<Component {...props} />} />

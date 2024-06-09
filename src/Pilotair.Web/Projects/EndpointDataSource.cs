@@ -2,17 +2,17 @@ using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.Primitives;
 
-namespace Pilotair.Web.Endpoint;
+namespace Pilotair.Web.Projects;
 
-public class CodeEndpointDataSource : EndpointDataSource
+public class ProjectEndpointDataSource : EndpointDataSource
 {
-    private readonly ConcurrentDictionary<string, Microsoft.AspNetCore.Http.Endpoint> endpoints = [];
+    private readonly ConcurrentDictionary<string, Endpoint> endpoints = [];
     private IChangeToken _changeToken;
     private CancellationTokenSource _cancellationTokenSource;
-    public override IReadOnlyList<Microsoft.AspNetCore.Http.Endpoint> Endpoints => [.. endpoints.Values];
+    public override IReadOnlyList<Endpoint> Endpoints => [.. endpoints.Values];
     public override IChangeToken GetChangeToken() => _changeToken;
 
-    public CodeEndpointDataSource()
+    public ProjectEndpointDataSource()
     {
         _cancellationTokenSource = new CancellationTokenSource();
         _changeToken = new CancellationChangeToken(_cancellationTokenSource.Token);

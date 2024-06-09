@@ -2,10 +2,8 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using Pilotair.Web.Codes;
-using Pilotair.Web.Files;
+using Pilotair.Web.Projects;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +47,6 @@ builder.Services.AddSwaggerGen(options =>
         return schema.Namespace + '.' + name;
     });
 });
-builder.Services.AddCodesRouting();
 
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
 {
@@ -75,14 +72,14 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCodesRouting();
+app.UseProjects();
 
-var fileService = app.Services.GetRequiredService<FileService>();
+// var fileService = app.Services.GetRequiredService<FileService>();
 
-app.UseFileServer(new FileServerOptions
-{
-    FileProvider = new PhysicalFileProvider(fileService.BasePath)
-});
+// app.UseFileServer(new FileServerOptions
+// {
+//     FileProvider = new PhysicalFileProvider(fileService.BasePath)
+// });
 
 var pilotairOptions = app.Services.GetRequiredService<IOptions<PilotairOptions>>();
 Console.WriteLine($"Data root path: {pilotairOptions.Value.DataPath}");
@@ -91,7 +88,6 @@ app.UseFileServer(new FileServerOptions
 {
     RequestPath = "/__admin__"
 });
-app.Services.GetServices<PilotairStore>();
 app.MapControllers();
 app.Run();
 

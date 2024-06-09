@@ -10,7 +10,6 @@ public class UrlModuleCacheStore(IOptions<PilotairOptions> options) : IUrlModule
     private readonly string folder = Path.Combine(options.Value.DataPath, Constants.URL_MODULES_CACHE);
     public void AddCode(Uri uri, string code)
     {
-
         var path = UriToPath(uri);
         IoHelper.EnsureDirectoryExist(Path.GetDirectoryName(path)!);
         System.IO.File.WriteAllText(path, code);

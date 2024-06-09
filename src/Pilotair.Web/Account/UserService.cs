@@ -2,7 +2,7 @@ using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.Web.Account;
 
-[Singleton]
+[Scoped]
 public class UserService(PilotairStore store)
 {
     public async Task AddAsync(User user)

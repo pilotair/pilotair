@@ -2,7 +2,7 @@ using Pilotair.Web.Menus;
 
 namespace Pilotair.Web.Contents;
 
-[Singleton]
+[Scoped]
 public class ContentCollectionService(ContentCollectionStore collectionStore) : IMenuProvider
 {
     public async Task<IEnumerable<MenuItem>> GetMenuItemsAsync(string currentPath = "")

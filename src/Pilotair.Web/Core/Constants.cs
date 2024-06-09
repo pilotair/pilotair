@@ -3,6 +3,7 @@ namespace Pilotair.Web;
 public class Constants
 {
     public const string DATA_PATH = "data";
+    public const string PROJECTS_FOLDER = "projects";
     public const string CODES_FOLDER = "codes";
     public const string FILES_FOLDER = "files";
     public const string CONTENT_COLLECTIONS_FOLDER = "content-collections";

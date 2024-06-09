@@ -1,21 +1,24 @@
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.Files;
+using Pilotair.Web.Projects;
 
 namespace Pilotair.Web.Files;
 
-[Singleton]
+[Scoped]
 public class FileService
 {
     private readonly string basePath;
-    private readonly PilotairOptions options;
     private readonly FileStore store;
     protected virtual string Folder { get; } = Constants.FILES_FOLDER;
     public string BasePath => basePath;
 
-    public FileService(IOptions<PilotairOptions> options)
+    public FileService(ProjectAccessor projectAccessor)
     {
-        this.options = options.Value;
-        basePath = Path.Combine(this.options.DataPath, Folder);
+        if (string.IsNullOrWhiteSpace(projectAccessor.Path))
+        {
+            throw new ProjectNotFoundException();
+        }
+        basePath = Path.Combine(projectAccessor.Path, Folder);
         store = new FileStore(basePath);
     }
 

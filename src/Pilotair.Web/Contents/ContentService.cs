@@ -2,7 +2,7 @@ using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.Web.Contents;
 
-[Singleton]
+[Scoped]
 public class ContentService(ContentCollectionStore collectionStore, ContentStore contentStore)
 {
     public async Task<Document<IDictionary<string, object>>> GetContentAsync(string collection, string id)
