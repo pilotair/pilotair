@@ -77,7 +77,7 @@ function Sider() {
                 </div>
                 <div className="flex flex-1 flex-col items-center cursor-pointer hover:bg-slate-50/10 p-2" onClick={onMoreClick}>
                     <AppstoreOutlined className="text-xl" />
-                    <span className="text-xs transform scale-75">MORE</span>
+                    <span className="text-xs transform scale-75">More</span>
                 </div>
             </div>
         </div>

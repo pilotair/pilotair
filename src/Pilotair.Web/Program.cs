@@ -76,7 +76,7 @@ await bindingService.LoadAsync();
 
 // app.UseHttpsRedirection();
 app.UseRouting();
-app.UseProjects();
+await app.UseProjectsAsync();
 
 app.UseFileServer(new FileServerOptions
 {

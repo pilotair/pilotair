@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Pilotair.Core.Stores.NoSqlite;
 
 namespace Pilotair.Web.Bindings;
@@ -27,5 +28,23 @@ public class BindingService(PilotairStore pilotairStore)
         }
 
         return null;
+    }
+
+    public async Task AddAsync(string project, string host)
+    {
+        var result = await pilotairStore.Binding.AddDocumentAsync(new Document<Binding>
+        {
+            Data = new Binding
+            {
+                Host = host,
+                Project = project
+            }
+        });
+        cache.Add(result);
+    }
+
+    public async Task<Document<Binding>?> GetAsync(string project, string host)
+    {
+        return await pilotairStore.Binding.Query.Where("project", "www").Where("host", "*").FirstOrDefaultAsync();
     }
 }

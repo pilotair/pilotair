@@ -55,7 +55,7 @@ public class Collection<T>
         return doc;
     }
 
-    public async Task AddDocumentAsync(Document<T> document)
+    public async Task<Document<T>> AddDocumentAsync(Document<T> document)
     {
         if (document.Data is null)
         {
@@ -63,7 +63,7 @@ public class Collection<T>
         }
 
         using var connection = Connection;
-        await connection.ExecuteAsync($"""
+        var returnModel = await connection.QueryFirstAsync<DocumentModel>($"""
         INSERT INTO {Name} (
             Id,
             ParentId,
@@ -83,6 +83,15 @@ public class Collection<T>
             @DataHash,
             @Note
         )
+        RETURNING 
+            Id,
+            ParentId,
+            CreationTime,
+            LastWriteTime,
+            json(Data) as Data,
+            Enabled,
+            DataHash,
+            Note
         """, new
         {
             document.Id,
@@ -94,9 +103,11 @@ public class Collection<T>
             document.DataHash,
             document.Note
         });
+
+        return returnModel.ToDocument<T>();
     }
 
-    public async Task UpdateDocumentAsync(Document<T> document)
+    public async Task<Document<T>> UpdateDocumentAsync(Document<T> document)
     {
         if (document.Data is null)
         {
@@ -104,7 +115,7 @@ public class Collection<T>
         }
 
         using var connection = Connection;
-        await connection.ExecuteAsync($"""
+        var returnModel = await connection.QueryFirstAsync<DocumentModel>($"""
         UPDATE {Name} 
         SET Data = jsonb(@Data),
             Enabled = @Enabled,
@@ -112,6 +123,15 @@ public class Collection<T>
             Note = @Note
         WHERE
             Id = @Id
+        RETURNING 
+            Id,
+            ParentId,
+            CreationTime,
+            LastWriteTime,
+            json(Data) as Data,
+            Enabled,
+            DataHash,
+            Note
         """, new
         {
             document.Id,
@@ -120,6 +140,7 @@ public class Collection<T>
             document.DataHash,
             document.Note
         });
+        return returnModel.ToDocument<T>();
     }
 
     public async Task RemoveDocumentAsync(string id)
