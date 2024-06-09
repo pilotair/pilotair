@@ -4,7 +4,7 @@ using Pilotair.Web.Projects;
 namespace Pilotair.Web.Contents;
 
 [Scoped]
-public class ContentCollectionStore(ProjectAccessor projectAccessor)
-    : JsonStore<ContentCollection>(projectAccessor.Path, Constants.CONTENT_COLLECTIONS_FOLDER)
+public class ContentCollectionStore(ProjectContext context)
+    : JsonStore<ContentCollection>(context.Path, Constants.CONTENT_COLLECTIONS_FOLDER)
 {
 }

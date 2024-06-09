@@ -7,8 +7,8 @@ namespace Pilotair.Web;
 [Scoped]
 public class ContentStore : NoSqliteStore
 {
-    public ContentStore(ProjectAccessor accessor)
-        : base(Path.Combine(accessor.Path, Constants.STORES_FOLDER, "content.db"))
+    public ContentStore(ProjectContext context)
+        : base(Path.Combine(context.Path, Constants.STORES_FOLDER, "content.db"))
     {
 
     }

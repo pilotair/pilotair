@@ -28,7 +28,7 @@ public class NoSqliteStore
         connectionString = builder.ToString();
     }
 
-    public Collection<T> Get<T>() where T : new()
+    public Collection<T> Get<T>()
     {
         if (!collections.TryGetValue(typeof(T).Name, out var collection))
         {
@@ -48,7 +48,7 @@ public class NoSqliteStore
         return collection;
     }
 
-    public Collection<T> GetOrCreate<T>() where T : new()
+    public Collection<T> GetOrCreate<T>()
     {
         return collections.GetOrAdd(typeof(T).Name, (name) => new Collection<T>(connectionString));
     }

@@ -46,11 +46,21 @@ public class ProjectService(
 
         var project = new Project
         {
-            Path = options.Value.DataPath,
+            Path = name,
             Name = name,
             Endpoints = endpoints
         };
 
         return project;
+    }
+
+    public Project? Get(string name)
+    {
+        if (projects.TryGetValue(name, out var project))
+        {
+            return project;
+        }
+
+        return null;
     }
 }

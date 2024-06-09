@@ -22,11 +22,10 @@ public static class ProjectExtensions
         foreach (var path in paths)
         {
             using var scope = services.CreateScope();
-            var projectAccessor = scope.ServiceProvider.GetRequiredService<ProjectAccessor>();
-            projectAccessor.Path = path;
+            var projectContext = scope.ServiceProvider.GetRequiredService<ProjectContext>();
+            projectContext.Path=path;
             var projectService = routeBuilder.ServiceProvider.GetRequiredService<ProjectService>();
             var project = projectService.Load(path, scope);
-            projectAccessor.Project = project;
             routeBuilder.DataSources.Add(project.Endpoints);
             project.Endpoints.Reload();
         }

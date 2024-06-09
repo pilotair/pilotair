@@ -1,18 +1,17 @@
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.NoSqlite;
-using Pilotair.Web.Account;
-using Pilotair.Web.Projects;
+using Pilotair.Web.Bindings;
 
 namespace Pilotair.Web;
 
-[Scoped]
+[Singleton]
 public class PilotairStore : NoSqliteStore
 {
-    public PilotairStore(ProjectAccessor projectAccessor)
-        : base(Path.Combine(projectAccessor.Path, Constants.STORES_FOLDER, "pilotair.db"))
+    public PilotairStore(IOptions<PilotairOptions> options)
+        : base(Path.Combine(options.Value.DataPath, Constants.STORES_FOLDER, "pilotair.db"))
     {
-        User = GetOrCreate<User>();
+        Binding = GetOrCreate<Binding>();
     }
 
-    public Collection<User> User { get; init; }
+    public Collection<Binding> Binding { get; init; }
 }

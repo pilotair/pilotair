@@ -3,6 +3,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Options;
+using Pilotair.Web.Bindings;
+using Pilotair.Web.Files;
 using Pilotair.Web.Projects;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,17 +71,17 @@ if (app.Environment.IsDevelopment())
     var frontApp = app.Services.GetRequiredService<FrontApp>();
     frontApp.GenerateApiSchema();
 }
+var bindingService = app.Services.GetRequiredService<BindingService>();
+await bindingService.LoadAsync();
 
 // app.UseHttpsRedirection();
 app.UseRouting();
 app.UseProjects();
 
-// var fileService = app.Services.GetRequiredService<FileService>();
-
-// app.UseFileServer(new FileServerOptions
-// {
-//     FileProvider = new PhysicalFileProvider(fileService.BasePath)
-// });
+app.UseFileServer(new FileServerOptions
+{
+    FileProvider = new FileProvider(app.Services.GetRequiredService<IHttpContextAccessor>()),
+});
 
 var pilotairOptions = app.Services.GetRequiredService<IOptions<PilotairOptions>>();
 Console.WriteLine($"Data root path: {pilotairOptions.Value.DataPath}");

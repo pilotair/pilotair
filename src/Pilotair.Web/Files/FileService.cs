@@ -12,13 +12,13 @@ public class FileService
     protected virtual string Folder { get; } = Constants.FILES_FOLDER;
     public string BasePath => basePath;
 
-    public FileService(ProjectAccessor projectAccessor)
+    public FileService(ProjectContext projectContext)
     {
-        if (string.IsNullOrWhiteSpace(projectAccessor.Path))
+        if (string.IsNullOrWhiteSpace(projectContext.Path))
         {
             throw new ProjectNotFoundException();
         }
-        basePath = Path.Combine(projectAccessor.Path, Folder);
+        basePath = Path.Combine(projectContext.Path, Folder);
         store = new FileStore(basePath);
     }
 
