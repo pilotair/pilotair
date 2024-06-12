@@ -32,13 +32,10 @@ public class BindingService(PilotairStore pilotairStore)
 
     public async Task AddAsync(string project, string host)
     {
-        var result = await pilotairStore.Binding.AddDocumentAsync(new Document<Binding>
+        var result = await pilotairStore.Binding.AddDocumentAsync(new Binding
         {
-            Data = new Binding
-            {
-                Host = host,
-                Project = project
-            }
+            Host = host,
+            Project = project
         });
         cache.Add(result);
     }

@@ -63,4 +63,9 @@ public class ProjectService(
 
         return null;
     }
+
+    public IEnumerable<ProjectModel> List()
+    {
+        return projects.Values.Select(s => new ProjectModel(s)).ToArray();
+    }
 }
