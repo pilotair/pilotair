@@ -9,12 +9,14 @@ import AsyncComponent from "../common/async-component";
 import Empty from "../common/empty";
 import { AppstoreOutlined, ClusterOutlined, SettingOutlined } from "@ant-design/icons";
 import { SiderLayoutContext } from "../common/layout/sider-layout-context";
+import { useNavigate } from "react-router-dom";
 
 
 function Sider() {
     const { menus, loadMenus } = useMenu();
     const { collapsed } = useContext(SiderLayoutContext)
     const { openTab, activeName } = useTabs();
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -67,7 +69,7 @@ function Sider() {
                 {menu}
             </div>
             <div className={"flex-shrink-0 text-slate-200 grid " + (collapsed ? "grid-cols-1" : "grid-cols-3")} >
-                <div className="flex flex-1 flex-col items-center cursor-pointer hover:bg-slate-50/10 p-2">
+                <div className="flex flex-1 flex-col items-center cursor-pointer hover:bg-slate-50/10 p-2" onClick={() => navigate('/')}>
                     <ClusterOutlined className="text-xl" />
                     <span className="text-xs transform scale-75">Projects</span>
                 </div>
