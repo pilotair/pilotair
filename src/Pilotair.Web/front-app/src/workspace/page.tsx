@@ -58,7 +58,7 @@ function Sider() {
         openTab(
             "features",
             "Features",
-            <AsyncComponent component={() => import("../feature/page")} />,
+            <AsyncComponent component={() => import("./feature/page")} />,
             <AppstoreOutlined />
         )
     }

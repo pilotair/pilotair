@@ -1,11 +1,11 @@
 import { DeleteOutlined, FileAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
-import { GlobalModalContext } from "../common/global-modal";
+import { GlobalModalContext } from "../../common/global-modal";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
-import { httpClient } from "../utils/request";
-import { useMenu } from "../workspace/menu";
+import { httpClient } from "../../utils/request";
+import { useMenu } from "../../workspace/menu";
 
 interface Props {
     children: ReactNode,

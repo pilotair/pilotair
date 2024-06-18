@@ -1,12 +1,12 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Divider, Form, Input } from "antd"
-import { httpClient } from "../utils/request";
-import { useTabs } from "../workspace/tabs";
-import { useMenu } from "../workspace/menu";
+import { httpClient } from "../../utils/request";
+import { useTabs } from "../../workspace/tabs";
+import { useMenu } from "../../workspace/menu";
 import { useEffect, useState } from "react";
-import { Pilotair } from "../schema";
+import { Pilotair } from "../../schema";
 import Fields from "./fields";
-import Empty from "../common/empty";
+import Empty from "../../common/empty";
 
 interface Props {
     name: string,

@@ -4,7 +4,7 @@ import LogoIcon from "../../assets/logo.svg"
 import { ClusterOutlined, GlobalOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
 
-export default function MainLayout() {
+export default function ContainerLayout() {
     const { Content, Header } = Layout
     const matches = useMatches()
     const navigate = useNavigate()

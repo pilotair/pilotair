@@ -1,8 +1,8 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Pilotair } from "../schema";
+import { Pilotair } from "../../schema";
 import { Button, Table } from "antd";
 import { useContext } from "react";
-import { TabContext } from "../common/tab/tab-panel";
+import { TabContext } from "../../common/tab/tab-panel";
 import NewFieldForm from "./new-field-form";
 
 interface Props {

@@ -1,5 +1,5 @@
 import { Input, InputNumber, Switch } from "antd";
-import { Pilotair } from "../schema";
+import { Pilotair } from "../../schema";
 
 interface Props {
     type: Pilotair.Web.DataModels.ControlTypes,

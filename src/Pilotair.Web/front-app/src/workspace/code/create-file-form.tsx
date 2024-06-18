@@ -1,8 +1,8 @@
 import { Form, Input } from "antd"
-import { httpClient } from "../utils/request";
+import { httpClient } from "../../utils/request";
 import { useContext } from "react";
-import { ModalContext } from "../common/modal-context";
-import { useMenu } from "../workspace/menu";
+import { ModalContext } from "../../common/modal-context";
+import { useMenu } from "../../workspace/menu";
 
 interface Props {
     path: string

@@ -2,10 +2,10 @@ import { ReactNode, useCallback } from "react"
 import { atom, useAtom } from "jotai"
 import { httpClient } from "../utils/request"
 import { Pilotair } from "../schema"
-import { getCodeFolderMenu, getCodeMenu, getCodesMenu } from "../code/code-menu"
+import { getCodeFolderMenu, getCodeMenu, getCodesMenu } from "./code/code-menu"
 import { ControlOutlined, FolderOutlined } from "@ant-design/icons"
 import AsyncComponent from "../common/async-component"
-import { getContentCollectionMenu, getContentsMenu } from "../contents/content-menu"
+import { getContentCollectionMenu, getContentsMenu } from "./contents/content-menu"
 
 export type MenuItem = {
     key: string,
@@ -62,7 +62,7 @@ function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
                 key: menu.type,
                 label: "Files",
                 icon: <FolderOutlined />,
-                tab: <AsyncComponent component={() => import("../files/page")} />,
+                tab: <AsyncComponent component={() => import("./files/page")} />,
             };
         case "Contents":
             return getContentsMenu(menu)

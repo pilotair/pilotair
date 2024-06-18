@@ -1,30 +1,40 @@
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, FormOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
-import { GlobalModalContext } from "../common/global-modal";
-import { httpClient } from "../utils/request";
-import { useMenu } from "../workspace/menu";
+import { GlobalModalContext } from "../../common/global-modal";
+import { httpClient } from "../../utils/request";
+import { useMenu } from "../../workspace/menu";
+import { useTabs } from "../../workspace/tabs";
+import AsyncComponent from "../../common/async-component";
 
 interface Props {
     children: ReactNode,
-    path: string
+    path: string,
+    name: string
 }
 
-export default function CodeContextMenu({ children, path }: Props) {
+export default function ContentContextMenu({ children, path, name }: Props) {
     const { modal } = useContext(GlobalModalContext)
     const { loadMenus } = useMenu()
+    const { openTab } = useTabs()
 
     function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();
 
         switch (key) {
+            case "edit":
+                openTab(
+                    path,
+                    `Edit ${name}`,
+                    <AsyncComponent component={() => import("./edit-collection")} props={{ name, path }} />,
+                    <FormOutlined />
+                )
+                break;
             case "delete":
                 modal.confirm({
                     title: "Are you sure delete?",
                     onOk: async () => {
-                        await httpClient.delete("code", {
-                            paths: [path]
-                        });
+                        await httpClient.delete(`content-collection?name=${name}`);
                         loadMenus()
                     }
                 })
@@ -36,6 +46,12 @@ export default function CodeContextMenu({ children, path }: Props) {
 
     const menu: MenuProps = {
         items: [
+            {
+                key: "edit",
+                label: <span>Edit collection</span>,
+                icon: <EditOutlined />,
+                title: ""
+            },
             {
                 key: "delete",
                 label: <span className="text-red-500">Delete</span>,

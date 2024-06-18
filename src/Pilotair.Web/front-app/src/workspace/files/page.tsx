@@ -6,10 +6,10 @@ import CreateFolderBtn from "./create-folder-btn"
 import UploadFilesBtn from "./upload-files-btn"
 import { DeleteOutlined } from "@ant-design/icons"
 import FolderBreadcrumb from "./folder-breadcrumb"
-import { httpClient } from "../utils/request"
-import { TabContext } from "../common/tab/tab-panel"
-import Empty from "../common/empty"
-import { Pilotair} from "../schema"
+import { httpClient } from "../../utils/request"
+import { TabContext } from "../../common/tab/tab-panel"
+import Empty from "../../common/empty"
+import { Pilotair} from "../../schema"
 
 export default function File() {
     const { folder, files, openFolder, loading, reload } = useFile();

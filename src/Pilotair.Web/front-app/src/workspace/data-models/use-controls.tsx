@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
-import { httpClient } from "../utils/request";
+import { httpClient } from "../../utils/request";
 
 const controlsAtom = atom<string[]>([]);
 
