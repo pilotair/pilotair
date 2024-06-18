@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { Pilotair } from "../../schema"
-import { httpClient } from "../../utils/request";
-import Empty from "../../common/empty";
+import { Pilotair } from "@/schema"
+import { httpClient } from "@/utils/request";
+import Empty from "@/common/empty";
 import { Table, GetProp } from "antd";
 
 type Columns = GetProp<typeof Table, "columns">

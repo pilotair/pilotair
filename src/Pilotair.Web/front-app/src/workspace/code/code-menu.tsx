@@ -1,9 +1,9 @@
-import { Pilotair } from "../../schema";
+import { Pilotair } from "@/schema";
 import FolderContextMenu from "./folder-context-menu";
 import { FunctionOutlined } from "@ant-design/icons";
-import { MenuItem } from "../../workspace/menu";
+import { MenuItem } from "@/workspace/menu";
 import CodeContextMenu from "./code-context-menu";
-import AsyncComponent from "../../common/async-component";
+import AsyncComponent from "@/common/async-component";
 
 export function getCodesMenu(menu: Pilotair.Web.MenuItem): MenuItem {
     return {

@@ -1,8 +1,8 @@
 import { FormOutlined, PlusOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode } from "react";
-import { useTabs } from "../../workspace/tabs";
-import AsyncComponent from "../../common/async-component";
+import { useTabs } from "@/workspace/tabs";
+import AsyncComponent from "@/common/async-component";
 
 interface Props {
     children: ReactNode,

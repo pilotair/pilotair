@@ -1,10 +1,10 @@
 import { FormOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Divider, Empty, GetProp, Input, Table } from "antd"
 import { useEffect, useState } from "react";
-import { Pilotair } from "../../schema";
-import { httpClient } from "../../utils/request";
-import { useTabs } from "../../workspace/tabs";
-import AsyncComponent from "../../common/async-component";
+import { Pilotair } from "@/schema";
+import { httpClient } from "@/utils/request";
+import { useTabs } from "@/workspace/tabs";
+import AsyncComponent from "@/common/async-component";
 
 type Columns = GetProp<typeof Table, "columns">
 interface Props {

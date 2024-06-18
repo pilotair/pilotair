@@ -1,8 +1,8 @@
-import { combine } from "../../utils/path";
+import { combine } from "@/utils/path";
 import { atom, useAtom } from "jotai";
 import useSWR from "swr";
-import { fetcher } from "../../utils/request";
-import { Pilotair } from '../../schema'
+import { fetcher } from "@/utils/request";
+import { Pilotair } from '@/schema'
 
 const folderAtom = atom("")
 

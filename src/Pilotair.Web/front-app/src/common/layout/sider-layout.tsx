@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import { ReactNode, useState } from "react";
-import LogoIcon from "../../assets/logo.svg"
+import LogoIcon from "@/assets/logo.svg"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import { Resizable } from "react-resizable"
 import { SiderLayoutContext } from "./sider-layout-context";

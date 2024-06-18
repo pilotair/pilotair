@@ -1,11 +1,11 @@
-import CodeEditor from "../../common/code-editor"
+import CodeEditor from "@/common/code-editor"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { TabContext } from "../../common/tab/tab-panel"
-import { Pilotair } from "../../schema"
-import { httpClient } from "../../utils/request";
+import { TabContext } from "@/common/tab/tab-panel"
+import { Pilotair } from "@/schema"
+import { httpClient } from "@/utils/request";
 import { Breadcrumb } from "antd"
 import { ReloadOutlined, RightOutlined, SaveOutlined } from "@ant-design/icons";
-import { useShortcut } from "../../utils/shortcuts";
+import { useShortcut } from "@/utils/shortcuts";
 
 interface Props {
     name: string,

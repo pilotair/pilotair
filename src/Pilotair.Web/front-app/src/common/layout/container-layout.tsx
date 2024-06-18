@@ -1,6 +1,6 @@
 import { Layout, Menu, MenuProps } from "antd";
 import { Outlet, useMatches, useNavigate } from "react-router-dom";
-import LogoIcon from "../../assets/logo.svg"
+import LogoIcon from "@/assets/logo.svg"
 import { ClusterOutlined, GlobalOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
 

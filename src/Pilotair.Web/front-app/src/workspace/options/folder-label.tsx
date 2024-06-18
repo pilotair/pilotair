@@ -1,7 +1,7 @@
 import { MenuProps } from "antd";
-import { useTabs } from "../../workspace/tabs"
-import MoreBtn from "../../common/menu/more-btn";
-import AsyncComponent from "../../common/async-component";
+import { useTabs } from "@/workspace/tabs"
+import MoreBtn from "@/common/menu/more-btn";
+import AsyncComponent from "@/common/async-component";
 import { ControlOutlined } from "@ant-design/icons";
 
 export default function OptionsFolderLabel() {

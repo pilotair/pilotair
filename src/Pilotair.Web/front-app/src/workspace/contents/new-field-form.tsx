@@ -1,7 +1,7 @@
 import { Form, Input, GetProps, Tabs, Select } from "antd";
 import { useContext } from "react";
-import { ModalContext } from "../../common/modal-context";
-import { Pilotair } from "../../schema";
+import { ModalContext } from "@/common/modal-context";
+import { Pilotair } from "@/schema";
 import { useControls } from "../data-models/use-controls";
 
 type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>

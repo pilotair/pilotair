@@ -1,5 +1,5 @@
 import { Button, Card, Divider, Form, Input } from "antd";
-import LogoIcon from "../assets/logo.svg"
+import LogoIcon from "@/assets/logo.svg"
 
 export default function Login() {
     return (

@@ -1,9 +1,9 @@
 import { FileZipOutlined, FolderOpenOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Progress, Segmented, Upload, UploadFile, UploadProps } from "antd";
 import { ReactNode, createRef, useState } from "react";
-import TabModal from "../../common/tab/tab-modal"
+import TabModal from "@/common/tab/tab-modal"
 import { useFile } from "./files-store";
-import { combine } from "../../utils/path";
+import { combine } from "@/utils/path";
 import upload from "rc-upload/es/request"
 
 export default function UploadFilesBtn() {

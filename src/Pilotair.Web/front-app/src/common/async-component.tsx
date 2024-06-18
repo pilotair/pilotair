@@ -1,5 +1,5 @@
 import { ComponentType, lazy, LazyExoticComponent, Suspense, useState } from "react"
-import Loading from "../common/loading"
+import Loading from "@/common/loading"
 import { Button, Result } from "antd";
 import { ReloadOutlined } from "@ant-design/icons"
 
