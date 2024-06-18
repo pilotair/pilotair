@@ -96,7 +96,7 @@ public class Query<T>(SqliteConnection connection, string name)
     public async Task<Document<T>[]> TakeAsync(long? count = null)
     {
         var sqlBuilder = new StringBuilder();
-        sqlBuilder.Append($"SELECT Id,CreationTime,LastWriteTime,");
+        sqlBuilder.Append($"SELECT Id,CreationTime,LastWriteTime,ParentId,Enabled,DataHash,Note,");
 
         if (exclude is null || exclude.Length == 0) sqlBuilder.Append("json(Data) as Data");
         else

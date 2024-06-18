@@ -3,9 +3,8 @@ using Pilotair.Web.Domains;
 
 namespace Pilotair.Web.Controllers;
 
-public class DomainController(DomainService domainService)
+public class DomainController(DomainService domainService) : ApiController
 {
-
     [HttpGet]
     public async Task<DomainModel[]> GetAsync()
     {
@@ -16,5 +15,11 @@ public class DomainController(DomainService domainService)
     public async Task PostAsync([FromBody] NewDomainModel model)
     {
         await domainService.SaveAsync(model);
+    }
+
+    [HttpDelete]
+    public async Task DeleteAsync(string name)
+    {
+        await domainService.DeleteAsync(name);
     }
 }
