@@ -1,6 +1,5 @@
 import SiderLayout from "../common/layout/sider-layout"
 import { Menu } from "antd"
-import { Header } from "./header"
 import { useMenu } from "./menu";
 import { useTabs } from "./tabs";
 import { useContext, useEffect, useMemo } from "react";
@@ -10,6 +9,7 @@ import Empty from "../common/empty";
 import { AppstoreOutlined, ClusterOutlined, SettingOutlined } from "@ant-design/icons";
 import { SiderLayoutContext } from "../common/layout/sider-layout-context";
 import { useNavigate } from "react-router-dom";
+import Avatar from "@/common/profile/avatar";
 
 
 function Sider() {
@@ -95,6 +95,13 @@ export default function Workspace() {
         }
 
         return <Tabs items={tabs} activeName={activeName} onTabClose={closeTab} onTabClick={setActiveName} />
+    }
+
+    function Header() {
+        return <>
+            <div className="flex-1"></div>
+            <Avatar />
+        </>
     }
 
     return (

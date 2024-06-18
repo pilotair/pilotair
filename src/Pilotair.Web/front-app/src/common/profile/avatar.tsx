@@ -1,6 +1,7 @@
-import { Dropdown, Avatar, MenuProps } from "antd"
-import { UserOutlined } from "@ant-design/icons"
-import { useNavigate } from "react-router-dom"
+import { UserOutlined } from "@ant-design/icons";
+import { Dropdown, Avatar as AntdAvatar, MenuProps } from "antd";
+import { useNavigate } from "react-router-dom";
+
 
 const items: MenuProps['items'] = [
     {
@@ -11,7 +12,8 @@ const items: MenuProps['items'] = [
     },
 ];
 
-export function Header() {
+export default function Avatar() {
+
     const nav = useNavigate();
     function onMenuClick({ key }: { key: string }) {
         switch (key) {
@@ -27,10 +29,9 @@ export function Header() {
         }
     }
 
-    return <>
-        <div className="flex-1"></div>
+    return (
         <Dropdown menu={{ items, onClick: onMenuClick }} >
-            <Avatar className="bg-slate-300" icon={<UserOutlined />} />
+            <AntdAvatar className="bg-slate-300" icon={<UserOutlined />} />
         </Dropdown>
-    </>
-} 
+    )
+}
