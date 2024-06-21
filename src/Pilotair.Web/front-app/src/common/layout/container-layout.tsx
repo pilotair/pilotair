@@ -1,13 +1,13 @@
 import { Layout } from "antd";
-import { Outlet } from "react-router-dom";
 import LogoIcon from "@/assets/logo.svg"
 import { ReactNode } from "react";
 
 interface Props {
-    header: ReactNode
+    header: ReactNode,
+    children: ReactNode
 }
 
-export default function ContainerLayout({ header }: Props) {
+export default function ContainerLayout({ header, children }: Props) {
     const { Content, Header } = Layout
 
     return (
@@ -21,7 +21,7 @@ export default function ContainerLayout({ header }: Props) {
             </Header>
             <div className="h-full overflow-y-auto">
                 <Content className="container mx-auto">
-                    <Outlet />
+                    {children}
                 </Content>
             </div>
         </Layout>

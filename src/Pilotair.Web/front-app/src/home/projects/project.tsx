@@ -1,19 +1,20 @@
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from "@ant-design/icons";
 import { Avatar, Card, Skeleton } from "antd";
-import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/logo.svg"
+import { useNavigate } from "@/common/router";
 
 interface Props {
     title: string
 }
 
 export default function Project({ title }: Props) {
-    const navigate = useNavigate()
+    const nav = useNavigate()
+
     return (
         <Card
             actions={[
                 <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" onClick={() => navigate("/workspace")} />,
+                <EditOutlined key="edit" onClick={() => nav("@/workspace")} />,
                 <EllipsisOutlined key="ellipsis" />,
             ]}
         >
