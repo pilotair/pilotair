@@ -12,8 +12,13 @@ public class ProjectController(ProjectService projectService) : ApiController
     }
 
     [HttpPost]
-    public void Post([FromBody] NewProjectModel model)
+    public async Task PostAsync([FromBody] NewProjectModel model)
     {
-        
+        var domain = model.Domain;
+        if (!string.IsNullOrWhiteSpace(model.Subdomain))
+        {
+            domain = $"{model.Subdomain}.{model.Domain}";
+        }
+        await projectService.CreateAsync(model.Name, domain);
     }
 }

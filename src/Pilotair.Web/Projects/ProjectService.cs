@@ -1,13 +1,15 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Options;
+using Pilotair.Web.Bindings;
 using Pilotair.Web.Codes;
 
 namespace Pilotair.Web.Projects;
 
 [Singleton]
 public class ProjectService(
-    IOptions<PilotairOptions> options,
-    IEnumerable<Codes.IRouteHandler> routeHandlers
+    IEnumerable<Codes.IRouteHandler> routeHandlers,
+    PilotairStore pilotairStore,
+    IOptions<PilotairOptions> options
     )
 {
     private readonly ConcurrentDictionary<string, Project> projects = [];
@@ -37,10 +39,11 @@ public class ProjectService(
         };
 
         projects.TryAdd(project.Name, project);
+
         return project;
     }
 
-    public Project Create(string name)
+    public async Task<Project> CreateAsync(string name, string host)
     {
         var endpoints = new ProjectEndpointDataSource();
 
@@ -50,6 +53,15 @@ public class ProjectService(
             Name = name,
             Endpoints = endpoints
         };
+
+        var projectPath = Path.Combine(options.Value.DataPath, Constants.PROJECTS_FOLDER, project.Name);
+        Directory.CreateDirectory(projectPath);
+        projects.TryAdd(project.Name, project);
+        await pilotairStore.Binding.AddDocumentAsync(new Binding
+        {
+            Host = host,
+            Project = project.Name
+        });
 
         return project;
     }
