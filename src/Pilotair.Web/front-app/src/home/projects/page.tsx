@@ -25,7 +25,7 @@ export default function Home() {
                 <Button type="primary" onClick={addProject}>Add project</Button>
             </div>
             <div className="gap-4 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-                {projects.map(p => <Project key={p.name} title={p.name ?? ""} url={p.url} />)}
+                {projects.map(p => <Project name={p.name!} key={p.name} title={p.name ?? ""} url={p.url} />)}
             </div>
         </div>
     )

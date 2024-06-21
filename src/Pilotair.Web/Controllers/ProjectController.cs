@@ -21,4 +21,10 @@ public class ProjectController(ProjectService projectService) : ApiController
         }
         await projectService.CreateAsync(model.Name, domain);
     }
+
+    [HttpDelete]
+    public void Delete(string name)
+    {
+        projectService.DeleteAsync(name);
+    }
 }

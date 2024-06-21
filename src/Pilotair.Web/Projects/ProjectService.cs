@@ -89,4 +89,13 @@ public class ProjectService(
 
         return result;
     }
+
+    internal Task DeleteAsync(string name)
+    {
+        throw new NotImplementedException();
+        // if (projects.TryRemove(name, out var project))
+        // {
+
+        // }
+    }
 }

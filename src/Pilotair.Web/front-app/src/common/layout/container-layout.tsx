@@ -19,7 +19,7 @@ export default function ContainerLayout({ header, children }: Props) {
                 {header}
 
             </Header>
-            <div className="h-full overflow-y-auto">
+            <div className="h-full overflow-y-auto px-12">
                 <Content className="container mx-auto">
                     {children}
                 </Content>

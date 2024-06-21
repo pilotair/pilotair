@@ -54,9 +54,10 @@ export default function ContentContextMenu({ children, path, name }: Props) {
             },
             {
                 key: "delete",
-                label: <span className="text-red-500">Delete</span>,
-                icon: <DeleteOutlined className="text-red-500" />,
-                title: ""
+                label: <span >Delete</span>,
+                icon: <DeleteOutlined />,
+                title: "",
+                danger: true
             }],
         onClick: onItemClick
     }
