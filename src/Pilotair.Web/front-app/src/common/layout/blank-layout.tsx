@@ -1,13 +1,17 @@
 import { Layout } from "antd"
-import { Outlet } from "react-router-dom"
+import { ReactNode } from "react"
 
 const { Content } = Layout
 
-export default function BlankLayout() {
+interface Props {
+    children: ReactNode
+}
+
+export default function BlankLayout({ children }: Props) {
     return (
         <Layout className="absolute inset-0">
             <Content className="flex flex-col justify-center items-center">
-                <Outlet />
+                {children}
             </Content>
         </Layout>
     )

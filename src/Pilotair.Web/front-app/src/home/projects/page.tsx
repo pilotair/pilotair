@@ -16,7 +16,7 @@ export default function Home() {
                 <Button type="primary">Add project</Button>
             </div>
             <div className="gap-4 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-                {projects.map(p => <Project title={p.name ?? ""} />)}
+                {projects.map(p => <Project key={p.name} title={p.name ?? ""} />)}
             </div>
         </div>
     )
