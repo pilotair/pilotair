@@ -6,9 +6,9 @@ namespace Pilotair.Web.Controllers;
 public class ProjectController(ProjectService projectService) : ApiController
 {
     [HttpGet]
-    public IEnumerable<ProjectModel> Get()
+    public Task<IEnumerable<ProjectModel>> Get()
     {
-        return projectService.List();
+        return projectService.ListAsync();
     }
 
     [HttpPost]

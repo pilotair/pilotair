@@ -76,8 +76,17 @@ public class ProjectService(
         return null;
     }
 
-    public IEnumerable<ProjectModel> List()
+    public async Task<IEnumerable<ProjectModel>> ListAsync()
     {
-        return projects.Values.Select(s => new ProjectModel(s)).ToArray();
+        var result = new List<ProjectModel>();
+
+        foreach (var project in projects.Values)
+        {
+            var binding = await pilotairStore.Binding.Query.Where("$.project", project.Name).FirstOrDefaultAsync();
+            var model = new ProjectModel(project, binding?.Data);
+            result.Add(model);
+        }
+
+        return result;
     }
 }
