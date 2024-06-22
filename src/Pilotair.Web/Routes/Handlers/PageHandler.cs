@@ -1,8 +1,7 @@
 using Jint;
-using Pilotair.Core.Helpers;
-using Pilotair.Web.Modules.Http;
+using Pilotair.Core.Stores.Files;
 
-namespace Pilotair.Web.Codes.RouteHandlers;
+namespace Pilotair.Web.Routes.Handles;
 
 [Singleton(typeof(IRouteHandler))]
 public class PageHandler() : IRouteHandler

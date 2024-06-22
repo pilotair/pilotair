@@ -1,3 +1,5 @@
+using System.IO;
+using System.Net.Http;
 using Esprima;
 using Jint;
 using Jint.Runtime.Modules;

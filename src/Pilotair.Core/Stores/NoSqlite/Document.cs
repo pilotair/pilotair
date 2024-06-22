@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Stores.NoSqlite;

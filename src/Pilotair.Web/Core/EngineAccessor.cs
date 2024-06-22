@@ -1,3 +1,5 @@
+using System.IO;
+using System.Net.Http;
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Runtime;
 using Pilotair.Core.Runtime.ModuleResolvers;

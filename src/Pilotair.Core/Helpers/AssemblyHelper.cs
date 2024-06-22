@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Pilotair.Core.Helpers;
 
 public static class AssemblyHelper

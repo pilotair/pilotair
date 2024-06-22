@@ -1,7 +1,9 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Pilotair.Web.Bindings;
 using Pilotair.Web.Files;
@@ -61,7 +63,9 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
+
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {

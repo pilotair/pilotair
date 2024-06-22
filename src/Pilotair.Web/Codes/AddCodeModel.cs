@@ -1,4 +1,4 @@
-namespace Pilotair.Web;
+namespace Pilotair.Web.Codes;
 
 public class AddCodeModel
 {

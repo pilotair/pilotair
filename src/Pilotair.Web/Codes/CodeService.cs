@@ -1,6 +1,8 @@
+using System.IO;
 using Pilotair.Core.Stores.Files;
 using Pilotair.Web.Menus;
 using Pilotair.Web.Projects;
+using Pilotair.Web.Routes;
 
 namespace Pilotair.Web.Codes;
 
@@ -56,9 +58,9 @@ public class CodeService : IMenuProvider
         return items;
     }
 
-    public IEnumerable<Route> GetRoutes()
+    public IEnumerable<FileRoute> GetRoutes()
     {
-        var result = new List<Route>();
+        var result = new List<FileRoute>();
 
         foreach (var handler in routeHandlers)
         {
@@ -66,7 +68,7 @@ public class CodeService : IMenuProvider
             foreach (var path in paths)
             {
                 var file = store.GetFile(path);
-                result.Add(new Route(file, handler));
+                result.Add(new FileRoute(file, handler));
             }
         }
 

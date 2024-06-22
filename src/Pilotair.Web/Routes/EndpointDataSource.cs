@@ -1,10 +1,12 @@
 using System.Collections.Concurrent;
+
+using System.Threading;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.Primitives;
 
-namespace Pilotair.Web.Projects;
+namespace Pilotair.Web.Routes;
 
-public class ProjectEndpointDataSource : EndpointDataSource
+public class EndpointDataSource : Microsoft.AspNetCore.Routing.EndpointDataSource
 {
     private readonly ConcurrentDictionary<string, Endpoint> endpoints = [];
     private IChangeToken _changeToken;
@@ -12,7 +14,7 @@ public class ProjectEndpointDataSource : EndpointDataSource
     public override IReadOnlyList<Endpoint> Endpoints => [.. endpoints.Values];
     public override IChangeToken GetChangeToken() => _changeToken;
 
-    public ProjectEndpointDataSource()
+    public EndpointDataSource()
     {
         _cancellationTokenSource = new CancellationTokenSource();
         _changeToken = new CancellationChangeToken(_cancellationTokenSource.Token);
@@ -29,7 +31,7 @@ public class ProjectEndpointDataSource : EndpointDataSource
     public void AddEndpoint(string key, string pattern, RequestDelegate handle, int order = 0)
     {
         var routePattern = RoutePatternFactory.Parse(pattern);
-        var endpoint = new RouteEndpointBuilder(handle, routePattern, order).Build();
+        var endpoint = new Microsoft.AspNetCore.Routing.RouteEndpointBuilder(handle, routePattern, order).Build();
         endpoints.TryAdd(key, endpoint);
         Reload();
     }

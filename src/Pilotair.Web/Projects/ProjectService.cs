@@ -1,13 +1,15 @@
 using System.Collections.Concurrent;
+using System.IO;
 using Microsoft.Extensions.Options;
 using Pilotair.Web.Bindings;
 using Pilotair.Web.Codes;
+using Pilotair.Web.Routes;
 
 namespace Pilotair.Web.Projects;
 
 [Singleton]
 public class ProjectService(
-    IEnumerable<Codes.IRouteHandler> routeHandlers,
+    IEnumerable<IRouteHandler> routeHandlers,
     PilotairStore pilotairStore,
     IOptions<PilotairOptions> options
     )
@@ -16,7 +18,7 @@ public class ProjectService(
 
     public Project Load(string path, IServiceScope scope)
     {
-        var endpoints = new ProjectEndpointDataSource();
+        var endpoints = new EndpointDataSource();
         var codeService = scope.ServiceProvider.GetRequiredService<CodeService>();
         var routeHandlerMap = routeHandlers.ToDictionary(r => r.Name, r => r);
         var routes = codeService.GetRoutes();
@@ -45,7 +47,7 @@ public class ProjectService(
 
     public async Task<Project> CreateAsync(string name, string host)
     {
-        var endpoints = new ProjectEndpointDataSource();
+        var endpoints = new EndpointDataSource();
 
         var project = new Project
         {
