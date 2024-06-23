@@ -3,11 +3,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Pilotair.Web.Bindings;
 using Pilotair.Web.Files;
-using Pilotair.Web.Projects;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,19 +71,17 @@ if (app.Environment.IsDevelopment())
     // app.MapFallbackToFile("index.html");
     app.UseSwagger();
     app.UseSwaggerUI();
-    var frontApp = app.Services.GetRequiredService<FrontApp>();
-    frontApp.GenerateApiSchema();
+    app.UseFrontApp();
 }
-var bindingService = app.Services.GetRequiredService<BindingService>();
-await bindingService.LoadAsync();
 
 // app.UseHttpsRedirection();
 app.UseRouting();
-app.UseProjects();
+
+var fileService = app.Services.GetRequiredService<FileService>();
 
 app.UseFileServer(new FileServerOptions
 {
-    FileProvider = new FileProvider(app.Services.GetRequiredService<IHttpContextAccessor>()),
+    FileProvider = new PhysicalFileProvider(fileService.BasePath)
 });
 
 var pilotairOptions = app.Services.GetRequiredService<IOptions<PilotairOptions>>();

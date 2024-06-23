@@ -1,12 +1,12 @@
 using System.IO;
+using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.Files;
 using Pilotair.Web.Menus;
-using Pilotair.Web.Projects;
 using Pilotair.Web.Routes;
 
 namespace Pilotair.Web.Codes;
 
-[Scoped]
+[Singleton]
 public class CodeService : IMenuProvider
 {
     private readonly FileStore store;
@@ -14,14 +14,10 @@ public class CodeService : IMenuProvider
 
     public FileStore Store => store;
 
-    public CodeService(ProjectContext projectContext, IEnumerable<IRouteHandler> routeHandlers)
+    public CodeService(IOptions<PilotairOptions> options, IEnumerable<IRouteHandler> routeHandlers)
     {
         this.routeHandlers = routeHandlers;
-        if (string.IsNullOrWhiteSpace(projectContext.Path))
-        {
-            throw new ProjectNotFoundException();
-        }
-        var root = Path.Combine(projectContext.Path, Constants.CODES_FOLDER);
+        var root = Path.Combine(options.Value.DataPath, Constants.CODES_FOLDER);
         store = new FileStore(root);
     }
 

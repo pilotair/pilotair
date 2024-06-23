@@ -1,14 +1,14 @@
 using System.IO;
+using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.NoSqlite;
-using Pilotair.Web.Projects;
 
 namespace Pilotair.Web;
 
-[Scoped]
+[Singleton]
 public class ContentStore : NoSqliteStore
 {
-    public ContentStore(ProjectContext context)
-        : base(Path.Combine(context.Path, Constants.STORES_FOLDER, "content.db"))
+    public ContentStore(IOptions<PilotairOptions> options)
+        : base(Path.Combine(options.Value.DataPath, Constants.STORES_FOLDER, "content.db"))
     {
 
     }

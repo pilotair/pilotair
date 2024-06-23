@@ -1,11 +1,10 @@
 using System.IO;
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.Files;
-using Pilotair.Web.Projects;
 
 namespace Pilotair.Web.Files;
 
-[Scoped]
+[Singleton]
 public class FileService
 {
     private readonly string basePath;
@@ -13,13 +12,9 @@ public class FileService
     protected virtual string Folder { get; } = Constants.FILES_FOLDER;
     public string BasePath => basePath;
 
-    public FileService(ProjectContext projectContext)
+    public FileService(IOptions<PilotairOptions> options)
     {
-        if (string.IsNullOrWhiteSpace(projectContext.Path))
-        {
-            throw new ProjectNotFoundException();
-        }
-        basePath = Path.Combine(projectContext.Path, Folder);
+        basePath = Path.Combine(options.Value.DataPath, Folder);
         store = new FileStore(basePath);
     }
 
