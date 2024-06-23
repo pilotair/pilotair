@@ -3,15 +3,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Pilotair.Web.Files;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddHttpClient();
-builder.Services.AddOptions<PilotairOptions>().Bind(builder.Configuration.GetSection(PilotairOptions.NAME));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers(options =>
 {
@@ -21,7 +16,7 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddFromAssemblies(Assembly.GetExecutingAssembly());
-builder.Services.AddRequestJsEngine();
+builder.Services.AddPilotair(builder.Configuration);
 
 string GetName(Type schema)
 {
@@ -65,7 +60,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 
 var app = builder.Build();
-app.UseFrontApp();
+app.UsePilotair();
 
 if (app.Environment.IsDevelopment())
 {
@@ -76,16 +71,6 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 app.UseRouting();
-
-var fileService = app.Services.GetRequiredService<FileService>();
-
-app.UseFileServer(new FileServerOptions
-{
-    FileProvider = new PhysicalFileProvider(fileService.BasePath)
-});
-
-var pilotairOptions = app.Services.GetRequiredService<IOptions<PilotairOptions>>();
-Console.WriteLine($"Data root path: {pilotairOptions.Value.DataPath}");
 app.MapControllers();
 app.Run();
 

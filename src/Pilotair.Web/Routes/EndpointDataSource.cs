@@ -6,6 +6,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace Pilotair.Web.Routes;
 
+[Singleton]
 public class EndpointDataSource : Microsoft.AspNetCore.Routing.EndpointDataSource
 {
     private readonly ConcurrentDictionary<string, Endpoint> endpoints = [];
