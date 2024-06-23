@@ -21,6 +21,7 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddFromAssemblies(Assembly.GetExecutingAssembly());
+builder.Services.AddRequestJsEngine();
 
 string GetName(Type schema)
 {
@@ -64,14 +65,13 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 
 var app = builder.Build();
-
+app.UseFrontApp();
 
 if (app.Environment.IsDevelopment())
 {
     // app.MapFallbackToFile("index.html");
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseFrontApp();
 }
 
 // app.UseHttpsRedirection();
@@ -86,11 +86,6 @@ app.UseFileServer(new FileServerOptions
 
 var pilotairOptions = app.Services.GetRequiredService<IOptions<PilotairOptions>>();
 Console.WriteLine($"Data root path: {pilotairOptions.Value.DataPath}");
-
-app.UseFileServer(new FileServerOptions
-{
-    RequestPath = "/__admin__"
-});
 app.MapControllers();
 app.Run();
 

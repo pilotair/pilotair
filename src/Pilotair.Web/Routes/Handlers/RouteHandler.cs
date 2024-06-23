@@ -1,5 +1,6 @@
 using Jint;
 using Pilotair.Core.Helpers;
+using Pilotair.Core.Runtime;
 using Pilotair.Core.Stores.Files;
 using Pilotair.Web.Modules.Http;
 
@@ -15,7 +16,8 @@ public class RouteHandler() : IRouteHandler
     public async Task HandleAsync(HttpContext context, File file)
     {
         if (context == default) return;
-        var module = await context.GetEngine().ExecuteAsync("./" + file.RelationPath);
+        var engine = context.RequestServices.GetRequiredService<JsEngine>();
+        var module = await engine.ExecuteAsync("./" + file.RelationPath);
         var function = module.Get(context.Request.Method);
         var result = function.Call().UnwrapIfPromise();
         string? body;
