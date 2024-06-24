@@ -23,19 +23,19 @@ public class FileService
         return store.GetFolder(path);
     }
 
-    public string CreateFolder(string path)
+    public string CreateFolder(string folder)
     {
-        return store.CreateFolder(path);
+        return store.CreateFolder(folder);
     }
 
-    public async Task SaveFileAsync(string path, Stream stream, string fileName)
+    public async Task SaveFileAsync(string folder, string fileName, Stream stream)
     {
-        await store.SaveFileAsync(path, stream, fileName);
+        await store.SaveFileAsync(folder, fileName,stream);
     }
 
-    public async Task SaveFileAsync(string path, string fileName, string content)
+    public async Task SaveFileAsync(string folder, string fileName, string content)
     {
-        await store.SaveFileAsync(path, fileName, content);
+        await store.SaveFileAsync(folder, fileName, content);
     }
 
     public void Delete(string path, string[] entries)

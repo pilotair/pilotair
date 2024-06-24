@@ -5,6 +5,7 @@ import TabModal from "@/common/tab/tab-modal"
 import { useFile } from "./files-store";
 import { combine } from "@/utils/path";
 import upload from "rc-upload/es/request"
+import { prefix } from "@/utils/request";
 
 export default function UploadFilesBtn() {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -15,7 +16,7 @@ export default function UploadFilesBtn() {
 
     const props: UploadProps = {
         name: "files",
-        action: "file",
+        action: combine(prefix, "file"),
         multiple: true,
         showUploadList: false,
         fileList,
@@ -36,7 +37,7 @@ export default function UploadFilesBtn() {
                 fragments.pop();
                 folder = combine(folder, ...fragments);
             }
-            options.action += `?folder=${folder}`
+            options.action = options.action + `?folder=${folder}`
             upload(options);
         }
     }
@@ -95,7 +96,7 @@ export default function UploadFilesBtn() {
         <Upload className="hidden" {...{
             ...props, directory: true, multiple: false
         }}><span ref={folderUpload} /></Upload>
-        <Upload className="hidden" {...{ ...props, name: "file", action: `file/zip`, accept: ".zip", multiple: false }}><span ref={zipUpload} /></Upload>
+        <Upload className="hidden" {...{ ...props, name: "file", action: combine(prefix, "file", "zip"), accept: ".zip", multiple: false }}><span ref={zipUpload} /></Upload>
         <TabModal closable={false} open={!!fileList.length} footer={footer} title={title}>
             <div className="max-h-96 overflow-auto">
                 {fileItems}

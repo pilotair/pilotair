@@ -48,7 +48,7 @@ public class FileStore
         return path;
     }
 
-    public async Task SaveFileAsync(string folder, Stream stream, string name)
+    public async Task SaveFileAsync(string folder, string name, Stream stream)
     {
         folder = CreateFolder(folder);
         folder = Path.Combine(folder, name);
@@ -56,7 +56,7 @@ public class FileStore
         await stream.CopyToAsync(fs);
     }
 
-    public async Task SaveFileAsync(string folder, string name,string content)
+    public async Task SaveFileAsync(string folder, string name, string content)
     {
         folder = CreateFolder(folder);
         folder = Path.Combine(folder, name);
