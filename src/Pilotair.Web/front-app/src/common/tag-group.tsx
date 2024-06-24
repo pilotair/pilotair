@@ -35,7 +35,7 @@ export default function TagGroup({ items, activeName, onTagClose, onTagClick }: 
             onClose={(e) =>onClose(item.name, e)}
             bordered={false}
             icon={item.icon}
-            className="cursor-pointer inline-flex gap-1"
+            className="cursor-pointer inline-flex"
             color={isActive ? 'blue-inverse' : "default"}
             onClick={() => onTagClick?.(item.name)}
         >

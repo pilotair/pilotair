@@ -101,6 +101,3 @@ function createClient(options?: ClientOptions) {
 export const prefix = "/__api__/"
 
 export const httpClient = createClient({ prefix });
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const fetcher = (url: string): Promise<any> => httpClient.get(url);

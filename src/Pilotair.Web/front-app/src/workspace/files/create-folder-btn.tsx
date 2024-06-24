@@ -19,7 +19,7 @@ export default function CreateFolderBtn() {
             await httpClient.post(`file/${path}`, new FormData());
         })
 
-        await fileStore.reload()
+        await fileStore.load()
         closeModal?.()
     }
 

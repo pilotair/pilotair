@@ -46,7 +46,7 @@ export default function UploadFilesBtn() {
 
     function onClose() {
         setFileList([]);
-        fileStore.reload()
+        fileStore.load()
     }
 
     for (const file of fileList) {
