@@ -69,12 +69,12 @@ function Sider() {
 
     return (
         <div className="flex flex-col h-full">
-            {!!openKeys.length && <div className="flex justify-center hover:bg-slate-200/10 py-1" onClick={() => setOpenKeys([])}>
-                <img className="h-4" src={FoldUp} />
-            </div>}
             <div className="flex-1 overflow-y-auto ">
                 {menu}
             </div>
+            {!!openKeys.length && <div className="flex justify-center hover:bg-slate-200/10 py-1" onClick={() => setOpenKeys([])}>
+                <img className="h-4" src={FoldUp} />
+            </div>}
             <div className={"flex-shrink-0 text-slate-200 grid " + (collapsed ? "grid-cols-1" : "grid-cols-3")} >
                 <div className="flex flex-1 flex-col items-center cursor-pointer hover:bg-slate-50/10 p-2" onClick={() => nav('/home')}>
                     <BranchesOutlined className="text-xl" />
