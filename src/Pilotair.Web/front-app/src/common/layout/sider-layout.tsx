@@ -47,9 +47,9 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
                         breakpoint="xl"
                         onBreakpoint={setCollapsed}>
                         <div className="flex flex-col h-full">
-                            <div className={(collapsed ? "px-5" : "px-3") + " h-12 flex flex-shrink-0 items-center shadow-md relative bg-slate-800 transition-all duration-300"}>
+                            <div className={(collapsed ? "px-5" : "px-3") + " h-12 flex flex-shrink-0 items-center shadow-md relative bg-slate-800 transition-all duration-300 space-x-2"}>
                                 <img className="w-10 h-10 cursor-default" src={LogoIcon} alt="pilotair" />
-                                <div className="flex-1"></div>
+                                {!collapsed && <div className="flex-1 text-slate-200 font-bold truncate">Pilotair</div>}
                                 <MenuFoldOutlined onClick={() => setCollapsed(true)} className={"transition-all duration-300 text-white hover:text-blue-400 " + (collapsed ? "opacity-0 pointer-events-none" : "opacity-100")} />
                             </div>
                             <div className="flex-1 overflow-y-hidden">

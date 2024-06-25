@@ -1,34 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Pilotair.Web.Codes;
 using Pilotair.Web.Contents;
+using Pilotair.Web.Menus;
 
 namespace Pilotair.Web.Controllers;
 
-public class MenuController(CodeService codeService, ContentCollectionService collectionService) : ApiController
+public class MenuController(IEnumerable<IMenuProvider> providers) : ApiController
 {
     [HttpGet]
     public async Task<IEnumerable<MenuItem>> GetAsync()
     {
-        var items = new List<MenuItem> {
-            new() {
-                Name="files",
-                Type=MenuItem.Types.Files,
-            },
-            new(){
-                Name="contents",
-                Type= MenuItem.Types.Contents,
-                Children=await collectionService.GetMenuItemsAsync()
-            },
-            new() {
-                Name="codes",
-                Type=MenuItem.Types.Codes,
-                Children=await codeService.GetMenuItemsAsync(),
-            },
-            new(){
-                Name="options",
-                Type= MenuItem.Types.Options,
-            },
-        };
+        var items = new List<MenuItem>();
+        foreach (var provider in providers)
+        {
+            var menus = await provider.GetMenuItemsAsync();
+            items.AddRange(menus);
+        }
 
         return items;
     }

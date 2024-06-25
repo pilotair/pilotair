@@ -2,13 +2,28 @@ using Pilotair.Web.Menus;
 
 namespace Pilotair.Web.Contents;
 
-[Singleton]
-public class ContentCollectionService(ContentCollectionStore collectionStore) 
+[Singleton(typeof(IMenuProvider))]
+public class ContentMenuProvider(ContentCollectionStore store) : IMenuProvider
 {
     public async Task<IEnumerable<MenuItem>> GetMenuItemsAsync(string currentPath = "")
     {
+        var result = new List<MenuItem>
+        {
+            new()
+            {
+                Order=10,
+                Name="contents",
+                Type=MenuItem.Types.Contents,
+                Children=await GetChildrenAsync()
+            }
+        };
+        return result;
+    }
+
+    public async Task<IEnumerable<MenuItem>> GetChildrenAsync(string currentPath = "")
+    {
         var result = new List<MenuItem>();
-        var collections = await collectionStore.ListAsync();
+        var collections = await store.ListAsync();
 
         foreach (var collection in collections)
         {

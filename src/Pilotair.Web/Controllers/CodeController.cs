@@ -3,7 +3,7 @@ using Pilotair.Web.Codes;
 
 namespace Pilotair.Web.Controllers;
 
-public class CodeController(CodeService codeService) : ApiController
+public class CodeController(CodeService codeService, CodeStore store) : ApiController
 {
     [HttpGet]
     public async Task<Code> GetAsync(string name, string folder = "")
@@ -12,31 +12,31 @@ public class CodeController(CodeService codeService) : ApiController
     }
 
     [HttpPost]
-    public async Task PostAsync([FromBody] AddCodeModel model, string name, string folder = "")
+    public async Task PostAsync([FromBody] AddCodeModel model, string folder = "")
     {
         string content = @$"
 export function GET(){{
     return ""Get from route '{folder}'"";
 }}        
 ";
-        await codeService.Store.SaveFileAsync(folder, model.Name, content);
+        await store.SaveFileAsync(folder, model.Name, content);
     }
 
     [HttpPost("folder")]
     public void Post(string path)
     {
-        codeService.Store.CreateFolder(path);
+        store.CreateFolder(path);
     }
 
     [HttpPut]
     public async Task PutAsync([FromBody] UpdateCodeModel model, string name, string folder = "")
     {
-        await codeService.Store.SaveFileAsync(folder, name, model.Content);
+        await store.SaveFileAsync(folder, name, model.Content);
     }
 
     [HttpDelete]
     public void Delete([FromQuery] string[] paths)
     {
-        codeService.Store.Delete(paths);
+        store.Delete(paths);
     }
 }

@@ -36,6 +36,7 @@ export function useMenu() {
 
 function mapMenuItems(items: Pilotair.Web.MenuItem[]) {
     const result: MenuItem[] = [];
+    items = items.sort((left, right) => left.order - right.order)
 
     for (const item of items) {
         const menu = getMenu(item);

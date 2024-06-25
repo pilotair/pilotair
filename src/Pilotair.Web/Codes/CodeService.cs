@@ -7,51 +7,16 @@ using Pilotair.Web.Routes;
 namespace Pilotair.Web.Codes;
 
 [Singleton]
-public class CodeService : IMenuProvider
+public class CodeService(CodeStore store, IEnumerable<IRouteHandler> routeHandlers)
 {
-    private readonly FileStore store;
-    private readonly IEnumerable<IRouteHandler> routeHandlers;
-
-    public FileStore Store => store;
-
-    public CodeService(IOptions<PilotairOptions> options, IEnumerable<IRouteHandler> routeHandlers)
-    {
-        this.routeHandlers = routeHandlers;
-        var root = Path.Combine(options.Value.DataPath, Constants.CODES_FOLDER);
-        store = new FileStore(root);
-    }
+    private readonly FileStore store = store;
+    private readonly IEnumerable<IRouteHandler> routeHandlers = routeHandlers;
 
     public async Task<Code> GetCodeAsync(string folder, string name)
     {
         var fileInfo = store.GetFile(folder, name);
         var content = await store.ReadTextAsync(fileInfo.RelationPath);
         return new Code(fileInfo, content, store.Root);
-    }
-
-    public async Task<IEnumerable<MenuItem>> GetMenuItemsAsync(string currentPath = "")
-    {
-        var items = new List<MenuItem>();
-        var entries = store.GetFolder(currentPath);
-
-        foreach (var entry in entries)
-        {
-            var item = new MenuItem
-            {
-                Name = entry.Name,
-                Type = entry.IsFolder ? MenuItem.Types.CodeFolder : MenuItem.Types.Code,
-                Folder = Path.GetDirectoryName(entry.RelationPath),
-            };
-
-            items.Add(item);
-
-            if (entry.IsFolder)
-            {
-                var path = Path.Combine(currentPath, entry.Name);
-                item.Children = await GetMenuItemsAsync(path);
-            }
-        }
-
-        return items;
     }
 
     public IEnumerable<FileRoute> GetRoutes()
