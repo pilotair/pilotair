@@ -2,7 +2,7 @@ import SiderLayout from "../common/layout/sider-layout"
 import { Menu } from "antd"
 import { useMenu } from "./menu";
 import { useTabs } from "./tabs";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
 import Empty from "../common/empty";
@@ -10,6 +10,7 @@ import { AppstoreOutlined, BranchesOutlined, SettingOutlined } from "@ant-design
 import { SiderLayoutContext } from "../common/layout/sider-layout-context";
 import Avatar from "@/common/profile/avatar";
 import { useNavigate } from "@/common/router";
+import FoldUp from "@/assets/fold-up.svg"
 
 
 function Sider() {
@@ -17,6 +18,7 @@ function Sider() {
     const { collapsed } = useContext(SiderLayoutContext)
     const { openTab, activeName } = useTabs();
     const nav = useNavigate()
+    const [openKeys, setOpenKeys] = useState<string[]>([])
 
 
     useEffect(() => {
@@ -46,6 +48,8 @@ function Sider() {
         selectedKeys={[activeName]}
         theme="dark"
         inlineIndent={12}
+        openKeys={openKeys}
+        onOpenChange={(keys: string[]) => setOpenKeys(keys)}
     />
 
     function onMenuItemClick(key: string) {
@@ -65,7 +69,10 @@ function Sider() {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto">
+            {!!openKeys.length && <div className="flex justify-center hover:bg-slate-200/10 py-1" onClick={() => setOpenKeys([])}>
+                <img className="h-4" src={FoldUp} />
+            </div>}
+            <div className="flex-1 overflow-y-auto ">
                 {menu}
             </div>
             <div className={"flex-shrink-0 text-slate-200 grid " + (collapsed ? "grid-cols-1" : "grid-cols-3")} >
