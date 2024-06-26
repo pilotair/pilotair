@@ -72,7 +72,7 @@ function Sider() {
             <div className="flex-1 overflow-y-auto ">
                 {menu}
             </div>
-            {!!openKeys.length && <div className="flex justify-center hover:bg-slate-200/10 py-1" onClick={() => setOpenKeys([])}>
+            {!!openKeys.length && !collapsed && <div className="flex justify-center hover:bg-slate-200/10 py-1" onClick={() => setOpenKeys([])}>
                 <img className="h-4" src={FoldUp} />
             </div>}
             <div className={"flex-shrink-0 text-slate-200 grid " + (collapsed ? "grid-cols-1" : "grid-cols-3")} >
