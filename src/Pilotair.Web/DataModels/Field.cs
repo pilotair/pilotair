@@ -8,4 +8,5 @@ public class Field
     public bool IsArray { get; set; } = false;
     public string? Collection { get; set; }
     public Dictionary<string, string>? Options { get; set; }
+    public object? DefaultValue { get; set; }
 }

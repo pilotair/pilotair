@@ -1,6 +1,6 @@
 namespace Pilotair.Web.Codes;
 
-public class AddCodeModel
+public class NewCodeModel
 {
     public required string Name { get; set; }
 }

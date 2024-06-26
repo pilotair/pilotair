@@ -12,7 +12,7 @@ public class CodeController(CodeService codeService, CodeStore store) : ApiContr
     }
 
     [HttpPost]
-    public async Task PostAsync([FromBody] AddCodeModel model, string folder = "")
+    public async Task PostAsync([FromBody] NewCodeModel model, string folder = "")
     {
         string content = @$"
 export function GET(){{

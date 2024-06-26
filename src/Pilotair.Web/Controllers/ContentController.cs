@@ -5,6 +5,7 @@ namespace Pilotair.Web.Controllers;
 
 public class ContentController(ContentCollectionStore collectionStore, ContentStore contentStore) : ApiController
 {
+    
     [HttpGet]
     public async Task<ContentPagingResult> GetAsync([FromQuery] ContentPagingQuery query)
     {
@@ -19,5 +20,12 @@ public class ContentController(ContentCollectionStore collectionStore, ContentSt
         var result = new ContentPagingResult(query, total);
         result.List = await contents.Query.Skip(result.GetSkip()).TakeAsync(result.Size);
         return result;
+    }
+
+    [HttpPost]
+    public async Task PostAsync()
+    {
+        var contents = contentStore.GetOrCreate("demo");
+        // contents.AddDocumentAsync()
     }
 }
