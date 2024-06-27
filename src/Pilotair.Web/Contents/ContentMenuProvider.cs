@@ -30,8 +30,8 @@ public class ContentMenuProvider(ContentCollectionStore store) : IMenuProvider
             result.Add(new MenuItem
             {
                 Type = MenuItem.Types.ContentCollection,
-                Name = collection.Name,
-                Display = collection.Display,
+                Name = collection.Key,
+                Display = collection.Value.Display,
                 Folder = "content-collections"
             });
         }

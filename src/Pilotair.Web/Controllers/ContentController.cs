@@ -15,7 +15,7 @@ public class ContentController(ContentCollectionStore collectionStore, ContentSt
             throw new ContentCollectionNotFoundException();
         }
 
-        var contents = contentStore.GetOrCreate(contentCollection.Name);
+        var contents = contentStore.GetOrCreate(query.Collection);
         var total = await contents.Query.CountAsync();
         var result = new ContentPagingResult(query, total);
         result.List = await contents.Query.Skip(result.GetSkip()).TakeAsync(result.Size);

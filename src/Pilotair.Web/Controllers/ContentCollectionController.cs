@@ -17,7 +17,7 @@ public class ContentCollectionController(ContentCollectionStore collectionStore)
     }
 
     [HttpPost]
-    public async Task Post(ContentCollection collection)
+    public async Task Post(ContentCollectionModel collection)
     {
         if (collectionStore.Exist(collection.Name))
         {
@@ -27,7 +27,7 @@ public class ContentCollectionController(ContentCollectionStore collectionStore)
     }
 
     [HttpPut]
-    public async Task Put(ContentCollection collection)
+    public async Task Put(ContentCollectionModel collection)
     {
         if (!collectionStore.Exist(collection.Name))
         {

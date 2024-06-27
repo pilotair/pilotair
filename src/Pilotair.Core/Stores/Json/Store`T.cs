@@ -13,14 +13,15 @@ public class JsonStore<T>
         IoHelper.EnsureDirectoryExist(this.folder);
     }
 
-    public async Task<IEnumerable<T>> ListAsync(CancellationToken token = default)
+    public async Task<IDictionary<string, T>> ListAsync(CancellationToken token = default)
     {
         var files = Directory.GetFiles(folder, "*.json");
-        var result = new List<T>();
+        var result = new Dictionary<string, T>();
         foreach (var item in files)
         {
             var value = await JsonHelper.DeserializeAsync<T>(item, token);
-            if (value != null) result.Add(value);
+            var key = Path.GetFileNameWithoutExtension(item);
+            if (value != null) result.Add(key, value);
         }
         return result;
     }
@@ -44,7 +45,7 @@ public class JsonStore<T>
         var path = Path.Combine(folder, $"{name}.json");
         return File.Exists(path);
     }
-    
+
     public void Delete(string name)
     {
         var path = Path.Combine(folder, $"{name}.json");
