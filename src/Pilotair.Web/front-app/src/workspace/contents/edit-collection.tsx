@@ -41,7 +41,7 @@ export default function EditCollection({ name, path }: Props) {
     if (!collection) return <Empty />
 
     return (
-        <div className="p-4 h-full flex flex-col space-y-4">
+        <div className="p-4 h-full flex flex-col space-y-3">
             <div className="flex items-center gap-2 flex-shrink-0">
                 <Button icon={<ReloadOutlined />}>Reset</Button>
                 <div className="flex-1"></div>

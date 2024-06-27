@@ -1,4 +1,4 @@
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Pilotair } from "@/schema";
 import { Button, Table } from "antd";
 import { useContext } from "react";
@@ -36,6 +36,7 @@ export default function Fields({ list, setList }: Props) {
             title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={onAdd} />,
             render(value) {
                 return <div>
+                    <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => remove(value)} />
                     <Button type="text" shape="circle" danger icon={<DeleteOutlined />} onClick={() => remove(value)} />
                 </div>
             },

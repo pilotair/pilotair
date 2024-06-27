@@ -1,4 +1,4 @@
-import { FormOutlined, PlusOutlined } from "@ant-design/icons"
+import { EditOutlined, FormOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Divider, Empty, GetProp, Input, Table } from "antd"
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
@@ -36,23 +36,42 @@ export default function Contents({ name, display }: Props) {
             <FormOutlined />
         )
     }
+    
     if (!collection) return <Empty />
 
-    const columns: Columns = collection.fields.map(m => ({
-        title: m.display || m.name,
-        dataIndex: m.name
-    }))
+    function remove(value: unknown) {
+
+    }
+
+    const columns: Columns = [
+        ...collection.fields.map(m => ({
+            title: m.display || m.name,
+            dataIndex: m.name
+        })),
+        {
+            title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={addContent} />,
+            render(value) {
+                return <div>
+                    <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => remove(value)} />
+                </div>
+            },
+            fixed: "right",
+            width: 100,
+            align: "end"
+        }]
+
 
     return (
-        <div className="p-4 h-full flex flex-col">
+        <div className="p-4 h-full flex flex-col space-y-3">
             <div className="flex flex-shrink-0">
-                <Search className="w-64" placeholder="input search text" />
                 <div className="flex-1"></div>
-                <Button type="primary" icon={<PlusOutlined />} onClick={addContent}>Add {display || name}</Button>
+                <Search className="w-64" placeholder="input search text" />
             </div>
             <Divider className="flex-shrink-0" />
             <div className="flex-1">
-                <Table className="h-full" dataSource={data?.list?.map(m => m.data)} columns={columns}></Table>
+                <Table rowSelection={{
+
+                }} className="h-full" size="small" dataSource={data?.list?.map(m => m.data)} columns={columns}></Table>
             </div>
         </div>
 
