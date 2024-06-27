@@ -3,29 +3,18 @@ using Pilotair.Web.Contents;
 
 namespace Pilotair.Web.Controllers;
 
-public class ContentController(ContentCollectionStore collectionStore, ContentStore contentStore) : ApiController
+public class ContentController(ContentService contentService) : ApiController
 {
-    
-    [HttpGet]
-    public async Task<ContentPagingResult> GetAsync([FromQuery] ContentPagingQuery query)
-    {
-        var contentCollection = await collectionStore.GetAsync(query.Collection);
-        if (contentCollection == default)
-        {
-            throw new ContentCollectionNotFoundException();
-        }
 
-        var contents = contentStore.GetOrCreate(query.Collection);
-        var total = await contents.Query.CountAsync();
-        var result = new ContentPagingResult(query, total);
-        result.List = await contents.Query.Skip(result.GetSkip()).TakeAsync(result.Size);
-        return result;
+    [HttpGet]
+    public Task<ContentPagingResult> GetAsync([FromQuery] ContentPagingQuery model)
+    {
+        return contentService.QueryAsync(model);
     }
 
     [HttpPost]
-    public async Task PostAsync()
+    public Task PostAsync(string collection, [FromBody] IDictionary<string, object> value)
     {
-        var contents = contentStore.GetOrCreate("demo");
-        // contents.AddDocumentAsync()
+        return contentService.AddContentAsync(collection, value);
     }
 }

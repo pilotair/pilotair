@@ -21,7 +21,51 @@ public class DictionaryConverter : JsonConverter<IDictionary<string, object?>>
 
     public override void Write(Utf8JsonWriter writer, IDictionary<string, object?> value, JsonSerializerOptions options)
     {
-        JsonSerializer.Serialize(writer, value, options);
+        writer.WriteStartObject();
+        foreach (var item in value)
+        {
+            writer.WritePropertyName(item.Key);
+            Write(writer, item.Value, options);
+        }
+        writer.WriteEndObject();
+    }
+
+    private static void Write(Utf8JsonWriter writer, object? value, JsonSerializerOptions options)
+    {
+        if (value is Array array)
+        {
+            writer.WriteStartArray();
+            foreach (var i in array)
+            {
+                Write(writer, i, options);
+            }
+            writer.WriteEndArray();
+        }
+
+        if (value is int || value is double || value is float || value is long || value is decimal || value is short || value is byte || value is uint || value is ulong || value is ushort || value is sbyte)
+        {
+            writer.WriteNumberValue(Convert.ToDecimal(value));
+        }
+
+        if (value is bool boolean)
+        {
+            writer.WriteBooleanValue(boolean);
+        }
+
+        if (value is null)
+        {
+            writer.WriteNullValue();
+        }
+
+        if (value is string stringValue)
+        {
+            writer.WriteStringValue(stringValue);
+        }
+
+        if (value is IDictionary<string, object> dictionary)
+        {
+            Write(writer, dictionary, options);
+        }
     }
 
     private static object? GetJsonElementValue(JsonElement jsonElement)

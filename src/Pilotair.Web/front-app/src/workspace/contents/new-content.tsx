@@ -21,7 +21,7 @@ export default function NewContent({ collection }: Props) {
 
     async function onSave() {
         const value = await dataForm.current?.getValue();
-        console.log(value)
+        httpClient.post(`/content?collection=${collection}`, value)
     }
 
     return (

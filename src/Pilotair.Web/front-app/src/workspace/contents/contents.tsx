@@ -39,7 +39,7 @@ export default function Contents({ name, display }: Props) {
     if (!collection) return <Empty />
 
     const columns: Columns = collection.fields.map(m => ({
-        title: m.name,
+        title: m.display || m.name,
         dataIndex: m.name
     }))
 
@@ -52,7 +52,7 @@ export default function Contents({ name, display }: Props) {
             </div>
             <Divider className="flex-shrink-0" />
             <div className="flex-1">
-                <Table className="h-full" dataSource={data?.list} columns={columns}></Table>
+                <Table className="h-full" dataSource={data?.list?.map(m => m.data)} columns={columns}></Table>
             </div>
         </div>
 
