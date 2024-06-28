@@ -13,12 +13,16 @@ export default function CreateFolderBtn() {
     let closeModal: () => void
 
     async function onFinish(value: { name: string }) {
-        const path = combine(fileStore.folder, value.name);
+        const folder = combine(fileStore.folder, value.name);
 
         await loading(async () => {
-            await httpClient.post(`file/${path}`, new FormData());
-        })
+            await httpClient.post("file", new FormData(), {
+                searchParams: {
+                    folder: folder
+                }
+            });
 
+        })
         await fileStore.load()
         closeModal?.()
     }

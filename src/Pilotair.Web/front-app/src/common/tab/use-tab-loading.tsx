@@ -18,7 +18,7 @@ export function useTabLoading() {
     const loading = useCallback(async (action: () => Promise<void>) => {
         showLoading(true);
         try {
-            action()
+            await action()
         } finally {
             showLoading(false);
         }

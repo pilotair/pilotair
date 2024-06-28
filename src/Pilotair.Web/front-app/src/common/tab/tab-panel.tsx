@@ -8,7 +8,7 @@ interface TabContextValue {
     modalContainer: HTMLDivElement | null,
     openModal: (props: ModalProps) => () => void;
     openConfirm: (props: ModalFuncProps) => Promise<void>;
-    loading: (action: () => Promise<void>) => void;
+    loading: (action: () => Promise<void>) => Promise<void>;
     showLoading: (show: boolean) => void;
     name: string
 }
