@@ -1,5 +1,5 @@
 import { ReactNode, useContext, useEffect, useMemo, useState } from "react"
-import { Button, Checkbox, Divider } from "antd"
+import { Button, Checkbox } from "antd"
 import EntryItem from "./entry-item"
 import { useFile } from "./files-store"
 import CreateFolderBtn from "./create-folder-btn"
@@ -10,6 +10,7 @@ import { httpClient } from "@/utils/request"
 import { TabContext } from "@/common/tab/tab-panel"
 import Empty from "@/common/empty"
 import { Pilotair } from "@/schema"
+import ToolbarLayout from "@/common/layout/toolbar-layout"
 
 export default function File() {
     const { folder, entries, openFolder, load } = useFile();
@@ -68,31 +69,24 @@ export default function File() {
         loading(load);
     }
 
+    const barLeft = <Checkbox indeterminate={indeterminate} checked={checkAll} className="flex items-center" onClick={onCheckAllClick} disabled={!entries.length}>Check all</Checkbox>
+
+    const barRight = <div className="flex gap-2">
+        {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={onDelete}>Delete</Button>}
+        <CreateFolderBtn />
+        <UploadFilesBtn />
+    </div>
+
+    const footer = !!folder && <FolderBreadcrumb path={folder} className="flex-shrink-0" />
+
     return (
-        <div className="p-4 space-y-3 flex flex-col h-full">
-            <div className="flex-shrink-0 space-y-4 ">
-                <div className="flex items-center">
-                    <Checkbox indeterminate={indeterminate} checked={checkAll} className="flex items-center" onClick={onCheckAllClick} disabled={!entries.length}>Check all</Checkbox>
-                    <div className="flex-1"></div>
-                    <div className="flex gap-2">
-                        {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={onDelete}>Delete</Button>}
-                        <CreateFolderBtn />
-                        <UploadFilesBtn />
-                    </div>
+        <ToolbarLayout barLeft={barLeft} barRight={barRight} footer={footer}>
+            {entries.length
+                ? <div className="flex flex-wrap gap-1">
+                    {entryItems}
                 </div>
-
-                <Divider />
-            </div>
-
-            <div className="flex-1 overflow-auto">
-                {entries.length
-                    ? <div className="flex flex-wrap gap-1">
-                        {entryItems}
-                    </div>
-                    : <Empty />
-                }
-            </div>
-            {!!folder && <FolderBreadcrumb path={folder} className="flex-shrink-0" />}
-        </div>
+                : <Empty />
+            }
+        </ToolbarLayout>
     )
 }

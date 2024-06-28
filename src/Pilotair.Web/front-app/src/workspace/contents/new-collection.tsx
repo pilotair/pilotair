@@ -1,11 +1,12 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
-import { Button, Divider, Form, Input } from "antd"
+import { Button, Form, Input } from "antd"
 import { httpClient } from "@/utils/request";
 import { useTabs } from "@/workspace/tabs";
 import { useMenu } from "@/workspace/menu";
 import { useState } from "react";
 import { Pilotair } from "@/schema";
 import Fields from "./fields";
+import ToolbarLayout from "@/common/layout/toolbar-layout";
 
 interface Props {
     path: string
@@ -27,14 +28,11 @@ export default function NewCollection({ path }: Props) {
         closeTab(path);
     }
 
+    const barLeft = <Button icon={<ReloadOutlined />}>Reset</Button>;
+    const barRight = <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+
     return (
-        <div className="p-4 h-full flex flex-col space-y-3">
-            <div className="flex items-center gap-2 flex-shrink-0">
-                <Button icon={<ReloadOutlined />}>Reset</Button>
-                <div className="flex-1"></div>
-                <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
-            </div>
-            <Divider className="flex-shrink-0" />
+        <ToolbarLayout barLeft={barLeft} barRight={barRight}>
             <Form
                 form={form}
                 layout="vertical"
@@ -49,6 +47,6 @@ export default function NewCollection({ path }: Props) {
                 </div>
             </Form>
             <Fields list={fields} setList={setFields} />
-        </div>
+        </ToolbarLayout>
     )
 }

@@ -1,10 +1,11 @@
 import { EditOutlined, FormOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Divider, Empty, GetProp, Input, Table } from "antd"
+import { Button, Empty, GetProp, Input, Table } from "antd"
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import { httpClient } from "@/utils/request";
 import { useTabs } from "@/workspace/tabs";
 import AsyncComponent from "@/common/async-component";
+import ToolbarLayout from "@/common/layout/toolbar-layout";
 
 type Columns = GetProp<typeof Table, "columns">
 interface Props {
@@ -36,7 +37,7 @@ export default function Contents({ name, display }: Props) {
             <FormOutlined />
         )
     }
-    
+
     if (!collection) return <Empty />
 
     function remove(value: unknown) {
@@ -60,20 +61,13 @@ export default function Contents({ name, display }: Props) {
             align: "end"
         }]
 
+    const barRight = <Search className="w-64" placeholder="input search text" />
 
     return (
-        <div className="p-4 h-full flex flex-col space-y-3">
-            <div className="flex flex-shrink-0">
-                <div className="flex-1"></div>
-                <Search className="w-64" placeholder="input search text" />
-            </div>
-            <Divider className="flex-shrink-0" />
-            <div className="flex-1">
-                <Table rowSelection={{
+        <ToolbarLayout barRight={barRight}>
+            <Table rowSelection={{
 
-                }} className="h-full" size="small" dataSource={data?.list?.map(m => m.data)} columns={columns}></Table>
-            </div>
-        </div>
-
+            }} className="h-full" size="small" dataSource={data?.list?.map(m => m.data)} columns={columns}></Table>
+        </ToolbarLayout>
     )
 }
