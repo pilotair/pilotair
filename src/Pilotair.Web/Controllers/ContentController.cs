@@ -5,7 +5,6 @@ namespace Pilotair.Web.Controllers;
 
 public class ContentController(ContentService contentService) : ApiController
 {
-
     [HttpGet]
     public Task<ContentPagingResult> GetAsync([FromQuery] ContentPagingQuery model)
     {

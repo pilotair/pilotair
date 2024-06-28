@@ -46,6 +46,18 @@ public class JsonStore<T>
         return File.Exists(path);
     }
 
+    public void ThrowIfExist(string name)
+    {
+        var path = Path.Combine(folder, $"{name}.json");
+        if (File.Exists(path)) throw new ExistException<T>(name);
+    }
+
+    public void ThrowIfNotFound(string name)
+    {
+        var path = Path.Combine(folder, $"{name}.json");
+        if (!File.Exists(path)) throw new NotFoundException<T>(name);
+    }
+
     public void Delete(string name)
     {
         var path = Path.Combine(folder, $"{name}.json");

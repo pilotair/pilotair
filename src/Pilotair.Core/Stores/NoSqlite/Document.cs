@@ -10,7 +10,7 @@ public class Document<T>
     private T? data;
 
     [Range(1, 64)]
-    public string Id { get; init; } = Guid.NewGuid().ToString();
+    public string Id { get; init; } = Guid.NewGuid().ToString("N");
     public string? ParentId { get; set; }
     public DateTimeOffset CreationTime { get; init; } = DateTimeHelper.UnixTimeMilliseconds();
     public DateTimeOffset LastWriteTime { get; init; } = DateTimeHelper.UnixTimeMilliseconds();

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Pilotair.Core.Helpers;

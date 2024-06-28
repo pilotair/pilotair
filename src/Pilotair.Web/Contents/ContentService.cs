@@ -7,18 +7,14 @@ public class ContentService(ContentCollectionStore collectionStore, ContentStore
 {
     public async Task<Document<IDictionary<string, object>>> GetContentAsync(string collection, string id)
     {
+        collectionStore.ThrowIfNotFound(collection);
         var contents = contentStore.Get(collection);
         return await contents.GetAsync(id);
     }
 
     public async Task<ContentPagingResult> QueryAsync(ContentPagingQuery query)
     {
-        var contentCollection = await collectionStore.GetAsync(query.Collection);
-        if (contentCollection == default)
-        {
-            throw new ContentCollectionNotFoundException();
-        }
-
+        collectionStore.ThrowIfNotFound(query.Collection);
         var contents = contentStore.GetOrCreate(query.Collection);
         var total = await contents.Query.CountAsync();
         var result = new ContentPagingResult(query, total);
@@ -28,8 +24,7 @@ public class ContentService(ContentCollectionStore collectionStore, ContentStore
 
     public async Task AddContentAsync(string collection, IDictionary<string, object> value)
     {
-        var contentCollection = await collectionStore.GetAsync(collection);
-        if (contentCollection == null) throw new ContentCollectionNotFoundException();
+        collectionStore.ThrowIfNotFound(collection);
         var contents = contentStore.Get(collection);
         await contents.AddDocumentAsync(value);
     }
