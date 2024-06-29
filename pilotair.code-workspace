@@ -13,11 +13,10 @@
 			"path": "src"
 		},
 		{
-			"name": "test",
-			"path": "tests/Pilotair.CoreTest"
+			"path": "src/Pilotair.Web/data"
 		},
 		{
-			"path": "src/Pilotair.Web/data"
+			"path": "tests"
 		}
 	],
 	"settings": {

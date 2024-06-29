@@ -1,4 +1,4 @@
-namespace Pilotair.Web.Account;
+namespace Pilotair.Web.Accounts;
 
 public class Role
 {

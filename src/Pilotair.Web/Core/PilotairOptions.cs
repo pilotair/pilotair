@@ -1,4 +1,5 @@
 using System.IO;
+using Pilotair.Web.Accounts;
 
 namespace Pilotair.Web;
 
@@ -15,8 +16,10 @@ public class PilotairOptions
             {
                 value = Path.GetFullPath(value);
             }
-            
+
             dataPath = value;
         }
     }
+
+    public User? AdminUser { get; set; }
 }

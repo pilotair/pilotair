@@ -2,7 +2,7 @@ using System.IO;
 using Microsoft.Extensions.Options;
 using Pilotair.Core.Stores.NoSqlite;
 
-namespace Pilotair.Web;
+namespace Pilotair.Web.Contents;
 
 [Singleton]
 public class ContentStore : NoSqliteStore

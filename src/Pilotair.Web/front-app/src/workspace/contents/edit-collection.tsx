@@ -5,7 +5,7 @@ import { useTabs } from "@/workspace/tabs";
 import { useMenu } from "@/workspace/menu";
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
-import Fields from "./fields";
+import FieldsEditor from "./fields-editor";
 import Empty from "@/common/empty";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 
@@ -60,7 +60,7 @@ export default function EditCollection({ name, path }: Props) {
                     </Form.Item>
                 </div>
             </Form>
-            <Fields list={fields} setList={setFields} />
+            <FieldsEditor list={fields} setList={setFields} />
         </ToolbarLayout>
     )
 }

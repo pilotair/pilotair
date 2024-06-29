@@ -52,5 +52,5 @@ export default function NewFieldForm({ addField }: Props) {
     }]
 
 
-    return <Form form={form}><Tabs items={items} /></Form>
+    return <Form labelCol={{span:4}} form={form}><Tabs items={items} /></Form>
 }

@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddFromAssemblies(Assembly.GetExecutingAssembly());
 builder.Services.AddPilotair(builder.Configuration);
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
 string GetName(Type schema)
 {
@@ -73,6 +75,8 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthorization();
+app.UseAuthentication();
 app.MapControllers();
 app.Run();
 

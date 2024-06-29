@@ -1,5 +1,5 @@
 import BlankLayout from "@/common/layout/blank-layout";
-import { Route, Switch } from "wouter";
+import { Redirect, Route, Switch } from "wouter";
 import Login from "./login";
 
 export default function Account() {
@@ -7,6 +7,7 @@ export default function Account() {
         <BlankLayout>
             <Switch>
                 <Route path="/login" component={Login} />
+                <Redirect to="/login" />
             </Switch>
         </BlankLayout>
     )

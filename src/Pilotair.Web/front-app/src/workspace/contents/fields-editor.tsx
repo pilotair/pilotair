@@ -10,7 +10,7 @@ interface Props {
     setList: (value: Pilotair.Web.DataModels.Field[]) => void;
 }
 
-export default function Fields({ list, setList }: Props) {
+export default function FieldsEditor({ list, setList }: Props) {
     const { openModal } = useContext(TabContext)
 
     function add(field: Pilotair.Web.DataModels.Field) {

@@ -21,10 +21,6 @@ export default function File() {
         setSelectedFiles([])
     }, [folder, entries])
 
-    useEffect(() => {
-        loading(load)
-    }, [])
-
     const indeterminate = useMemo(() => {
         return !!selectedFiles.length && selectedFiles.length !== entries?.length;
     }, [entries, selectedFiles.length])

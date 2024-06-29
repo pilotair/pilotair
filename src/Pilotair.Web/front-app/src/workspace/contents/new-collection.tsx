@@ -5,7 +5,7 @@ import { useTabs } from "@/workspace/tabs";
 import { useMenu } from "@/workspace/menu";
 import { useState } from "react";
 import { Pilotair } from "@/schema";
-import Fields from "./fields";
+import FieldsEditor from "./fields-editor";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 
 interface Props {
@@ -16,7 +16,6 @@ export default function NewCollection({ path }: Props) {
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollection>();
     const { closeTab } = useTabs();
     const { loadMenus } = useMenu();
-
     const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
 
     async function onSave() {
@@ -46,7 +45,7 @@ export default function NewCollection({ path }: Props) {
                     </Form.Item>
                 </div>
             </Form>
-            <Fields list={fields} setList={setFields} />
+            <FieldsEditor list={fields} setList={setFields} />
         </ToolbarLayout>
     )
 }
