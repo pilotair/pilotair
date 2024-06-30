@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Hosting;
 using Pilotair.Core.Stores.NoSqlite;
+using Pilotair.Web.Accounts;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -19,7 +20,10 @@ builder.Services.AddControllers(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddFromAssemblies(Assembly.GetExecutingAssembly());
 builder.Services.AddPilotair(builder.Configuration);
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.EventsType = typeof(JsonWebTokenEvents);
+});
 
 string GetName(Type schema)
 {

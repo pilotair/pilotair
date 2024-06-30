@@ -2,6 +2,6 @@ POST http://dev.pilotair.org/__api__/account/password-sign HTTP/1.1
 Content-Type: application/json
 
 {
-    "userName":"test",
-    "password":"test"
+    "userName":"admin",
+    "password":"admin"
 }

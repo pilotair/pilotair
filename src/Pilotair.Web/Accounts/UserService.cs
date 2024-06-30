@@ -24,7 +24,7 @@ public class UserService(AccountStore store, IOptionsMonitor<PilotairOptions> op
             };
         }
 
-        var doc = await store.User.Query.Where("$.userName", name).FirstOrDefaultAsync() ?? throw new NotFoundException<UserService>(name);
+        var doc = await store.User.Query.Where("$.userName", name).FirstOrDefaultAsync() ?? throw new NotFoundException<User>(name);
 
         return new UserModel
         {

@@ -4,7 +4,7 @@ export function useChallenge() {
     const navigate = useNavigate();
 
     function challenge() {
-        navigate("@/account/login");
+        navigate("@/account/sign");
     }
 
     return {
