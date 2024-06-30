@@ -20,10 +20,11 @@ builder.Services.AddControllers(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddFromAssemblies(Assembly.GetExecutingAssembly());
 builder.Services.AddPilotair(builder.Configuration);
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.EventsType = typeof(JsonWebTokenEvents);
-});
+builder.Services.AddAuthentication().AddJwtBearer(options =>
+    {
+        options.EventsType = typeof(JsonWebTokenEvents);
+    }
+);
 
 string GetName(Type schema)
 {
@@ -79,8 +80,8 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
 

@@ -2,10 +2,18 @@ import { combine } from "./path";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
+interface ClientOptions {
+    prefix?: string,
+    onResponse?: (response: Response) => void
+    onRequest?: (request: Request) => void
+}
+
 interface SendParams {
     searchParams?: SearchParams
     body?: unknown,
-    headers?: Record<string, string>
+    headers?: Record<string, string>,
+    onResponse?: (response: Response) => void,
+    onRequest?: (request: Request) => void
 }
 type SupportMethods = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -36,13 +44,17 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
         body = sendParams?.body
     }
 
-    const response = await fetch(urlObject, {
+    const request = new Request(urlObject, {
         method,
         headers,
-        body,
-    })
+        body
+    });
+
+    if (sendParams?.onRequest) sendParams.onRequest(request);
+    const response = await fetch(request)
 
     try {
+        if (sendParams?.onResponse) sendParams.onResponse(response)
         const data = await response.json();
         return data as T
     } catch (error) {
@@ -69,35 +81,56 @@ function bodyStringify(contentType: string, body: unknown) {
     }
 }
 
-interface ClientOptions {
-    prefix?: string
-}
-
 function createClient(options?: ClientOptions) {
-    function wrapSend<T>(url: string, method: SupportMethods, sendParams?: SendParams) {
+    function _send<T>(url: string, method: SupportMethods, sendParams?: SendParams) {
         if (options?.prefix) {
             url = combine(options.prefix, url)
         }
+
+        if (options?.onResponse) {
+            if (!sendParams) sendParams = {};
+            if (!sendParams.onResponse) sendParams.onResponse = options.onResponse
+        }
+
+        if (options?.onRequest) {
+            if (!sendParams) sendParams = {};
+            if (!sendParams.onRequest) sendParams.onRequest = options.onRequest
+        }
+
         return send<T>(url, method, sendParams)
     }
 
     return {
         get<T>(url: string, searchParams?: SearchParams, sendParams?: Omit<SendParams, "body" | "searchParams">) {
-            return wrapSend<T>(url, "GET", { ...sendParams, searchParams })
+            return _send<T>(url, "GET", { ...sendParams, searchParams })
         },
         post<T>(url: string, body?: unknown, sendParams?: Omit<SendParams, "body">) {
-            return wrapSend<T>(url, "POST", { ...sendParams, body })
+            return _send<T>(url, "POST", { ...sendParams, body })
         },
         put<T>(url: string, body?: unknown, sendParams?: Omit<SendParams, "body">) {
-            return wrapSend<T>(url, "PUT", { ...sendParams, body })
+            return _send<T>(url, "PUT", { ...sendParams, body })
         },
         delete<T>(url: string, searchParams?: SearchParams, sendParams?: Omit<SendParams, "body" | "searchParams">) {
-            return wrapSend<T>(url, "DELETE", { ...sendParams, searchParams })
+            return _send<T>(url, "DELETE", { ...sendParams, searchParams })
         },
-        send: wrapSend
+        send: _send
     }
 }
 
 export const prefix = "/__api__/"
 
-export const httpClient = createClient({ prefix });
+export const httpClient = createClient({
+    prefix,
+    onRequest(request) {
+        const token = localStorage.getItem("access_token");
+        if (token) {
+            request.headers.set("Authorization", `Bearer ${token}`)
+        }
+    },
+    onResponse(response) {
+        const bearer = response.headers.get("www-authenticate")
+        if (bearer && response.ok) {
+            localStorage.setItem("access_token", bearer)
+        }
+    }
+});

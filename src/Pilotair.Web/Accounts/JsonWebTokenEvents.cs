@@ -27,7 +27,7 @@ public class JsonWebTokenEvents(UserService userService, IOptionsMonitor<JwtBear
                 context.Response.Headers.TryAdd(HeaderNames.WWWAuthenticate, token);
                 context.HandleResponse();
             }
-            catch (NotFoundException<User> )
+            catch (NotFoundException<User>)
             {
                 //Challenge field, do nothing
             }

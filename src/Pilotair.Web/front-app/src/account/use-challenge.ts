@@ -4,7 +4,10 @@ export function useChallenge() {
     const navigate = useNavigate();
 
     function challenge() {
-        navigate("@/account/sign");
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            navigate("@/account/sign");
+        }
     }
 
     return {
