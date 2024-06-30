@@ -117,12 +117,13 @@ function createClient(options?: ClientOptions) {
     }
 }
 
-export const prefix = "/__api__/"
+export const prefix = "/__api__/";
+export const tokenName = "access_token";
 
 export const httpClient = createClient({
     prefix,
     onRequest(request) {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem(tokenName);
         if (token) {
             request.headers.set("Authorization", `Bearer ${token}`)
         }
@@ -130,7 +131,7 @@ export const httpClient = createClient({
     onResponse(response) {
         const bearer = response.headers.get("www-authenticate")
         if (bearer && response.ok) {
-            localStorage.setItem("access_token", bearer)
+            localStorage.setItem(tokenName, bearer)
         }
     }
 });
