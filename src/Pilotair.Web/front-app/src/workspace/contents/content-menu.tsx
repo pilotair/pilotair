@@ -1,7 +1,7 @@
 import { Pilotair } from "@/schema";
 import ContentsContextMenu from "./contents-context-menu";
 import { FormOutlined } from "@ant-design/icons";
-import { MenuItem } from "@/workspace/menu";
+import { MenuItem } from "@/workspace/use-menu";
 import ContentContextMenu from "./content-context-menu";
 import AsyncComponent from "@/common/async-component";
 
@@ -19,7 +19,8 @@ export function getContentCollectionMenu(menu: Pilotair.Web.MenuItem): MenuItem 
         key: menu.path,
         tab: <AsyncComponent component={() => import("./contents")} props={{
             name: menu.name,
-            display: menu.display
+            display: menu.display,
+            path: menu.path
         }} />,
         tabIcon: <FormOutlined />,
         tabLabel: menu.display || menu.name

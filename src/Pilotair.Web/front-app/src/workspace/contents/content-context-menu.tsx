@@ -3,9 +3,10 @@ import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
 import { httpClient } from "@/utils/request";
-import { useMenu } from "@/workspace/menu";
+import { useMenu } from "@/workspace/use-menu";
 import { useTabs } from "@/workspace/tabs";
 import AsyncComponent from "@/common/async-component";
+import { combine } from "@/utils/path";
 
 interface Props {
     children: ReactNode,
@@ -18,17 +19,22 @@ export default function ContentContextMenu({ children, path, name }: Props) {
     const { loadMenus } = useMenu()
     const { openTab } = useTabs()
 
+    function edit() {
+        const editPath = combine('edit', path);
+        openTab(
+            editPath,
+            `Edit ${name}`,
+            <AsyncComponent component={() => import("./edit-collection")} props={{ name, path: editPath }} />,
+            <FormOutlined />
+        )
+    }
+
     function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();
 
         switch (key) {
             case "edit":
-                openTab(
-                    path,
-                    `Edit ${name}`,
-                    <AsyncComponent component={() => import("./edit-collection")} props={{ name, path }} />,
-                    <FormOutlined />
-                )
+                edit();
                 break;
             case "delete":
                 modal.confirm({

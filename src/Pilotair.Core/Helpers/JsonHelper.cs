@@ -47,7 +47,7 @@ public static class JsonHelper
 
     public static async Task SerializeAsync(object value, string path, CancellationToken token = default)
     {
-        using var stream = new FileStream(path, FileMode.OpenOrCreate);
+        using var stream = File.Create(path);
         await JsonSerializer.SerializeAsync(stream, value, defaultOptions, token);
     }
 }

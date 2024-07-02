@@ -2,7 +2,7 @@ import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
 import { httpClient } from "@/utils/request";
 import { useTabs } from "@/workspace/tabs";
-import { useMenu } from "@/workspace/menu";
+import { useMenu } from "@/workspace/use-menu";
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import FieldsEditor from "./fields-editor";
@@ -15,14 +15,14 @@ interface Props {
 }
 
 export default function EditCollection({ name, path }: Props) {
-    const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollection>()
+    const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>()
     const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
-    const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollection>();
+    const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
     const { closeTab } = useTabs();
     const { loadMenus } = useMenu();
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollection>(`/content-collection?name=${name}`).then(rsp => {
+        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(rsp => {
             setCollection(rsp!)
             setFields(rsp!.fields)
         })
@@ -52,7 +52,7 @@ export default function EditCollection({ name, path }: Props) {
                 initialValues={collection}
             >
                 <div className="grid grid-cols-2 gap-4">
-                    <Form.Item label='Name' name="name" rules={[{ required: true }]}>
+                    <Form.Item label='Name' name="name">
                         <Input disabled />
                     </Form.Item>
                     <Form.Item label='Display' name="display">

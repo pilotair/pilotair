@@ -1,81 +1,62 @@
-import { ReactNode, useCallback } from "react"
-import { atom, useAtom } from "jotai"
-import { httpClient } from "../utils/request"
-import { Pilotair } from "../schema"
-import { getCodeFolderMenu, getCodeMenu, getCodesMenu } from "./code/code-menu"
-import { ControlOutlined, FolderOutlined } from "@ant-design/icons"
-import AsyncComponent from "../common/async-component"
-import { getContentCollectionMenu, getContentsMenu } from "./contents/content-menu"
+import { useMemo, useState } from "react";
+import { MenuItem, useMenu } from "./use-menu";
+import { Menu as AntdMenu, GetProps } from "antd"
+import { useTabs } from "./tabs";
 
-export type MenuItem = {
-    key: string,
-    icon?: ReactNode,
-    label: ReactNode,
-    children?: MenuItem[],
-    className?: string,
-    tab?: ReactNode,
-    tabLabel?: ReactNode,
-    tabIcon?: ReactNode,
-}
+type MenuItems = GetProps<typeof AntdMenu>["items"]
 
-const menusAtom = atom<MenuItem[]>([])
+export default function Menu() {
+    const [openKeys, setOpenKeys] = useState<string[]>([])
+    const { openTab, activeName } = useTabs();
+    const { menus } = useMenu();
 
-export function useMenu() {
-    const [menus, setMenus] = useAtom(menusAtom)
+    const expandMenus = useMemo(() => {
+        const result: typeof menus = []
 
-    const loadMenus = useCallback(async () => {
-        const response = await httpClient.get<Pilotair.Web.MenuItem[]>("menu");
-        setMenus(mapMenuItems(response ?? []) ?? []);
-    }, [])
-
-    return {
-        menus,
-        loadMenus
-    }
-}
-
-function mapMenuItems(items: Pilotair.Web.MenuItem[]) {
-    const result: MenuItem[] = [];
-    items = items.sort((left, right) => left.order - right.order)
-
-    for (const item of items) {
-        const menu = getMenu(item);
-        if (!menu) continue;
-        result.push(menu)
-        if (item.children) {
-            menu.children = mapMenuItems(item.children)
+        function getMenus(items: typeof menus) {
+            for (const menu of items) {
+                result.push(menu);
+                if (menu.children) {
+                    getMenus(menu.children)
+                }
+            }
         }
+
+        getMenus(menus)
+        return result;
+    }, [menus])
+
+    function onMenuItemClick(key: string) {
+        const menu = expandMenus.find(f => f.key == key);
+        if (!menu || !menu.tab) return;
+        openTab(key, menu.tabLabel ?? menu.label, menu.tab, menu.tabIcon ?? menu.icon)
     }
 
-    return result.length ? result : undefined;
+    return <AntdMenu
+        mode="inline"
+        items={getItems(menus)}
+        onClick={({ key }) => onMenuItemClick(key)}
+        selectedKeys={[activeName]}
+        theme="dark"
+        inlineIndent={12}
+        openKeys={openKeys}
+        onOpenChange={(keys: string[]) => setOpenKeys(keys)}
+    />
 }
 
-function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
-    switch (menu.type) {
-        case "Codes":
-            return getCodesMenu(menu);
-        case "CodeFolder":
-            return getCodeFolderMenu(menu);
-        case "Code":
-            return getCodeMenu(menu);
-        case "Files":
-            return {
-                key: menu.type,
-                label: "Files",
-                icon: <FolderOutlined />,
-                tab: <AsyncComponent component={() => import("./files/page")} />,
-            };
-        case "Contents":
-            return getContentsMenu(menu)
-        case "ContentCollection":
-            return getContentCollectionMenu(menu)
-        case "Options":
-            return {
-                key: menu.type,
-                label: "Options",
-                icon: <ControlOutlined />,
-            };
-        default:
-            return;
+function getItems(menus?: MenuItem[]): MenuItems | undefined {
+    if (!menus || !menus.length) return undefined;
+    const result: MenuItems = [];
+
+    for (const i of menus) {
+        result.push({
+            label: i.label,
+            children: getItems(i.children),
+            className: i.className,
+            icon: i.icon,
+            key: i.key,
+        })
     }
+
+    return result;
 }

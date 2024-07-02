@@ -1,8 +1,6 @@
 import SiderLayout from "../common/layout/sider-layout"
-import { Menu } from "antd"
-import { useMenu } from "./menu";
 import { useTabs } from "./tabs";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useState } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
 import Empty from "../common/empty";
@@ -11,52 +9,16 @@ import { SiderLayoutContext } from "../common/layout/sider-layout-context";
 import Avatar from "@/common/profile/avatar";
 import { useNavigate } from "@/common/router";
 import FoldUp from "@/assets/fold-up.svg"
+import Menu from "./menu"
 
 
 function Sider() {
-    const { menus, loadMenus } = useMenu();
     const { collapsed } = useContext(SiderLayoutContext)
-    const { openTab, activeName } = useTabs();
+    const { openTab } = useTabs();
     const nav = useNavigate()
     const [openKeys, setOpenKeys] = useState<string[]>([])
 
-
-    useEffect(() => {
-        loadMenus();
-    }, [loadMenus])
-
-    const expandMenus = useMemo(() => {
-        const result: typeof menus = []
-
-        function getMenus(items: typeof menus) {
-            for (const menu of items) {
-                result.push(menu);
-                if (menu.children) {
-                    getMenus(menu.children)
-                }
-            }
-        }
-
-        getMenus(menus)
-        return result;
-    }, [menus])
-
-    const menu = <Menu
-        mode="inline"
-        items={menus}
-        onClick={({ key }) => onMenuItemClick(key)}
-        selectedKeys={[activeName]}
-        theme="dark"
-        inlineIndent={12}
-        openKeys={openKeys}
-        onOpenChange={(keys: string[]) => setOpenKeys(keys)}
-    />
-
-    function onMenuItemClick(key: string) {
-        const menu = expandMenus.find(f => f.key == key);
-        if (!menu || !menu.tab) return;
-        openTab(key, menu.tabLabel ?? menu.label, menu.tab, menu.tabIcon ?? menu.icon)
-    }
+   
 
     function onMoreClick() {
         openTab(
@@ -70,7 +32,7 @@ function Sider() {
     return (
         <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto ">
-                {menu}
+                <Menu />
             </div>
             {!!openKeys.length && !collapsed && <div className="flex justify-center hover:bg-slate-200/10 py-1" onClick={() => setOpenKeys([])}>
                 <img className="h-4" src={FoldUp} />

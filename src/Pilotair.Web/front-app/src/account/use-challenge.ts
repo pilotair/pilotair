@@ -2,6 +2,12 @@ import { useNavigate } from "@/common/router"
 import { tokenName } from "@/utils/request";
 import { jwtDecode } from "jwt-decode";
 
+// interface User {
+//     id: string,
+//     name: string,
+//     expire: number
+// }
+
 export function useChallenge() {
     const navigate = useNavigate();
 

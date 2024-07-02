@@ -6,14 +6,20 @@ namespace Pilotair.Web.Controllers;
 public class ContentCollectionController(ContentCollectionStore collectionStore) : ApiController
 {
     [HttpGet]
-    public async Task<ContentCollection> GetAsync(string name)
+    public async Task<ContentCollectionModel> GetAsync(string name)
     {
         var collection = await collectionStore.GetAsync(name);
         if (collection == default)
         {
             throw new ContentCollectionNotFoundException();
         }
-        return collection;
+
+        return new ContentCollectionModel
+        {
+            Name = name,
+            Fields = collection.Fields,
+            Display = collection.Display
+        };
     }
 
     [HttpPost]

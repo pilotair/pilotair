@@ -2,7 +2,7 @@ import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
 import { httpClient } from "@/utils/request";
 import { useTabs } from "@/workspace/tabs";
-import { useMenu } from "@/workspace/menu";
+import { useMenu } from "@/workspace/use-menu";
 import { useState } from "react";
 import { Pilotair } from "@/schema";
 import FieldsEditor from "./fields-editor";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function NewCollection({ path }: Props) {
-    const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollection>();
+    const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
     const { closeTab } = useTabs();
     const { loadMenus } = useMenu();
     const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])

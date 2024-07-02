@@ -6,33 +6,37 @@ import { httpClient } from "@/utils/request";
 import { useTabs } from "@/workspace/tabs";
 import AsyncComponent from "@/common/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
+import { combine } from "@/utils/path";
 
 type Columns = GetProp<typeof Table, "columns">
 interface Props {
     name: string,
     display?: string,
+    path: string
 }
 
 const { Search } = Input;
 
-export default function Contents({ name, display }: Props) {
-    const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollection>();
+export default function Contents({ name, display, path }: Props) {
+    const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
     const [data, setData] = useState<Pilotair.Web.Contents.ContentPagingResult>()
     const { openTab } = useTabs()
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollection>("content-collection", { name }).then(rsp => setCollection(rsp!))
+        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name }).then(rsp => setCollection(rsp!))
         httpClient.get<Pilotair.Web.Contents.ContentPagingResult>("content", {
             collection: name,
         }).then(rsp => setData(rsp!))
     }, [])
 
     function addContent() {
+        const addPath = combine('new', path)
         openTab(
-            `new-content/${name}`,
+            addPath,
             `New ${display || name}`,
             <AsyncComponent component={() => import("./new-content")} props={{
-                collection: name
+                collection: name,
+                path: addPath
             }} />,
             <FormOutlined />
         )

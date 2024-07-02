@@ -30,6 +30,7 @@ public class JsonStore<T>
     {
         ArgumentNullException.ThrowIfNull(value);
         var path = Path.Combine(folder, $"{name}.json");
+        
         await JsonHelper.SerializeAsync(value, path, token);
     }
 

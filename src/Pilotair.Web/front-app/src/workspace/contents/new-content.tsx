@@ -5,23 +5,28 @@ import Empty from "@/common/empty";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
+import { useTabs } from "../tabs";
 
 interface Props {
-    collection: string
+    collection: string,
+    path: string
 }
 
-export default function NewContent({ collection }: Props) {
-    const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollection>();
+export default function NewContent({ collection, path }: Props) {
+    const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
     const dataForm = useRef<DataFormRef>();
+    const { closeTab } = useTabs()
+    
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollection>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
+        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
     }, [])
 
     if (!contentCollection) return <Empty />
 
     async function onSave() {
         const value = await dataForm.current?.getValue();
-        httpClient.post(`/content?collection=${collection}`, value)
+        await httpClient.post(`/content?collection=${collection}`, value)
+        closeTab(path)
     }
 
     return (

@@ -3,7 +3,7 @@ import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
 import { httpClient } from "@/utils/request";
-import { useMenu } from "@/workspace/menu";
+import { useMenu } from "@/workspace/use-menu";
 
 interface Props {
     children: ReactNode,

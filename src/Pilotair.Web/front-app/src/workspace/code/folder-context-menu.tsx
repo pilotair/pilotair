@@ -5,7 +5,7 @@ import { GlobalModalContext } from "@/common/global-modal";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
 import { httpClient } from "@/utils/request";
-import { useMenu } from "@/workspace/menu";
+import { useMenu } from "@/workspace/use-menu";
 
 interface Props {
     children: ReactNode,
