@@ -4,7 +4,7 @@ import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
 import { httpClient } from "@/utils/request";
 import { useMenu } from "@/workspace/use-menu";
-import { useTabs } from "@/workspace/tabs";
+import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/async-component";
 import { combine } from "@/utils/path";
 
@@ -17,7 +17,7 @@ interface Props {
 export default function ContentContextMenu({ children, path, name }: Props) {
     const { modal } = useContext(GlobalModalContext)
     const { loadMenus } = useMenu()
-    const { openTab } = useTabs()
+    const { openTab } = useTab()
 
     function edit() {
         const editPath = combine('edit', path);

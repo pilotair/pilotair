@@ -16,4 +16,10 @@ public class ContentController(ContentService contentService) : ApiController
     {
         return contentService.AddContentAsync(collection, value);
     }
+
+    [HttpDelete]
+    public async Task DeleteAsync(string collection, [FromQuery] string[] ids)
+    {
+        await contentService.DeleteAsync(collection, ids);
+    }
 }

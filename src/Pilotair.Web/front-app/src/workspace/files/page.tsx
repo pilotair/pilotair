@@ -65,18 +65,21 @@ export default function File() {
         loading(load);
     }
 
-    const barLeft = <Checkbox indeterminate={indeterminate} checked={checkAll} className="flex items-center" onClick={onCheckAllClick} disabled={!entries.length}>Check all</Checkbox>
+    const header = <>
+        <Checkbox indeterminate={indeterminate} checked={checkAll} className="flex items-center" onClick={onCheckAllClick} disabled={!entries.length}>Check all</Checkbox>
 
-    const barRight = <div className="flex gap-2">
-        {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={onDelete}>Delete</Button>}
-        <CreateFolderBtn />
-        <UploadFilesBtn />
-    </div>
+        <div className="flex-1"></div>
+        <div className="flex gap-2">
+            {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={onDelete}>Delete</Button>}
+            <CreateFolderBtn />
+            <UploadFilesBtn />
+        </div>
+    </>
 
     const footer = !!folder && <FolderBreadcrumb path={folder} className="flex-shrink-0" />
 
     return (
-        <ToolbarLayout barLeft={barLeft} barRight={barRight} footer={footer}>
+        <ToolbarLayout header={header} footer={footer}>
             {entries.length
                 ? <div className="flex flex-wrap gap-1">
                     {entryItems}

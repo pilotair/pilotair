@@ -1,7 +1,7 @@
 import { FormOutlined, PlusOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode } from "react";
-import { useTabs } from "@/workspace/tabs";
+import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/async-component";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function ContentsContextMenu({ children, path }: Props) {
-    const { openTab } = useTabs()
+    const { openTab } = useTab()
 
     function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();

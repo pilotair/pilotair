@@ -28,10 +28,6 @@ export function useMenu() {
         setMenus(mapMenuItems(response ?? []) ?? []);
     }, [])
 
-    useEffect(() => {
-        loadMenus();
-    }, [loadMenus])
-
     return {
         menus,
         loadMenus

@@ -1,5 +1,5 @@
 import TagGroup, { TagItem } from "../tag-group"
-import { ReactNode, } from "react"
+import { ReactNode } from "react"
 import TabPanel from "./tab-panel"
 
 export interface TabItem extends TagItem {

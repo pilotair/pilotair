@@ -1,9 +1,9 @@
 import { EditOutlined, FormOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Empty, GetProp, Input, Table } from "antd"
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import { httpClient } from "@/utils/request";
-import { useTabs } from "@/workspace/tabs";
+import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { combine } from "@/utils/path";
@@ -20,14 +20,19 @@ const { Search } = Input;
 export default function Contents({ name, display, path }: Props) {
     const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
     const [data, setData] = useState<Pilotair.Web.Contents.ContentPagingResult>()
-    const { openTab } = useTabs()
+    const { openTab } = useTab()
+    const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
 
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name }).then(rsp => setCollection(rsp!))
+        loadContents()
+    }, [])
+
+    function loadContents() {
         httpClient.get<Pilotair.Web.Contents.ContentPagingResult>("content", {
             collection: name,
         }).then(rsp => setData(rsp!))
-    }, [])
+    }
 
     function addContent() {
         const addPath = combine('new', path)
@@ -43,35 +48,50 @@ export default function Contents({ name, display, path }: Props) {
     }
 
     if (!collection) return <Empty />
+    if (!data) return <Empty />
 
-    function remove(value: unknown) {
-
+    async function deleteContents() {
+        await httpClient.delete("/content", {
+            collection: name,
+            ids: selectedRowKeys as string[]
+        })
+        loadContents()
     }
 
     const columns: Columns = [
         ...collection.fields.map(m => ({
             title: m.display || m.name,
-            dataIndex: m.name
+            dataIndex: ["data", m.name]
         })),
         {
             title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={addContent} />,
             render(value) {
                 return <div>
-                    <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => remove(value)} />
+                    <Button type="text" shape="circle" icon={<EditOutlined />} />
                 </div>
             },
             fixed: "right",
             width: 100,
             align: "end"
-        }]
+        }
+    ]
 
-    const barRight = <Search className="w-64" placeholder="input search text" />
+    const barRight = <>
+        {!!selectedRowKeys.length && <Button danger onClick={deleteContents}>Delete</Button>}
+        <div className="flex-1"></div>
+        <Search className="w-64" placeholder="input search text" />
+    </>
 
     return (
-        <ToolbarLayout barRight={barRight}>
-            <Table rowSelection={{
-
-            }} className="h-full" size="small" dataSource={data?.list?.map(m => m.data)} columns={columns}></Table>
+        <ToolbarLayout header={barRight}>
+            {
+                <Table rowSelection={{
+                    fixed: "left",
+                    selectedRowKeys,
+                    onChange: setSelectedRowKeys
+                }} className="h-full" size="small" rowKey='id' dataSource={data?.list} columns={columns}>
+                </Table>
+            }
         </ToolbarLayout>
     )
 }

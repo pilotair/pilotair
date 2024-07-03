@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 const activeNameAtom = atom("")
 const tabsAtom = atom<TabItem[]>([])
 
-export function useTabs() {
+export function useTab() {
     const [activeName, setActiveName] = useAtom(activeNameAtom);
     const [tabs, setTabs] = useAtom(tabsAtom);
 

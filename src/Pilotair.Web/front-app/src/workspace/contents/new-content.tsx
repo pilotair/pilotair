@@ -5,7 +5,7 @@ import Empty from "@/common/empty";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
-import { useTabs } from "../tabs";
+import { useTab } from "../use-tab";
 
 interface Props {
     collection: string,
@@ -15,7 +15,7 @@ interface Props {
 export default function NewContent({ collection, path }: Props) {
     const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
     const dataForm = useRef<DataFormRef>();
-    const { closeTab } = useTabs()
+    const { closeTab } = useTab()
     
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))

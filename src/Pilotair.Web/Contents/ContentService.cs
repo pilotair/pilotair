@@ -28,4 +28,14 @@ public class ContentService(ContentCollectionStore collectionStore, ContentStore
         var contents = contentStore.Get(collection);
         await contents.AddDocumentAsync(value);
     }
+
+    internal async Task DeleteAsync(string collection, string[] ids)
+    {
+        collectionStore.ThrowIfNotFound(collection);
+        var contents = contentStore.Get(collection);
+        foreach (var id in ids)
+        {
+            await contents.RemoveDocumentAsync(id);
+        }
+    }
 }

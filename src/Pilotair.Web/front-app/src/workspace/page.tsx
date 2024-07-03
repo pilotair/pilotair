@@ -1,6 +1,6 @@
 import SiderLayout from "../common/layout/sider-layout"
-import { useTabs } from "./tabs";
-import { useContext, useState } from "react";
+import { useTab } from "./use-tab";
+import { memo, useContext, useEffect, useState } from "react";
 import Tabs from "../common/tab/tabs";
 import AsyncComponent from "../common/async-component";
 import Empty from "../common/empty";
@@ -10,15 +10,19 @@ import Avatar from "@/common/profile/avatar";
 import { useNavigate } from "@/common/router";
 import FoldUp from "@/assets/fold-up.svg"
 import Menu from "./menu"
+import { useMenu } from "./use-menu";
 
 
 function Sider() {
     const { collapsed } = useContext(SiderLayoutContext)
-    const { openTab } = useTabs();
+    const { openTab } = useTab();
+    const { loadMenus } = useMenu()
     const nav = useNavigate()
     const [openKeys, setOpenKeys] = useState<string[]>([])
 
-   
+    useEffect(() => {
+        loadMenus();
+    }, [])
 
     function onMoreClick() {
         openTab(
@@ -56,7 +60,7 @@ function Sider() {
 }
 
 export default function Workspace() {
-    const { tabs, closeTab, setActiveName, activeName } = useTabs();
+    const { tabs, closeTab, setActiveName, activeName } = useTab();
 
     function Content() {
         if (!tabs.length) {
@@ -66,15 +70,15 @@ export default function Workspace() {
         return <Tabs items={tabs} activeName={activeName} onTabClose={closeTab} onTabClick={setActiveName} />
     }
 
-    function Header() {
-        return <>
-            <div className="flex-1"></div>
-            <Avatar />
-        </>
-    }
-
     return (
         <SiderLayout sider={<Sider />} content={<Content />} header={<Header />} />
     )
 }
 
+
+const Header = memo(function Header() {
+    return <>
+        <div className="flex-1"></div>
+        <Avatar />
+    </>
+})

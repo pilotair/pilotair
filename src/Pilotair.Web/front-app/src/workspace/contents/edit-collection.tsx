@@ -1,7 +1,7 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
 import { httpClient } from "@/utils/request";
-import { useTabs } from "@/workspace/tabs";
+import { useTab } from "@/workspace/use-tab";
 import { useMenu } from "@/workspace/use-menu";
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
@@ -18,7 +18,7 @@ export default function EditCollection({ name, path }: Props) {
     const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>()
     const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
-    const { closeTab } = useTabs();
+    const { closeTab } = useTab();
     const { loadMenus } = useMenu();
 
     useEffect(() => {
@@ -41,11 +41,14 @@ export default function EditCollection({ name, path }: Props) {
 
     if (!collection) return <Empty />
 
-    const barLeft = <Button icon={<ReloadOutlined />}>Reset</Button>;
-    const barRight = <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+    const header = <>
+        <Button icon={<ReloadOutlined />}>Reset</Button>
+        <div className="flex-1"></div>
+        <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+    </>
 
     return (
-        <ToolbarLayout barLeft={barLeft} barRight={barRight}>
+        <ToolbarLayout header={header} >
             <Form
                 form={form}
                 layout="vertical"

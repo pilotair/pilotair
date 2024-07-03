@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { MenuItem, useMenu } from "./use-menu";
 import { Menu as AntdMenu, GetProps } from "antd"
-import { useTabs } from "./tabs";
+import { useTab } from "./use-tab";
 
 type MenuItems = GetProps<typeof AntdMenu>["items"]
 
 export default function Menu() {
     const [openKeys, setOpenKeys] = useState<string[]>([])
-    const { openTab, activeName } = useTabs();
+    const { openTab, activeName } = useTab();
     const { menus } = useMenu();
 
     const expandMenus = useMemo(() => {
