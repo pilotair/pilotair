@@ -52,12 +52,12 @@ public class OpenApiAdapter(OpenApiDocument document) : ISourceAdapter
                 "integer" => "number",
                 "boolean" => "boolean",
                 "string" => item.Value.Reference?.Id ?? type,
-                "object" => item.Value.Reference?.Id ?? type,
+                "object" => item.Value.Reference?.Id ?? "record<string,unknown>",
                 "array" => (item.Value.Items.Reference?.Id ?? type) + "[]",
                 _ => item.Value.Reference?.Id,
             };
 
-            var property = new Schema.Property(name, type ?? "any");
+            var property = new Schema.Property(name, type ?? "unknown");
             result.Add(property);
         }
 

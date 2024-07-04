@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Pilotair.Core.Stores.NoSqlite;
 using Pilotair.Web.Contents;
 
 namespace Pilotair.Web.Controllers;
@@ -11,10 +12,22 @@ public class ContentController(ContentService contentService) : ApiController
         return contentService.QueryAsync(model);
     }
 
-    [HttpPost]
+    [HttpGet("{collection}/{id}")]
+    public Task<Document<IDictionary<string, object>>> GetAsync(string collection, string id)
+    {
+        return contentService.GetAsync(collection, id);
+    }
+
+    [HttpPost("{collection}")]
     public Task PostAsync(string collection, [FromBody] IDictionary<string, object> value)
     {
-        return contentService.AddContentAsync(collection, value);
+        return contentService.AddAsync(collection, value);
+    }
+
+    [HttpPut("{collection}/{id}")]
+    public Task PutAsync(string collection, string id, [FromBody] IDictionary<string, object> value)
+    {
+        return contentService.UpdateAsync(collection, id, value);
     }
 
     [HttpDelete]

@@ -9,23 +9,27 @@ import { useTab } from "../use-tab";
 
 interface Props {
     collection: string,
-    path: string
+    path: string,
+    id: string
 }
 
-export default function NewContent({ collection, path }: Props) {
+export default function EditContent({ collection, path, id }: Props) {
     const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
     const dataForm = useRef<DataFormRef>();
     const { closeTab } = useTab()
-    
+    const [content, SetContent] = useState<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>()
+
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
+        httpClient.get<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>(`content/${collection}/${id}`).then(rsp => SetContent(rsp!))
     }, [])
 
     if (!contentCollection) return <Empty />
+    if (!content) return <Empty />
 
     async function onSave() {
         const value = await dataForm.current?.getValue();
-        await httpClient.post(`/content/${collection}`, value)
+        await httpClient.put(`/content/${collection}/${id}`, value)
         closeTab(path)
     }
 
@@ -37,7 +41,7 @@ export default function NewContent({ collection, path }: Props) {
                 <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
             </div>
             <Divider className="flex-shrink-0" />
-            <DataForm fields={contentCollection.fields} ref={dataForm} />
+            <DataForm initValues={content.data} fields={contentCollection.fields} ref={dataForm} />
         </div>
     )
 }

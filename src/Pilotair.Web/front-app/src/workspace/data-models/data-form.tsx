@@ -4,14 +4,15 @@ import { ReactNode, forwardRef, useImperativeHandle } from "react";
 import DataFormItem from "./data-form-item";
 
 interface Props {
-    fields: Pilotair.Web.DataModels.Field[]
+    fields: Pilotair.Web.DataModels.Field[],
+    initValues?: Record<string, unknown>
 }
 
 export interface DataFormRef {
     getValue(): Promise<unknown>
 }
 
-const DataForm = forwardRef<DataFormRef | undefined, Props>(function DataForm({ fields }, ref) {
+const DataForm = forwardRef<DataFormRef | undefined, Props>(function DataForm({ fields, initValues }, ref) {
     const items: ReactNode[] = [];
     const [form] = Form.useForm()
 
@@ -30,7 +31,7 @@ const DataForm = forwardRef<DataFormRef | undefined, Props>(function DataForm({ 
     }
 
     return (
-        <Form form={form} labelCol={{ span: 2 }} wrapperCol={{ span: 20 }}>
+        <Form initialValues={initValues} form={form} labelCol={{ span: 2 }} wrapperCol={{ span: 20 }}>
             {items}
         </Form>
     )

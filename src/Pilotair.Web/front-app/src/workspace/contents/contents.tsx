@@ -34,7 +34,7 @@ export default function Contents({ name, display, path }: Props) {
         }).then(rsp => setData(rsp!))
     }
 
-    function addContent() {
+    function onAdd() {
         const addPath = combine('new', path)
         openTab(
             addPath,
@@ -42,6 +42,20 @@ export default function Contents({ name, display, path }: Props) {
             <AsyncComponent component={() => import("./new-content")} props={{
                 collection: name,
                 path: addPath
+            }} />,
+            <FormOutlined />
+        )
+    }
+
+    function onEdit(id: string) {
+        const editPath = combine('edit', path)
+        openTab(
+            editPath,
+            `Edit ${display || name}`,
+            <AsyncComponent component={() => import("./edit-content")} props={{
+                collection: name,
+                path: editPath,
+                id
             }} />,
             <FormOutlined />
         )
@@ -55,6 +69,7 @@ export default function Contents({ name, display, path }: Props) {
             collection: name,
             ids: selectedRowKeys as string[]
         })
+        setSelectedRowKeys([])
         loadContents()
     }
 
@@ -64,10 +79,10 @@ export default function Contents({ name, display, path }: Props) {
             dataIndex: ["data", m.name]
         })),
         {
-            title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={addContent} />,
+            title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={onAdd} />,
             render(value) {
                 return <div>
-                    <Button type="text" shape="circle" icon={<EditOutlined />} />
+                    <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => onEdit(value.id)} />
                 </div>
             },
             fixed: "right",

@@ -22,11 +22,20 @@ public class ContentService(ContentCollectionStore collectionStore, ContentStore
         return result;
     }
 
-    public async Task AddContentAsync(string collection, IDictionary<string, object> value)
+    public async Task AddAsync(string collection, IDictionary<string, object> value)
     {
         collectionStore.ThrowIfNotFound(collection);
         var contents = contentStore.Get(collection);
         await contents.AddDocumentAsync(value);
+    }
+
+    internal async Task UpdateAsync(string collection, string id, IDictionary<string, object> value)
+    {
+        collectionStore.ThrowIfNotFound(collection);
+        var contents = contentStore.Get(collection);
+        var content = await contents.GetAsync(id);
+        content.Data = value;
+        await contents.UpdateDocumentAsync(content);
     }
 
     internal async Task DeleteAsync(string collection, string[] ids)
@@ -37,5 +46,12 @@ public class ContentService(ContentCollectionStore collectionStore, ContentStore
         {
             await contents.RemoveDocumentAsync(id);
         }
+    }
+
+    internal async Task<Document<IDictionary<string, object>>> GetAsync(string collection, string id)
+    {
+        collectionStore.ThrowIfNotFound(collection);
+        var contents = contentStore.Get(collection);
+        return await contents.GetAsync(id);
     }
 }

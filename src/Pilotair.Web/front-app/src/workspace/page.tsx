@@ -71,7 +71,7 @@ export default function Workspace() {
     }
 
     return (
-        <SiderLayout sider={<Sider />} content={<Content />} header={<Header />} />
+        <SiderLayout sider={<Sider />} content={Content()} header={<Header />} />
     )
 }
 
