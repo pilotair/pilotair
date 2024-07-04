@@ -25,12 +25,12 @@ function Sider() {
     }, [])
 
     function onMoreClick() {
-        openTab(
-            "features",
-            "Features",
-            <AsyncComponent component={() => import("./feature/page")} />,
-            <AppstoreOutlined />
-        )
+        openTab({
+            name: "features",
+            label: "Features",
+            panel: <AsyncComponent component={() => import("./feature/page")} />,
+            icon: <AppstoreOutlined />
+        })
     }
 
     return (

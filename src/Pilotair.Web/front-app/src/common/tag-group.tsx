@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
-import { Tag } from "antd"
+import { Dropdown, MenuProps, Tag } from "antd"
 import { CloseOutlined } from "@ant-design/icons";
 
 export interface TagItem {
     name: string
     label?: ReactNode,
     icon?: ReactNode,
-    closable?: boolean
+    closable?: boolean,
+    contextMenu?: MenuProps
 }
 
 interface Props {
@@ -29,10 +30,10 @@ export default function TagGroup({ items, activeName, onTagClose, onTagClick }: 
     for (const item of items) {
         const isActive = item.name === activeName;
         const closeIcon = <CloseOutlined style={{ color: isActive ? '#fff' : '#000' }} />
-        const tag = <Tag
+        let tag = <Tag
             key={item.name}
             closeIcon={closeIcon}
-            onClose={(e) =>onClose(item.name, e)}
+            onClose={(e) => onClose(item.name, e)}
             bordered={false}
             icon={item.icon}
             className="cursor-pointer inline-flex"
@@ -41,6 +42,9 @@ export default function TagGroup({ items, activeName, onTagClose, onTagClick }: 
         >
             {item.label}
         </Tag>
+        if (item.contextMenu) {
+            tag = <Dropdown trigger={["contextMenu"]} key={item.name} menu={item.contextMenu}>{tag}</Dropdown>
+        }
         tags.push(tag);
     }
 

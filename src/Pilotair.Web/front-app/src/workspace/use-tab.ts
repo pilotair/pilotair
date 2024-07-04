@@ -1,6 +1,5 @@
 import { atom, useAtom } from "jotai";
 import { TabItem } from "../common/tab/tabs";
-import { ReactNode } from "react";
 
 const activeNameAtom = atom("")
 const tabsAtom = atom<TabItem[]>([])
@@ -27,23 +26,16 @@ export function useTab() {
         setTabs(tabs.filter(f => f != tab))
     }
 
-    function openTab(name: string, label: ReactNode, panel: ReactNode, icon?: ReactNode) {
-        let tab = tabs.find(f => f.name == name);
+    function openTab(value: TabItem) {
+        const tab = tabs.find(f => f.name == value.name);
 
         if (tab) {
             setActiveName(tab.name);
             return;
         }
 
-        tab = {
-            name: name,
-            label,
-            icon,
-            panel
-        }
-
-        setActiveName(tab.name);
-        setTabs([...tabs, tab]);
+        setActiveName(value.name);
+        setTabs([...tabs, value]);
     }
 
     return {

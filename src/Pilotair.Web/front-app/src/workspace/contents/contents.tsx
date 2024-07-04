@@ -36,29 +36,30 @@ export default function Contents({ name, display, path }: Props) {
 
     function onAdd() {
         const addPath = combine('new', path)
-        openTab(
-            addPath,
-            `New ${display || name}`,
-            <AsyncComponent component={() => import("./new-content")} props={{
+        openTab({
+            name: addPath,
+            label: `New ${display || name}`,
+            panel: <AsyncComponent component={() => import("./new-content")} props={{
                 collection: name,
                 path: addPath
             }} />,
-            <FormOutlined />
-        )
+            icon: <FormOutlined />
+        })
     }
 
     function onEdit(id: string) {
         const editPath = combine('edit', path)
-        openTab(
-            editPath,
-            `Edit ${display || name}`,
-            <AsyncComponent component={() => import("./edit-content")} props={{
+        openTab({
+            name: editPath,
+            label: `Edit ${display || name}`,
+            panel: <AsyncComponent component={() => import("./edit-content")} props={{
                 collection: name,
                 path: editPath,
                 id
-            }} />,
-            <FormOutlined />
-        )
+            }
+            } />,
+            icon: <FormOutlined />
+        })
     }
 
     if (!collection) return <Empty />

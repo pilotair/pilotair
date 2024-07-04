@@ -20,9 +20,8 @@ export default function Code({ name, folder }: Props) {
     const shortcutRef = useShortcut({ ctrlOrMeta: true, key: "s" }, onSave);
 
     useEffect(() => {
-        loading(async () => {
-            const response = await httpClient.get<Pilotair.Web.Codes.Code>("code", { name, folder });
-            if (response?.content) setContent(response.content)
+        httpClient.get<Pilotair.Web.Codes.Code>("code", { name, folder }).then(rsp => {
+            setContent(rsp!.content!)
         })
     }, [])
 

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { MenuItem, useMenu } from "./use-menu";
 import { Menu as AntdMenu, GetProps } from "antd"
 import { useTab } from "./use-tab";
+import { ReloadOutlined } from "@ant-design/icons";
 
 type MenuItems = GetProps<typeof AntdMenu>["items"]
 
@@ -29,7 +30,21 @@ export default function Menu() {
     function onMenuItemClick(key: string) {
         const menu = expandMenus.find(f => f.key == key);
         if (!menu || !menu.tab) return;
-        openTab(key, menu.tabLabel ?? menu.label, menu.tab, menu.tabIcon ?? menu.icon)
+        openTab({
+            name: key,
+            label: menu.tabLabel ?? menu.label,
+            panel: menu.tab,
+            icon: menu.tabIcon ?? menu.icon,
+            contextMenu: {
+                items: [
+                    {
+                        label: <span>Reload</span>,
+                        key: "reload",
+                        icon: <ReloadOutlined />
+                    }
+                ]
+            }
+        })
     }
 
     return <AntdMenu

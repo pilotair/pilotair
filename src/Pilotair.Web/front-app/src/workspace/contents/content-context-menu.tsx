@@ -21,12 +21,12 @@ export default function ContentContextMenu({ children, path, name }: Props) {
 
     function edit() {
         const editPath = combine('edit', path);
-        openTab(
-            editPath,
-            `Edit ${name}`,
-            <AsyncComponent component={() => import("./edit-collection")} props={{ name, path: editPath }} />,
-            <FormOutlined />
-        )
+        openTab({
+            name: editPath,
+            label: `Edit ${name}`,
+            panel: <AsyncComponent component={() => import("./edit-collection")} props={{ name, path: editPath }} />,
+            icon: <FormOutlined />
+        })
     }
 
     function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {

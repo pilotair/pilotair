@@ -17,14 +17,14 @@ export default function ContentsContextMenu({ children, path }: Props) {
 
         switch (key) {
             case "add":
-                openTab(
-                    path,
-                    "New collection",
-                    <AsyncComponent component={() => import("./new-collection")} props={{
+                openTab({
+                    name: path,
+                    label: "New collection",
+                    panel: <AsyncComponent component={() => import("./new-collection")} props={{
                         path
                     }} />,
-                    <FormOutlined />
-                )
+                    icon: <FormOutlined />
+                })
                 break;
             default:
                 break;

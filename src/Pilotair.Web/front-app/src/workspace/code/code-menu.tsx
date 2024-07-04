@@ -1,7 +1,7 @@
 import { Pilotair } from "@/schema";
 import FolderContextMenu from "./folder-context-menu";
 import { FunctionOutlined } from "@ant-design/icons";
-import { MenuItem } from "@/workspace/menu";
+import { MenuItem } from "@/workspace/use-menu";
 import CodeContextMenu from "./code-context-menu";
 import AsyncComponent from "@/common/async-component";
 

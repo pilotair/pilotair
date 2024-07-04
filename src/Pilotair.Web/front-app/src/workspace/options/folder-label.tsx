@@ -10,12 +10,12 @@ export default function OptionsFolderLabel() {
     function onItemClick({ key }: { key: string }) {
         switch (key) {
             case "options":
-                openTab(
-                    "CreateOptions",
-                    "New Options",
-                    <AsyncComponent component={() => import("../options/create-options")} />,
-                    <ControlOutlined />
-                )
+                openTab({
+                    name: "CreateOptions",
+                    label: "New Options",
+                    panel: <AsyncComponent component={() => import("../options/create-options")} />,
+                    icon: <ControlOutlined />
+                })
                 break;
 
             default:
