@@ -1,9 +1,10 @@
 import { Layout } from "antd";
-import { ReactNode, useState } from "react";
+import { ReactNode, Suspense, useState } from "react";
 import LogoIcon from "@/assets/logo.svg"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
 import { Resizable } from "react-resizable"
 import { SiderLayoutContext } from "./sider-layout-context";
+import Loading from "../loading";
 
 interface Props {
     sider: ReactNode,
@@ -53,7 +54,9 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
                                 <MenuFoldOutlined onClick={() => setCollapsed(true)} className={"transition-all duration-300 text-white hover:text-blue-400 " + (collapsed ? "opacity-0 pointer-events-none" : "opacity-100")} />
                             </div>
                             <div className="flex-1 overflow-y-hidden">
-                                {sider}
+                                <Suspense fallback={<Loading className="bg-transparent" />}>
+                                    {sider}
+                                </Suspense>
                             </div>
                         </div>
                     </Sider>
