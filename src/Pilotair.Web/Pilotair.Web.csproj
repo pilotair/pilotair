@@ -32,5 +32,10 @@
     <Compile Remove="front-app\**\*" />
     <Content Remove="front-app\**\*" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="data\**\*" />
+    <Compile Remove="data\**\*" />
+    <Content Remove="data\**\*" />
+  </ItemGroup>
 
 </Project>

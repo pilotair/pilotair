@@ -7,6 +7,8 @@ import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { combine } from "@/utils/path";
+import { useEvent } from "@/common/events/event";
+import { reloadContents } from "@/common/events/sources";
 
 type Columns = GetProp<typeof Table, "columns">
 interface Props {
@@ -33,6 +35,11 @@ export default function Contents({ name, display, path }: Props) {
             collection: name,
         }).then(rsp => setData(rsp!))
     }
+
+    useEvent(reloadContents, (e) => {
+        if (e != name) return;
+        loadContents();
+    })
 
     function onAdd() {
         const addPath = combine('new', path)

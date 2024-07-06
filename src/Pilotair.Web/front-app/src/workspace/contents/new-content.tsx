@@ -6,6 +6,8 @@ import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
 import { useTab } from "../use-tab";
+import { useEvent } from "@/common/events/event";
+import { reloadContents } from "@/common/events/sources";
 
 interface Props {
     collection: string,
@@ -16,7 +18,8 @@ export default function NewContent({ collection, path }: Props) {
     const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
     const dataForm = useRef<DataFormRef>();
     const { closeTab } = useTab()
-    
+    const emitReloadContents = useEvent(reloadContents);
+
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
     }, [])
@@ -25,8 +28,9 @@ export default function NewContent({ collection, path }: Props) {
 
     async function onSave() {
         const value = await dataForm.current?.getValue();
-        await httpClient.post(`/content/${collection}`, value)
+        await httpClient.post(`/content/${collection}`, value);
         closeTab(path)
+        emitReloadContents(collection)
     }
 
     return (
