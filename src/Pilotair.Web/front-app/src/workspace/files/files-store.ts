@@ -14,7 +14,7 @@ export function useFile() {
         const response = await httpClient.get<Pilotair.Core.Stores.Files.Entry[]>("file", {
             folder
         });
-        setEntries(response!)
+        setEntries(response)
     }
 
     return {

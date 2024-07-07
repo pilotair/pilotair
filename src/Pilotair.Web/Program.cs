@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.StaticFiles;
@@ -12,6 +11,7 @@ using Pilotair.Web.Accounts;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddControllers(options =>
 {
     options.Conventions.Add(
@@ -71,6 +71,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 
 var app = builder.Build();
+app.UseExceptionHandler("__admin__/error");
 app.UsePilotair();
 
 if (app.Environment.IsDevelopment())

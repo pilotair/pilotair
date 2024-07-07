@@ -1,23 +1,25 @@
+import { message } from "antd";
 import { combine } from "./path";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
 interface ClientOptions {
     prefix?: string,
-    onResponse?: (response: Response) => void
-    onRequest?: (request: Request) => void
+    onResponse?: (response: Response) => Promise<Response> | Response
+    onRequest?: (request: Request) => Promise<Request> | Request
 }
 
 interface SendParams {
     searchParams?: SearchParams
     body?: unknown,
     headers?: Record<string, string>,
-    onResponse?: (response: Response) => void,
-    onRequest?: (request: Request) => void
+    onResponse?: (response: Response) => Promise<Response> | Response,
+    onRequest?: (request: Request) => Promise<Request> | Request
 }
 type SupportMethods = "GET" | "POST" | "PUT" | "DELETE";
+type SendResponse<T> = Promise<T extends void ? void : T>
 
-async function send<T>(url: string, method: SupportMethods, sendParams?: SendParams) {
+async function send<T>(url: string, method: SupportMethods, sendParams?: SendParams): SendResponse<T> {
     const urlObject = new URL(url, URL.canParse(url) ? undefined : location.origin)
 
     if (sendParams?.searchParams) {
@@ -44,22 +46,29 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
         body = sendParams?.body
     }
 
-    const request = new Request(urlObject, {
+    let request = new Request(urlObject, {
         method,
         headers,
         body
     });
 
-    if (sendParams?.onRequest) sendParams.onRequest(request);
-    const response = await fetch(request)
-
-    try {
-        if (sendParams?.onResponse) sendParams.onResponse(response)
-        const data = await response.json();
-        return data as T
-    } catch (error) {
-        return null
+    if (sendParams?.onRequest) {
+        request = await Promise.resolve(sendParams.onRequest(request));
     }
+
+    let response = await fetch(request)
+
+    if (sendParams?.onResponse) {
+        response = await Promise.resolve(sendParams.onResponse(response))
+    }
+
+    const responseType = response.headers.get("Content-Type");
+
+    if (responseType?.includes("application/json")) {
+        return await response.json();
+    }
+    // other todo
+    return Promise.resolve() as SendResponse<T>;
 }
 
 function bodyStringify(contentType: string, body: unknown) {
@@ -127,11 +136,19 @@ export const httpClient = createClient({
         if (token) {
             request.headers.set("Authorization", `Bearer ${token}`)
         }
+        return request;
     },
-    onResponse(response) {
+    async onResponse(response) {
         const bearer = response.headers.get("www-authenticate")
         if (bearer && response.ok) {
             localStorage.setItem(tokenName, bearer)
         }
+
+        if (!response.ok) {
+            const error = await response.json();
+            message.error(error);
+        }
+
+        return response;
     }
 });
