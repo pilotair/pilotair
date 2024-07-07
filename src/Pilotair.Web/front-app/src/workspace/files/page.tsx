@@ -18,6 +18,10 @@ export default function File() {
     const { openConfirm, loading } = useContext(TabContext)
 
     useEffect(() => {
+        load();
+    }, [folder])
+
+    useEffect(() => {
         setSelectedFiles([])
     }, [folder, entries])
 
@@ -39,12 +43,12 @@ export default function File() {
         entryItems.push(<EntryItem
             selected={selectedFiles.includes(file)}
             key={file.name}
-            type={file.isFolder ? "folder" : 'text'}
-            url=""
+            type={file.type}
+            url={file.relationPath}
             name={file.name}
             onSelected={(value) => setSelectedFiles(value ? [...selectedFiles, file] : selectedFiles.filter(f => f !== file))}
             extension={file.extension}
-            onClick={() => file.isFolder && openFolder(file.name)}
+            onClick={() => file.type == "Folder" && openFolder(file.name)}
         />)
     }
 

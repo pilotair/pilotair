@@ -7,13 +7,15 @@ namespace Pilotair.Core.Stores.Files;
 public class FileStore
 {
     private readonly string root;
+    private readonly IMimeMapping mimeMapping;
 
     public string Root => root;
 
-    public FileStore(string root)
+    public FileStore(string root, IMimeMapping mimeMapping)
     {
         IoHelper.EnsureDirectoryExist(root);
         this.root = root;
+        this.mimeMapping = mimeMapping;
     }
 
     public IEnumerable<Entry> GetFolder(string path)
@@ -33,7 +35,7 @@ public class FileStore
         foreach (var file in files)
         {
             var fileInfo = new FileInfo(file);
-            result.Add(new File(fileInfo, root));
+            result.Add(new File(fileInfo, root, mimeMapping));
         }
 
         return result;
@@ -77,7 +79,7 @@ public class FileStore
         }
 
         var fileInfo = new FileInfo(path);
-        return new File(fileInfo, root);
+        return new File(fileInfo, root, mimeMapping);
     }
 
     public async Task<string> ReadTextAsync(string path)

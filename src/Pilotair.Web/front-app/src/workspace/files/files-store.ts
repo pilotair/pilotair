@@ -2,7 +2,6 @@ import { combine } from "@/utils/path";
 import { atom, useAtom } from "jotai";
 import { httpClient } from "@/utils/request";
 import { Pilotair } from '@/schema'
-import { useEffect } from "react";
 
 const folderAtom = atom("")
 const entriesAtom = atom<Pilotair.Core.Stores.Files.Entry[]>([])
@@ -17,10 +16,6 @@ export function useFile() {
         });
         setEntries(response!)
     }
-
-    useEffect(() => {
-        load()
-    }, [folder])
 
     return {
         folder,

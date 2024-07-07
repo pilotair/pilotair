@@ -1,9 +1,12 @@
-import { FileOutlined, FolderTwoTone } from "@ant-design/icons";
+import { FileOutlined } from "@ant-design/icons";
 import { Typography, Checkbox } from "antd";
 import React, { MouseEvent } from "react";
+import Folder from "./entries/folder";
+import Image from "./entries/image"
+import { Pilotair } from "@/schema";
 
 interface Props {
-    type: 'folder' | "text" | "image",
+    type: Pilotair.Core.Stores.Files.EntryType,
     url: string,
     name: string,
     extension?: string
@@ -17,11 +20,10 @@ export default function EntryItem({ type, url, name, selected, onSelected, onCli
 
     function getPreview() {
         switch (type) {
-            case "folder":
-                return <FolderTwoTone className="text-7xl" />
-
-            case "image":
-                return <div className="w-14 h-14 bg-contain bg-center bg-no-repeat" style={{ backgroundImage: `url('${url}')` }}></div>
+            case "Folder":
+                return <Folder />
+            case "Image":
+                return <Image url={url} />
 
             default:
                 return <FileOutlined className="text-5xl" />

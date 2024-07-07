@@ -2,7 +2,21 @@ using System.IO;
 
 namespace Pilotair.Core.Stores.Files;
 
-public class File(FileInfo fileInfo, string root) : Entry(fileInfo, root)
+public class File : Entry
 {
-    public override bool IsFolder => false;
+    private readonly EntryType type;
+
+    public File(FileInfo fileInfo, string root, IMimeMapping mimeMapping) : base(fileInfo, root)
+    {
+        if (mimeMapping.TryGetContentType(RelationPath, out var contentType))
+        {
+            ContentType = contentType;
+        }
+
+        type = mimeMapping.GetEntryType(ContentType);
+    }
+
+    public override EntryType Type => type;
+
+    public string ContentType { get; init; } = "application/octet-stream";
 }

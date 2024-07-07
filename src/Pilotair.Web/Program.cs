@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Hosting;
 using Pilotair.Core.Stores.NoSqlite;
 using Pilotair.Web.Accounts;
@@ -18,6 +19,7 @@ builder.Services.AddControllers(options =>
     );
 });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IContentTypeProvider, FileExtensionContentTypeProvider>();
 builder.Services.AddFromAssemblies(Assembly.GetExecutingAssembly());
 builder.Services.AddPilotair(builder.Configuration);
 builder.Services.AddAuthentication().AddJwtBearer(options =>

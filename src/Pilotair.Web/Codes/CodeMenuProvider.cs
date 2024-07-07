@@ -1,4 +1,5 @@
 using System.IO;
+using Pilotair.Core.Stores.Files;
 using Pilotair.Web.Menus;
 
 namespace Pilotair.Web.Codes;
@@ -28,16 +29,18 @@ public class CodeMenuProvider(CodeStore store) : IMenuProvider
 
         foreach (var entry in entries)
         {
+            var isFolder = entry.Type == EntryType.Folder;
+
             var item = new MenuItem
             {
                 Name = entry.Name,
-                Type = entry.IsFolder ? MenuItem.Types.CodeFolder : MenuItem.Types.Code,
+                Type = isFolder ? MenuItem.Types.CodeFolder : MenuItem.Types.Code,
                 Folder = Path.GetDirectoryName(entry.RelationPath),
             };
 
             items.Add(item);
 
-            if (entry.IsFolder)
+            if (isFolder)
             {
                 var path = Path.Combine(currentPath, entry.Name);
                 item.Children = await GetChildrenAsync(path);
