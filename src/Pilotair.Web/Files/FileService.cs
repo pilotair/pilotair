@@ -44,8 +44,8 @@ public class FileService
         store.Delete(path, entries);
     }
 
-    public void ImportFromZip(string path, Stream stream)
+    public async Task ImportFromZipAsync(string path, Stream stream)
     {
-        store.ImportFromZip(path, stream);
+        await store.ImportFromZipAsync(path, stream);
     }
 }

@@ -16,7 +16,7 @@ public class NoSqliteStore
 
         if (dir is not null)
         {
-            IoHelper.EnsureDirectoryExist(dir);
+            IoHelper.EnsureFolderExist(dir);
         }
 
         var builder = new SqliteConnectionStringBuilder

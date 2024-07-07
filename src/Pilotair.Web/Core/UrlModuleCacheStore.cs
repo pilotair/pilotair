@@ -12,7 +12,7 @@ public class UrlModuleCacheStore(IOptions<PilotairOptions> options) : IUrlModule
     public void AddCode(Uri uri, string code)
     {
         var path = UriToPath(uri);
-        IoHelper.EnsureDirectoryExist(Path.GetDirectoryName(path)!);
+        IoHelper.EnsureFolderExist(Path.GetDirectoryName(path)!);
         System.IO.File.WriteAllText(path, code);
     }
 

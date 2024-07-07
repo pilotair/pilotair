@@ -1,4 +1,4 @@
-namespace system;
+namespace System;
 
 public static class ObjectExtensions
 {

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using system;
 
 namespace Pilotair.Web.Contents;
 

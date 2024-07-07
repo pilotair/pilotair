@@ -4,7 +4,17 @@ namespace Pilotair.Core.Helpers;
 
 public static class IoHelper
 {
-    public static void EnsureDirectoryExist(string path)
+
+    public static void EnsureFileFolderExist(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path)) return;
+        var folder = Path.GetDirectoryName(path);
+        if (folder != null)
+        {
+            EnsureFolderExist(folder);
+        }
+    }
+    public static void EnsureFolderExist(string path)
     {
         if (string.IsNullOrWhiteSpace(path)) return;
         if (!Directory.Exists(path))

@@ -25,11 +25,11 @@ public class FileController(FileService fileService) : ApiController
     }
 
     [HttpPost("zip")]
-    public void ImportZip(IFormFile file, string folder = "")
+    public async Task ImportZipAsync(IFormFile file, string folder = "")
     {
         if (!string.IsNullOrWhiteSpace(folder)) fileService.CreateFolder(folder);
         using var stream = file.OpenReadStream();
-        fileService.ImportFromZip(folder!, stream);
+        await fileService.ImportFromZipAsync(folder!, stream);
     }
 
     [HttpDelete]

@@ -9,7 +9,7 @@ public class JsonStore
 
     public JsonStore(string root)
     {
-        IoHelper.EnsureDirectoryExist(root);
+        IoHelper.EnsureFolderExist(root);
         this.root = root;
     }
 

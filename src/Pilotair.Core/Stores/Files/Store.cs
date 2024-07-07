@@ -13,7 +13,7 @@ public class FileStore
 
     public FileStore(string root, IMimeMapping mimeMapping)
     {
-        IoHelper.EnsureDirectoryExist(root);
+        IoHelper.EnsureFolderExist(root);
         this.root = root;
         this.mimeMapping = mimeMapping;
     }
@@ -44,7 +44,7 @@ public class FileStore
     public string CreateFolder(string path)
     {
         path = GetValidPath(path);
-        IoHelper.EnsureDirectoryExist(path);
+        IoHelper.EnsureFolderExist(path);
         return path;
     }
 
@@ -95,8 +95,6 @@ public class FileStore
 
     public void Delete(string folder, string[] entries)
     {
-        folder = GetValidPath(folder);
-        if (!Directory.Exists(folder)) return;
         var paths = entries.Select(s => Path.Combine(folder, s)).ToArray();
         Delete(paths);
     }
@@ -105,24 +103,39 @@ public class FileStore
     {
         foreach (var item in paths)
         {
-            var entryPath = GetValidPath(item);
-            var isFolder = Directory.Exists(entryPath);
+            var path = GetValidPath(item);
+            var isFolder = Directory.Exists(path);
             if (isFolder)
             {
-                Directory.Delete(entryPath, true);
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
             }
             else
             {
-                System.IO.File.Delete(entryPath);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
             }
         }
     }
 
-    public void ImportFromZip(string folder, Stream stream)
+    public async Task ImportFromZipAsync(string folder, Stream stream)
     {
-        var path = GetValidPath(folder);
+        folder = GetValidPath(folder);
         using var zipArchive = new ZipArchive(stream);
-        zipArchive.ExtractToDirectory(path, true);
+        foreach (var entry in zipArchive.Entries)
+        {
+            if (entry == null) continue;
+            var path = Path.Combine(folder, entry.FullName);
+            path = PathHelper.Normalization(path);
+            IoHelper.EnsureFileFolderExist(path);
+            using var fileStream = System.IO.File.Create(path);
+            using var itemStream = entry.Open();
+            await itemStream.CopyToAsync(fileStream);
+        }
     }
 
     private string GetValidPath(string path)
