@@ -1,13 +1,10 @@
-import { message } from "antd";
-import { combine } from "./path";
+import { bodyParse, bodyStringify } from "./content"
+import { combine } from "@/utils/path"
 
+type SupportMethods = "GET" | "POST" | "PUT" | "DELETE";
 type SearchParams = Record<string, string | string[] | undefined>;
+type SendResponse<T> = Promise<T extends void ? void : T>
 
-interface ClientOptions {
-    prefix?: string,
-    onResponse?: (response: Response) => Promise<Response> | Response
-    onRequest?: (request: Request) => Promise<Request> | Request
-}
 
 interface SendParams {
     searchParams?: SearchParams
@@ -16,8 +13,6 @@ interface SendParams {
     onResponse?: (response: Response) => Promise<Response> | Response,
     onRequest?: (request: Request) => Promise<Request> | Request
 }
-type SupportMethods = "GET" | "POST" | "PUT" | "DELETE";
-type SendResponse<T> = Promise<T extends void ? void : T>
 
 async function send<T>(url: string, method: SupportMethods, sendParams?: SendParams): SendResponse<T> {
     const urlObject = new URL(url, URL.canParse(url) ? undefined : location.origin)
@@ -62,35 +57,16 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
         response = await Promise.resolve(sendParams.onResponse(response))
     }
 
-    const responseType = response.headers.get("Content-Type");
-
-    if (responseType?.includes("application/json")) {
-        return await response.json();
-    }
-    // other todo
-    return Promise.resolve() as SendResponse<T>;
+    return bodyParse(response) as SendResponse<T>;
 }
 
-function bodyStringify(contentType: string, body: unknown) {
-    if (!body) return undefined;
-
-    switch (contentType) {
-        case "application/x-www-form-urlencoded": {
-            const formData = new FormData();
-            if (typeof body == "object") {
-                for (const key in body) {
-                    formData.append(key, body[key as keyof typeof body])
-                }
-            }
-            return formData;
-        }
-
-        default:
-            return JSON.stringify(body)
-    }
+interface ClientOptions {
+    prefix?: string,
+    onResponse?: (response: Response) => Promise<Response> | Response
+    onRequest?: (request: Request) => Promise<Request> | Request
 }
 
-function createClient(options?: ClientOptions) {
+export function createClient(options?: ClientOptions) {
     function _send<T>(url: string, method: SupportMethods, sendParams?: SendParams) {
         if (options?.prefix) {
             url = combine(options.prefix, url)
@@ -125,30 +101,3 @@ function createClient(options?: ClientOptions) {
         send: _send
     }
 }
-
-export const prefix = "/__api__/";
-export const tokenName = "access_token";
-
-export const httpClient = createClient({
-    prefix,
-    onRequest(request) {
-        const token = localStorage.getItem(tokenName);
-        if (token) {
-            request.headers.set("Authorization", `Bearer ${token}`)
-        }
-        return request;
-    },
-    async onResponse(response) {
-        const bearer = response.headers.get("www-authenticate")
-        if (bearer && response.ok) {
-            localStorage.setItem(tokenName, bearer)
-        }
-
-        if (!response.ok) {
-            const error = await response.json();
-            message.error(error);
-        }
-
-        return response;
-    }
-});

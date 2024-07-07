@@ -1,9 +1,9 @@
-import { FileOutlined } from "@ant-design/icons";
 import { Typography, Checkbox } from "antd";
-import React, { MouseEvent } from "react";
+import { MouseEvent } from "react";
 import Folder from "./entries/folder";
 import Image from "./entries/image"
 import { Pilotair } from "@/schema";
+import Default from "./entries/default";
 
 interface Props {
     type: Pilotair.Core.Stores.Files.EntryType,
@@ -26,7 +26,7 @@ export default function EntryItem({ type, url, name, selected, onSelected, onCli
                 return <Image url={url} />
 
             default:
-                return <FileOutlined className="text-5xl" />
+                return <Default />
         }
     }
 

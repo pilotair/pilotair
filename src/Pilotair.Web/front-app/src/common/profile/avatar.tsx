@@ -1,6 +1,6 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Dropdown, Avatar as AntdAvatar, MenuProps } from "antd";
-import { useLocation } from "wouter";
+import { useNavigate } from "@/common/router";
 
 
 const items: MenuProps['items'] = [
@@ -14,11 +14,11 @@ const items: MenuProps['items'] = [
 
 export default function Avatar() {
 
-    const [location, setLocation] = useLocation();
+    const navigate = useNavigate();
     function onMenuClick({ key }: { key: string }) {
         switch (key) {
             case "logout":
-                setLocation("~/__admin__/account/login")
+                navigate("@/account/login")
                 break;
 
             default:

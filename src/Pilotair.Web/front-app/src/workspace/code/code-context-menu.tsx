@@ -2,7 +2,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import { useMenu } from "@/workspace/use-menu";
 
 interface Props {

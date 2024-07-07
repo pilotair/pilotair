@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd"
 import { TabContext } from "@/common/tab/tab-panel";
 import { useContext } from "react";
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import { useFile } from "./files-store";
 import { combine } from "@/utils/path";
 import { FolderAddOutlined } from "@ant-design/icons";

@@ -71,7 +71,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 
 var app = builder.Build();
-app.UseExceptionHandler("__admin__/error");
+app.UseExceptionHandler("/__admin__/error");
 app.UsePilotair();
 
 if (app.Environment.IsDevelopment())

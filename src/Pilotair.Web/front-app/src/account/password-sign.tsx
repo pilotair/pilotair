@@ -1,6 +1,6 @@
 import { Button, Card, Divider, Form, Input } from "antd";
 import LogoIcon from "@/assets/logo.svg"
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import { useNavigate } from "@/common/router";
 
 export default function Login() {

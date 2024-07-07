@@ -4,7 +4,7 @@ import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import { useMenu } from "@/workspace/use-menu";
 
 interface Props {

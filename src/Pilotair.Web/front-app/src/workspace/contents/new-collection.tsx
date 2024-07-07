@@ -1,6 +1,6 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import { useTab } from "@/workspace/use-tab";
 import { useMenu } from "@/workspace/use-menu";
 import { useState } from "react";

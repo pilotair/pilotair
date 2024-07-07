@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Pilotair } from "@/schema"
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import Empty from "@/common/empty";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";

@@ -1,5 +1,5 @@
 import { Form, Input } from "antd"
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import { useContext } from "react";
 import { ModalContext } from "@/common/modal-context";
 import { useMenu } from "@/workspace/use-menu";

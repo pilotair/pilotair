@@ -1,6 +1,6 @@
 import { combine } from "@/utils/path";
 import { atom, useAtom } from "jotai";
-import { httpClient } from "@/utils/request";
+import { httpClient } from "@/utils/http/request";
 import { Pilotair } from '@/schema'
 
 const folderAtom = atom("")
