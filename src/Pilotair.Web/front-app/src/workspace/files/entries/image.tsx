@@ -16,6 +16,7 @@ export default function Image({ url }: Props) {
             { key: MenuItemKeys.delete }
         ]}>
             <AntdImage
+                className="object-contain"
                 width={56}
                 height={56}
                 src={`/${url}`}
