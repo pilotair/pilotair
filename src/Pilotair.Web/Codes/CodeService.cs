@@ -28,7 +28,7 @@ public class CodeService(CodeStore store, IEnumerable<IRouteHandler> routeHandle
             var paths = Directory.GetFiles(store.Root, $"{handler.Name}.tsx", SearchOption.AllDirectories);
             foreach (var path in paths)
             {
-                var file = store.GetFile(path);
+                var file = store.GetFile(Path.GetRelativePath(store.Root, path));
                 result.Add(new FileRoute(file, handler));
             }
         }

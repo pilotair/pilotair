@@ -19,8 +19,7 @@ public class FileStore
     public IEnumerable<Entry> GetFolder(string path)
     {
         var result = new List<Entry>();
-        IoHelper.ShouldBeRelative(path);
-        path = Path.Combine(root, path);
+        path = GetValidPath(path);
         var directories = Directory.GetDirectories(path);
 
         foreach (var directory in directories)
@@ -42,8 +41,7 @@ public class FileStore
 
     public string CreateFolder(string path)
     {
-        IoHelper.ShouldBeRelative(path);
-        path = Path.Combine(root, path);
+        path = GetValidPath(path);
         IoHelper.EnsureDirectoryExist(path);
         return path;
     }
@@ -51,21 +49,15 @@ public class FileStore
     public async Task SaveFileAsync(string folder, string name, Stream stream)
     {
         folder = CreateFolder(folder);
-        folder = Path.Combine(folder, name);
-        using var fs = System.IO.File.OpenWrite(folder);
+        var path = Path.Combine(folder, name);
+        using var fs = System.IO.File.OpenWrite(path);
         await stream.CopyToAsync(fs);
     }
 
     public async Task SaveFileAsync(string folder, string name, string content)
     {
         folder = CreateFolder(folder);
-        folder = Path.Combine(folder, name);
-        await System.IO.File.WriteAllTextAsync(folder, content);
-    }
-
-    public async Task SaveFileAsync(string path, string content)
-    {
-        if (!Path.IsPathRooted(path)) path = Path.Combine(root, path);
+        var path = Path.Combine(folder, name);
         await System.IO.File.WriteAllTextAsync(path, content);
     }
 
@@ -77,10 +69,7 @@ public class FileStore
 
     public File GetFile(string path)
     {
-        if (!Path.IsPathRooted(path))
-        {
-            path = Path.Combine(root, path);
-        }
+        path = GetValidPath(path);
 
         if (!System.IO.File.Exists(path))
         {
@@ -89,12 +78,6 @@ public class FileStore
 
         var fileInfo = new FileInfo(path);
         return new File(fileInfo, root);
-    }
-
-    public async Task<string> ReadTextAsync(string folder, string name)
-    {
-        var path = Path.Combine(folder, name);
-        return await ReadTextAsync(path);
     }
 
     public async Task<string> ReadTextAsync(string path)
@@ -110,29 +93,17 @@ public class FileStore
 
     public void Delete(string folder, string[] entries)
     {
-        folder = Path.Combine(root, folder);
+        folder = GetValidPath(folder);
         if (!Directory.Exists(folder)) return;
-
-        foreach (var item in entries)
-        {
-            var entryPath = Path.Combine(folder, item);
-            var isFolder = Directory.Exists(entryPath);
-            if (isFolder)
-            {
-                Directory.Delete(entryPath, true);
-            }
-            else
-            {
-                System.IO.File.Delete(entryPath);
-            }
-        }
+        var paths = entries.Select(s => Path.Combine(folder, s)).ToArray();
+        Delete(paths);
     }
 
     public void Delete(string[] paths)
     {
         foreach (var item in paths)
         {
-            var entryPath = Path.Combine(root, item);
+            var entryPath = GetValidPath(item);
             var isFolder = Directory.Exists(entryPath);
             if (isFolder)
             {
@@ -147,9 +118,16 @@ public class FileStore
 
     public void ImportFromZip(string folder, Stream stream)
     {
-        IoHelper.ShouldBeRelative(folder);
+        var path = GetValidPath(folder);
         using var zipArchive = new ZipArchive(stream);
-        folder = Path.Combine(root, folder);
-        zipArchive.ExtractToDirectory(folder, true);
+        zipArchive.ExtractToDirectory(path, true);
+    }
+
+    private string GetValidPath(string path)
+    {
+        IoHelper.ShouldBeRelative(path);
+        path = Path.Combine(root, path);
+        path = PathHelper.Normalization(path);
+        return path;
     }
 }

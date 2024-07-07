@@ -15,3 +15,10 @@
 
 - pilotair cloud
 - Use http3 proxy
+
+
+## milestone
+
+[ ] file content option 
+[ ] code and module
+[ ] make a demo site
