@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { createClient } from "./client";
 import { TabContext } from "@/common/tab/tab-panel";
 import { message } from "antd";
+import { GlobalContext } from "@/common/global-context";
 
 export const prefix = "/__api__/";
 export const tokenName = "access_token";
 
-
-
 export function useHttpClient() {
     const tabContext = useContext(TabContext)
+    const globalContext = useContext(GlobalContext)
 
     const httpClient = createClient({
         prefix,
@@ -34,12 +34,15 @@ export function useHttpClient() {
             return response;
         },
         async onSend(action) {
-            try {
-                tabContext.showLoading?.(true)
-                return await action
-            } finally {
-                tabContext.showLoading?.(false)
+            if (tabContext.loading) {
+                return await tabContext.loading(action)
             }
+
+            if (globalContext.loading) {
+                return await globalContext.loading(action)
+            }
+
+            return await action;
         }
     });
 

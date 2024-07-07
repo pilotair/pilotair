@@ -6,7 +6,6 @@ import { useMenu } from "@/workspace/use-menu";
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import FieldsEditor from "./fields-editor";
-import Empty from "@/common/empty";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 
 interface Props {
@@ -40,7 +39,7 @@ export default function EditCollection({ name, path }: Props) {
         closeTab(path);
     }
 
-    if (!collection) return <Empty />
+    if (!collection) return
 
     const header = <>
         <Button icon={<ReloadOutlined />}>Reset</Button>

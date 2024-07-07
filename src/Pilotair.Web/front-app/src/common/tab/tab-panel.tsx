@@ -1,14 +1,14 @@
 import { Modal, ModalFuncProps, ModalProps } from "antd";
 import { ReactNode, createContext, createRef } from "react";
 import Loading from "../loading";
-import { useTabLoading } from "./use-tab-loading";
 import { useModal } from "../use-modal";
+import { useLoading } from "../use-loading";
 
 interface TabContextValue {
     modalContainer: HTMLDivElement | null,
     openModal: (props: ModalProps) => () => void;
     openConfirm: (props: ModalFuncProps) => Promise<void>;
-    loading: (action: () => Promise<void>) => Promise<void>;
+    loading: (action: Promise<unknown>) => Promise<unknown>;
     showLoading: (show: boolean) => void;
     name: string
 }
@@ -30,7 +30,7 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
         },
         getContainer: false
     });
-    const { isLoading, loading, showLoading } = useTabLoading()
+    const { isLoading, loading, showLoading } = useLoading()
 
     function openConfirm(props: ModalFuncProps) {
         return new Promise<void>((rs, rj) => {
@@ -70,7 +70,7 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
                     {children}
                 </div>
                 <div ref={modalContainer}>{modals}</div>
-                {isLoading && <Loading className="absolute inset-0" />}
+                <Loading show={isLoading} className="absolute inset-0" />
             </div>
 
         </TabContext.Provider >

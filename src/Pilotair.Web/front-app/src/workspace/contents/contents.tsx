@@ -1,5 +1,5 @@
 import { EditOutlined, FormOutlined, PlusOutlined } from "@ant-design/icons"
-import { Button, Empty, GetProp, Input, Table } from "antd"
+import { Button, GetProp, Input, Table } from "antd"
 import { Key, useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import { useHttpClient } from "@/utils/http/use-client";
@@ -70,8 +70,8 @@ export default function Contents({ name, display, path }: Props) {
         })
     }
 
-    if (!collection) return <Empty />
-    if (!data) return <Empty />
+    if (!collection) return 
+    if (!data) return 
 
     async function deleteContents() {
         await httpClient.delete("/content", {

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Pilotair } from "@/schema"
 import { useHttpClient } from "@/utils/http/use-client";
-import Empty from "@/common/empty";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
@@ -25,8 +24,7 @@ export default function EditContent({ collection, path, id }: Props) {
         httpClient.get<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>(`content/${collection}/${id}`).then(rsp => SetContent(rsp!))
     }, [])
 
-    if (!contentCollection) return <Empty />
-    if (!content) return <Empty />
+    if (!contentCollection || !content) return
 
     async function onSave() {
         const value = await dataForm.current?.getValue();

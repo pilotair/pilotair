@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { GlobalModalContext } from "@/common/global-modal";
+import { GlobalContext } from "@/common/global-context";
 import { Form, Input } from "antd";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 
 export function useNewFolderModal() {
-    const { openModal } = useContext(GlobalModalContext)
+    const { openModal } = useContext(GlobalContext)
     const { loadMenus } = useMenu()
     const [form] = Form.useForm();
     let closeModal: () => void

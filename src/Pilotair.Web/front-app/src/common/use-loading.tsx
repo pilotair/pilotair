@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react"
 
-export function useTabLoading() {
+export function useLoading() {
     const loadingStack = useRef(0)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -15,10 +15,10 @@ export function useTabLoading() {
         }
     }, [])
 
-    const loading = useCallback(async (action: () => Promise<void>) => {
+    const loading = useCallback(async (action: Promise<unknown>) => {
         showLoading(true);
         try {
-            await action()
+            return await action
         } finally {
             showLoading(false);
         }

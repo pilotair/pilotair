@@ -1,7 +1,7 @@
 import { DeleteOutlined, FileAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
-import { GlobalModalContext } from "@/common/global-modal";
+import { GlobalContext } from "@/common/global-context";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
 import { useHttpClient } from "@/utils/http/use-client";
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function FolderContextMenu({ children, path }: Props) {
-    const { openModal, modal } = useContext(GlobalModalContext)
+    const { openModal, modal } = useContext(GlobalContext)
     const openNewFolderModal = useNewFolderModal();
     const { loadMenus } = useMenu()
     const { httpClient } = useHttpClient()

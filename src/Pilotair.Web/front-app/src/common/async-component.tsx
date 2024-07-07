@@ -44,5 +44,5 @@ export default function AsyncComponent({ component, props }: Props) {
         }
     }
 
-    return <Suspense fallback={<Loading />} children={<Component {...props} />} />
+    return <Suspense fallback={<Loading className="bg-transparent" show={true} />} children={<Component {...props} />} />
 }

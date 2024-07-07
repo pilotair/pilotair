@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Pilotair } from "@/schema"
 import { useHttpClient } from "@/utils/http/use-client";
-import Empty from "@/common/empty";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
@@ -25,7 +24,7 @@ export default function NewContent({ collection, path }: Props) {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
     }, [])
 
-    if (!contentCollection) return <Empty />
+    if (!contentCollection) return
 
     async function onSave() {
         const value = await dataForm.current?.getValue();

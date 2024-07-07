@@ -1,7 +1,7 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
-import { GlobalModalContext } from "@/common/global-modal";
+import { GlobalContext } from "@/common/global-context";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function CodeContextMenu({ children, path }: Props) {
-    const { modal } = useContext(GlobalModalContext)
+    const { modal } = useContext(GlobalContext)
     const { loadMenus } = useMenu()
     const { httpClient } = useHttpClient()
 
