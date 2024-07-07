@@ -76,9 +76,13 @@ app.UsePilotair();
 
 if (app.Environment.IsDevelopment())
 {
-    // app.MapFallbackToFile("index.html");
+
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.MapFallbackToFile("index.html");
 }
 
 // app.UseHttpsRedirection();

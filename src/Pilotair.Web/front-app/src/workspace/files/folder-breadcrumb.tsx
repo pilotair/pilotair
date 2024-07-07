@@ -1,15 +1,14 @@
 import { Breadcrumb, BreadcrumbProps } from "antd"
 import { useMemo } from "react"
-import { useFile } from "./files-store"
 import { HomeTwoTone } from "@ant-design/icons"
 
 interface Props {
     path: string,
-    className?: string
+    className?: string,
+    setFolder: (path: string) => void
 }
 
-export default function FolderBreadcrumb({ path, className }: Props) {
-    const { goTo } = useFile();
+export default function FolderBreadcrumb({ path, className, setFolder }: Props) {
     const Items = useMemo(() => {
         const items: BreadcrumbProps["items"] = [];
         const fragments = path.split('/').filter(f => f)
@@ -17,7 +16,7 @@ export default function FolderBreadcrumb({ path, className }: Props) {
 
         while (fragments.length) {
             const title = fragments[fragments.length - 1];
-            
+
             if (fragments.length == length) {
                 items.unshift({ title: title })
             } else {
@@ -25,7 +24,7 @@ export default function FolderBreadcrumb({ path, className }: Props) {
                 items.unshift({
                     title: <a>{title}</a>,
                     onClick() {
-                        goTo(path)
+                        setFolder(path)
                     }
                 })
             }
@@ -36,12 +35,12 @@ export default function FolderBreadcrumb({ path, className }: Props) {
         items.unshift({
             title: <a><HomeTwoTone /></a>,
             onClick() {
-                goTo('')
+                setFolder('')
             }
         })
 
         return items;
-    }, [goTo, path])
+    }, [path])
 
     return <Breadcrumb className={className} items={Items} />
 }

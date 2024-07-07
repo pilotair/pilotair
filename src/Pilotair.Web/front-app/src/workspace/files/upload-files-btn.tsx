@@ -2,17 +2,23 @@ import { FileZipOutlined, FolderOpenOutlined, UploadOutlined } from "@ant-design
 import { Button, Dropdown, Progress, Segmented, Upload, UploadFile, UploadProps } from "antd";
 import { ReactNode, createRef, useState } from "react";
 import TabModal from "@/common/tab/tab-modal"
-import { useFile } from "./files-store";
 import { combine } from "@/utils/path";
 import upload from "rc-upload/es/request"
 import { prefix } from "@/utils/http/use-client";
+import { useEvent } from "@/common/events/event";
+import { reloadFiles } from "@/common/events/sources";
 
-export default function UploadFilesBtn() {
+interface Props {
+    folder: string
+}
+
+
+export default function UploadFilesBtn({ folder }: Props) {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [status, setStatus] = useState('all');
-    const fileStore = useFile()
     const folderUpload = createRef<HTMLSpanElement>()
     const zipUpload = createRef<HTMLSpanElement>()
+    const reloadFilesEvent = useEvent(reloadFiles)
 
     const props: UploadProps = {
         name: "files",
@@ -30,7 +36,6 @@ export default function UploadFilesBtn() {
         customRequest(options) {
             const file = options.file as File;
             const webkitRelativePath = file.webkitRelativePath;
-            let folder = fileStore.folder;
             if (webkitRelativePath) {
                 const fragments = webkitRelativePath.split("/");
                 fragments.shift();
@@ -46,7 +51,7 @@ export default function UploadFilesBtn() {
 
     function onClose() {
         setFileList([]);
-        fileStore.load()
+        reloadFilesEvent('');
     }
 
     for (const file of fileList) {

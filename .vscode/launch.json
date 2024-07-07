@@ -27,6 +27,7 @@
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Staging",
+                "ASPNETCORE_HTTP_PORTS": "80",
             }
         },
     ]
