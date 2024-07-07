@@ -1,6 +1,6 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
 import { useMenu } from "@/workspace/use-menu";
 import { useEffect, useState } from "react";
@@ -20,6 +20,7 @@ export default function EditCollection({ name, path }: Props) {
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
     const { closeTab } = useTab();
     const { loadMenus } = useMenu();
+    const { httpClient } = useHttpClient()
 
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(rsp => {

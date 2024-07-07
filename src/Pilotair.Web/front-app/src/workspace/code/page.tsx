@@ -1,8 +1,7 @@
 import CodeEditor from "@/common/code-editor"
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { TabContext } from "@/common/tab/tab-panel"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Pilotair } from "@/schema"
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { Breadcrumb } from "antd"
 import { ReloadOutlined, RightOutlined, SaveOutlined } from "@ant-design/icons";
 import { useShortcut } from "@/utils/shortcuts";
@@ -13,11 +12,11 @@ interface Props {
 }
 
 export default function Code({ name, folder }: Props) {
-    const { loading } = useContext(TabContext);
     const [content, setContent] = useState("");
     const newContent = useRef<string>()
     const [isChange, setIsChange] = useState(false)
     const shortcutRef = useShortcut({ ctrlOrMeta: true, key: "s" }, onSave);
+    const { httpClient } = useHttpClient()
 
     useEffect(() => {
         httpClient.get<Pilotair.Web.Codes.Code>("code", { name, folder }).then(rsp => {
@@ -26,15 +25,13 @@ export default function Code({ name, folder }: Props) {
     }, [])
 
     async function onSave() {
-        loading(async () => {
-            await httpClient.put("code", {
-                content: newContent.current
-            }, {
-                searchParams: {
-                    name,
-                    folder,
-                }
-            })
+        await httpClient.put("code", {
+            content: newContent.current
+        }, {
+            searchParams: {
+                name,
+                folder,
+            }
         })
     }
 

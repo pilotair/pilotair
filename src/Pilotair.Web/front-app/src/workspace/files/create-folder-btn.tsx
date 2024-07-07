@@ -1,28 +1,25 @@
 import { Button, Form, Input } from "antd"
 import { TabContext } from "@/common/tab/tab-panel";
 import { useContext } from "react";
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useFile } from "./files-store";
 import { combine } from "@/utils/path";
 import { FolderAddOutlined } from "@ant-design/icons";
 
 export default function CreateFolderBtn() {
-    const { openModal, loading } = useContext(TabContext)
+    const { openModal } = useContext(TabContext)
     const [form] = Form.useForm();
     const fileStore = useFile()
     let closeModal: () => void
+    const { httpClient } = useHttpClient()
 
     async function onFinish(value: { name: string }) {
         const folder = combine(fileStore.folder, value.name);
-
-        await loading(async () => {
-            await httpClient.post("file", new FormData(), {
-                searchParams: {
-                    folder: folder
-                }
-            });
-
-        })
+        await httpClient.post("file", new FormData(), {
+            searchParams: {
+                folder: folder
+            }
+        });
         await fileStore.load()
         closeModal?.()
     }

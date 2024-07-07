@@ -1,6 +1,6 @@
 import { ReactNode, useCallback } from "react"
 import { atom, useAtom } from "jotai"
-import { httpClient } from "../utils/http/request"
+import { useHttpClient } from "../utils/http/use-client"
 import { Pilotair } from "../schema"
 import { getCodeFolderMenu, getCodeMenu, getCodesMenu } from "./code/code-menu"
 import { ControlOutlined, FolderOutlined } from "@ant-design/icons"
@@ -21,7 +21,8 @@ export type MenuItem = {
 const menusAtom = atom<MenuItem[]>([])
 
 export function useMenu() {
-    const [menus, setMenus] = useAtom(menusAtom)
+    const [menus, setMenus] = useAtom(menusAtom);
+    const { httpClient } = useHttpClient()
 
     const loadMenus = useCallback(async () => {
         const response = await httpClient.get<Pilotair.Web.MenuItem[]>("menu");

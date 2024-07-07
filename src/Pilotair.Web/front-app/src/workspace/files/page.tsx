@@ -6,7 +6,7 @@ import CreateFolderBtn from "./create-folder-btn"
 import UploadFilesBtn from "./upload-files-btn"
 import { DeleteOutlined } from "@ant-design/icons"
 import FolderBreadcrumb from "./folder-breadcrumb"
-import { httpClient } from "@/utils/http/request"
+import { useHttpClient } from "@/utils/http/use-client"
 import { TabContext } from "@/common/tab/tab-panel"
 import Empty from "@/common/empty"
 import { Pilotair } from "@/schema"
@@ -15,7 +15,8 @@ import ToolbarLayout from "@/common/layout/toolbar-layout"
 export default function File() {
     const { folder, entries, openFolder, load } = useFile();
     const [selectedFiles, setSelectedFiles] = useState<Pilotair.Core.Stores.Files.Entry[]>([])
-    const { openConfirm, loading } = useContext(TabContext)
+    const { openConfirm } = useContext(TabContext)
+    const { httpClient } = useHttpClient()
 
     useEffect(() => {
         load();
@@ -66,7 +67,7 @@ export default function File() {
         })
         const entries = selectedFiles.map(m => m.name);
         await httpClient.delete("file", { entries, folder });
-        loading(load);
+        load();
     }
 
     const header = <>

@@ -4,7 +4,7 @@ import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 
 interface Props {
@@ -16,6 +16,7 @@ export default function FolderContextMenu({ children, path }: Props) {
     const { openModal, modal } = useContext(GlobalModalContext)
     const openNewFolderModal = useNewFolderModal();
     const { loadMenus } = useMenu()
+    const { httpClient } = useHttpClient()
 
     function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();

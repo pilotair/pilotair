@@ -2,7 +2,7 @@ import { EditOutlined, FormOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Empty, GetProp, Input, Table } from "antd"
 import { Key, useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
-import { httpClient } from "@/utils/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
@@ -24,6 +24,7 @@ export default function Contents({ name, display, path }: Props) {
     const [data, setData] = useState<Pilotair.Web.Contents.ContentPagingResult>()
     const { openTab } = useTab()
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
+    const { httpClient } = useHttpClient()
 
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name }).then(rsp => setCollection(rsp!))

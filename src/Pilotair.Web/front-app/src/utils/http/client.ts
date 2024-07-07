@@ -63,7 +63,8 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
 interface ClientOptions {
     prefix?: string,
     onResponse?: (response: Response) => Promise<Response> | Response
-    onRequest?: (request: Request) => Promise<Request> | Request
+    onRequest?: (request: Request) => Promise<Request> | Request,
+    onSend?: (action: Promise<unknown>) => Promise<unknown>
 }
 
 export function createClient(options?: ClientOptions) {
@@ -80,6 +81,10 @@ export function createClient(options?: ClientOptions) {
         if (options?.onRequest) {
             if (!sendParams) sendParams = {};
             if (!sendParams.onRequest) sendParams.onRequest = options.onRequest
+        }
+
+        if (options?.onSend) {
+            return options.onSend(send<T>(url, method, sendParams)) as SendResponse<T>
         }
 
         return send<T>(url, method, sendParams)

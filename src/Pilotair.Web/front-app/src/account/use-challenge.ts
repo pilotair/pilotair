@@ -1,5 +1,5 @@
 import { useNavigate } from "@/common/router"
-import { tokenName } from "@/utils/http/request";
+import { tokenName } from "@/utils/http/use-client";
 import { jwtDecode } from "jwt-decode";
 
 // interface User {

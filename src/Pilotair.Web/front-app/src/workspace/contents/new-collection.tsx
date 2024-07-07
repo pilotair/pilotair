@@ -1,6 +1,6 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
 import { useMenu } from "@/workspace/use-menu";
 import { useState } from "react";
@@ -17,6 +17,7 @@ export default function NewCollection({ path }: Props) {
     const { closeTab } = useTab();
     const { loadMenus } = useMenu();
     const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
+    const { httpClient } = useHttpClient()
 
     async function onSave() {
         await form.validateFields();

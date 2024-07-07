@@ -5,7 +5,7 @@ import TabModal from "@/common/tab/tab-modal"
 import { useFile } from "./files-store";
 import { combine } from "@/utils/path";
 import upload from "rc-upload/es/request"
-import { prefix } from "@/utils/http/request";
+import { prefix } from "@/utils/http/use-client";
 
 export default function UploadFilesBtn() {
     const [fileList, setFileList] = useState<UploadFile[]>([]);

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Pilotair } from "@/schema"
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import Empty from "@/common/empty";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
@@ -19,6 +19,7 @@ export default function NewContent({ collection, path }: Props) {
     const dataForm = useRef<DataFormRef>();
     const { closeTab } = useTab()
     const emitReloadContents = useEvent(reloadContents);
+    const { httpClient } = useHttpClient()
 
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))

@@ -1,5 +1,5 @@
 import { Form, Input } from "antd"
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useContext } from "react";
 import { ModalContext } from "@/common/modal-context";
 import { useMenu } from "@/workspace/use-menu";
@@ -12,6 +12,7 @@ export default function CreateFileForm({ path }: Props) {
     const [form] = Form.useForm<{ name: string }>();
     const { setOk } = useContext(ModalContext)
     const { loadMenus } = useMenu()
+    const { httpClient } = useHttpClient()
 
     setOk(async () => {
         await form.validateFields();

@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined, FormOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/async-component";
@@ -18,6 +18,7 @@ export default function ContentContextMenu({ children, path, name }: Props) {
     const { modal } = useContext(GlobalModalContext)
     const { loadMenus } = useMenu()
     const { openTab } = useTab()
+    const { httpClient } = useHttpClient()
 
     function edit() {
         const editPath = combine('edit', path);

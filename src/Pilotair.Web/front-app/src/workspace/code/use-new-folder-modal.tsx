@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
 import { Form, Input } from "antd";
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 
 export function useNewFolderModal() {
@@ -9,6 +9,7 @@ export function useNewFolderModal() {
     const { loadMenus } = useMenu()
     const [form] = Form.useForm();
     let closeModal: () => void
+    const { httpClient } = useHttpClient()
 
     async function onFinish(value: { name: string }) {
 

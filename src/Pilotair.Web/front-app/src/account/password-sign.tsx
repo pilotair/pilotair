@@ -1,11 +1,12 @@
 import { Button, Card, Divider, Form, Input } from "antd";
 import LogoIcon from "@/assets/logo.svg"
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useNavigate } from "@/common/router";
 
 export default function Login() {
     const [form] = Form.useForm();
     const navigate = useNavigate()
+    const { httpClient } = useHttpClient();
 
     async function sign() {
         await form.validateFields();

@@ -2,7 +2,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
 import { GlobalModalContext } from "@/common/global-modal";
-import { httpClient } from "@/utils/http/request";
+import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 export default function CodeContextMenu({ children, path }: Props) {
     const { modal } = useContext(GlobalModalContext)
     const { loadMenus } = useMenu()
+    const { httpClient } = useHttpClient()
 
     function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();
