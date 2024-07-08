@@ -57,11 +57,11 @@ public static class PilotairExtensions
         var routeService = app.Services.GetRequiredService<RouteService>();
         routeService.Init(app);
         app.UseFrontApp();
-        var fileService = app.Services.GetRequiredService<FileService>();
+        var fileStore = app.Services.GetRequiredService<FileStore>();
 
         app.UseFileServer(new FileServerOptions
         {
-            FileProvider = new PhysicalFileProvider(fileService.BasePath)
+            FileProvider = new PhysicalFileProvider(fileStore.Root)
         });
 
         Console.WriteLine($"Data root path: {options.DataPath}");

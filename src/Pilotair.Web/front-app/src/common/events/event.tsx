@@ -22,8 +22,8 @@ export function useEvent<T>(source: EventSource<T>, listener?: (e: T) => void) {
         listener?.(eventSource.current);
     }, [eventSource])
 
-    return (e: T) => {
+    return (e?: T) => {
         const old = eventSource.current ? JSON.parse(JSON.stringify(eventSource.current)) : undefined
-        setEventSource({ old, current: e, count: eventSource.count + 1 })
+        setEventSource({ old, current: e as unknown as T, count: eventSource.count + 1 })
     }
 }

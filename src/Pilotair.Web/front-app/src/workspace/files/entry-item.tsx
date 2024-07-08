@@ -6,27 +6,24 @@ import { Pilotair } from "@/schema";
 import Default from "./entries/default";
 
 interface Props {
-    type: Pilotair.Core.Stores.Files.EntryType,
-    url: string,
-    name: string,
-    extension?: string
+    entry: Pilotair.Core.Stores.Files.Entry,
     selected: boolean,
     onSelected: (value: boolean) => void;
     onClick?: (e: React.MouseEvent) => void
 }
 
-export default function EntryItem({ type, url, name, selected, onSelected, onClick }: Props) {
+export default function EntryItem({ entry, selected, onSelected, onClick }: Props) {
     const { Text } = Typography;
 
     function getPreview() {
-        switch (type) {
+        switch (entry.type) {
             case "Folder":
-                return <Folder />
+                return <Folder entry={entry} />
             case "Image":
-                return <Image url={url} />
+                return <Image entry={entry} />
 
             default:
-                return <Default />
+                return <Default entry={entry} />
         }
     }
 
@@ -40,7 +37,7 @@ export default function EntryItem({ type, url, name, selected, onSelected, onCli
             <div onClick={onClick} className="w-16 h-16 flex justify-center items-center cursor-pointer">
                 {getPreview()}
             </div>
-            <Text className="px-1" ellipsis={true}>{name}</Text>
+            <Text className="px-1" ellipsis={true}>{entry.name}</Text>
             <Checkbox checked={selected} className={"absolute top-1 left-1 opacity-0 group-hover:opacity-100" + (selected ? " opacity-100" : "")} onClick={onCheckboxClick} />
         </div>
     )

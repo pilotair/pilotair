@@ -18,7 +18,7 @@ export default function UploadFilesBtn({ folder }: Props) {
     const [status, setStatus] = useState('all');
     const folderUpload = useRef<HTMLSpanElement>(null)
     const zipUpload = useRef<HTMLSpanElement>(null)
-    const reloadFilesEvent = useEvent(reloadFiles)
+    const emitReloadFiles = useEvent(reloadFiles)
 
     const props: UploadProps = {
         name: "files",
@@ -51,7 +51,7 @@ export default function UploadFilesBtn({ folder }: Props) {
 
     function onClose() {
         setFileList([]);
-        reloadFilesEvent('');
+        emitReloadFiles();
     }
 
     for (const file of fileList) {

@@ -19,3 +19,12 @@ export function removeFragment(path: string, start: number) {
 
     return fragments.join('/')
 }
+
+export function splitPath(path: string) {
+    const breakIndex = path.lastIndexOf('/')
+    if (breakIndex == -1) {
+        return { folder: '', entry: path }
+    } else {
+        return { folder: path.substring(0, breakIndex), entry: path.substring(breakIndex + 1) }
+    }
+}

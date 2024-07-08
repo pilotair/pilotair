@@ -14,7 +14,7 @@ interface Props {
 export default function CreateFolderBtn({ folder }: Props) {
     const { openModal } = useContext(TabContext)
     const [form] = Form.useForm();
-    const reloadFilesEvent = useEvent(reloadFiles)
+    const emitReloadFiles = useEvent(reloadFiles)
     let closeModal: () => void
     const { httpClient } = useHttpClient()
 
@@ -24,7 +24,7 @@ export default function CreateFolderBtn({ folder }: Props) {
                 folder: combine(folder, value.name)
             }
         });
-        reloadFilesEvent('');
+        emitReloadFiles();
         closeModal?.()
     }
 

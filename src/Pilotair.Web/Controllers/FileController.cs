@@ -1,40 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
 using Pilotair.Core.Stores.Files;
-using Pilotair.Web.Files;
 
 namespace Pilotair.Web.Controllers;
 
-public class FileController(FileService fileService) : ApiController
+public class FileController(Files.FileStore store) : ApiController
 {
     [HttpGet]
     public IEnumerable<Entry> Get(string? folder = "")
     {
-        return fileService.GetFolder(folder!);
+        return store.GetFolder(folder!);
     }
 
     [HttpPost]
     public async Task PostAsync(IEnumerable<IFormFile> files, [FromQuery] string folder = "")
     {
-        if (!string.IsNullOrWhiteSpace(folder)) fileService.CreateFolder(folder);
+        if (!string.IsNullOrWhiteSpace(folder)) store.CreateFolder(folder);
 
         foreach (var file in files)
         {
             using var stream = file.OpenReadStream();
-            await fileService.SaveFileAsync(folder, file.FileName, stream);
+            await store.SaveFileAsync(folder, file.FileName, stream);
         }
     }
 
     [HttpPost("zip")]
     public async Task ImportZipAsync(IFormFile file, string folder = "")
     {
-        if (!string.IsNullOrWhiteSpace(folder)) fileService.CreateFolder(folder);
+        if (!string.IsNullOrWhiteSpace(folder)) store.CreateFolder(folder);
         using var stream = file.OpenReadStream();
-        await fileService.ImportFromZipAsync(folder!, stream);
+        await store.ImportFromZipAsync(folder!, stream);
+    }
+
+    [HttpPut("move")]
+    public void Move(string path, string newPath)
+    {
+        store.Move(path, newPath);
     }
 
     [HttpDelete]
     public void Delete([FromQuery] string[] entries, string? folder = "")
     {
-        fileService.Delete(folder!, entries);
+        store.Delete(folder!, entries);
     }
 }

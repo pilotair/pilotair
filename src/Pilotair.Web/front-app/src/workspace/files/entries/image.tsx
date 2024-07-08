@@ -1,13 +1,14 @@
 import { MenuItemKeys } from "@/common/menus/constants";
 import ContextMenu from "@/common/menus/context-menu";
+import { Pilotair } from "@/schema";
 import { Image as AntdImage } from "antd"
 import { useState } from "react";
 
 interface Props {
-    url: string;
+    entry: Pilotair.Core.Stores.Files.Entry
 }
 
-export default function Image({ url }: Props) {
+export default function Image({ entry }: Props) {
     const [preview, setPreview] = useState(false)
 
     return (
@@ -19,11 +20,11 @@ export default function Image({ url }: Props) {
                 className="object-contain"
                 width={56}
                 height={56}
-                src={`/${url}`}
+                src={`/${entry.relationPath}`}
                 onClick={() => setPreview(true)}
                 preview={{
                     visible: preview,
-                    src: `/${url}`,
+                    src: `/${entry.relationPath}`,
                     onVisibleChange: (value) => {
                         setPreview(value);
                     },

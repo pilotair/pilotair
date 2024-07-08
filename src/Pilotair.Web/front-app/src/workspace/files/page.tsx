@@ -54,13 +54,10 @@ export default function File() {
 
     for (const entry of entries) {
         entryItems.push(<EntryItem
+            key={entry.hash}
             selected={selectedFiles.includes(entry)}
-            key={entry.name}
-            type={entry.type}
-            url={entry.relationPath}
-            name={entry.name}
+            entry={entry}
             onSelected={(value) => setSelectedFiles(value ? [...selectedFiles, entry] : selectedFiles.filter(f => f !== entry))}
-            extension={entry.extension}
             onClick={() => entry.type == "Folder" && setFolder(combine(folder, entry.name))}
         />)
     }

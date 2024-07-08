@@ -122,23 +122,35 @@ public class FileStore
         }
     }
 
-    public async Task ImportFromZipAsync(string folder, Stream stream)
+    public void Move(string path, string newPath)
     {
-        folder = GetValidPath(folder);
-        using var zipArchive = new ZipArchive(stream);
-        foreach (var entry in zipArchive.Entries)
+        path = GetValidPath(path);
+        newPath = GetValidPath(newPath);
+        if (Directory.Exists(path))
         {
-            if (entry == null) continue;
-            var path = Path.Combine(folder, entry.FullName);
-            path = PathHelper.Normalization(path);
-            IoHelper.EnsureFileFolderExist(path);
-            using var fileStream = System.IO.File.Create(path);
-            using var itemStream = entry.Open();
-            await itemStream.CopyToAsync(fileStream);
+            if (Directory.Exists(newPath))
+            {
+                throw new FolderExistException();
+            }
+
+            Directory.Move(path, newPath);
+        }
+        else if (System.IO.File.Exists(path))
+        {
+            if (System.IO.File.Exists(newPath))
+            {
+                throw new FileExistException();
+            }
+
+            System.IO.File.Move(path, newPath);
+        }
+        else
+        {
+            throw new PathNotFoundException();
         }
     }
 
-    private string GetValidPath(string path)
+    protected string GetValidPath(string path)
     {
         IoHelper.ShouldBeRelative(path);
         path = Path.Combine(root, path);
