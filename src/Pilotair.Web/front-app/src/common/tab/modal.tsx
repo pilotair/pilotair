@@ -1,6 +1,6 @@
 import { Modal, ModalProps } from "antd";
 import { useContext } from "react";
-import { TabContext } from "./tab-panel";
+import { TabContext } from "./context";
 
 export default function TabModal(props: ModalProps) {
     const { modalContainer } = useContext(TabContext)

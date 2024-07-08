@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Pilotair } from "@/schema";
 import { Button, Table } from "antd";
 import { useContext } from "react";
-import { TabContext } from "@/common/tab/tab-panel";
+import { TabContext } from "@/common/tab/context";
 import NewFieldForm from "./new-field-form";
 
 interface Props {

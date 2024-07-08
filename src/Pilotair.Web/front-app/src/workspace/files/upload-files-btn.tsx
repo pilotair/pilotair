@@ -1,7 +1,7 @@
 import { FileZipOutlined, FolderOpenOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Progress, Segmented, Upload, UploadFile, UploadProps } from "antd";
-import { ReactNode, createRef, useState } from "react";
-import TabModal from "@/common/tab/tab-modal"
+import { ReactNode, useRef, useState } from "react";
+import TabModal from "@/common/tab/modal"
 import { combine } from "@/utils/path";
 import upload from "rc-upload/es/request"
 import { prefix } from "@/utils/http/use-client";
@@ -16,8 +16,8 @@ interface Props {
 export default function UploadFilesBtn({ folder }: Props) {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [status, setStatus] = useState('all');
-    const folderUpload = createRef<HTMLSpanElement>()
-    const zipUpload = createRef<HTMLSpanElement>()
+    const folderUpload = useRef<HTMLSpanElement>(null)
+    const zipUpload = useRef<HTMLSpanElement>(null)
     const reloadFilesEvent = useEvent(reloadFiles)
 
     const props: UploadProps = {

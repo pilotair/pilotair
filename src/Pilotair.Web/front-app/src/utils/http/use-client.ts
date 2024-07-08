@@ -1,50 +1,54 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { createClient } from "./client";
-import { TabContext } from "@/common/tab/tab-panel";
+import { TabContext } from "@/common/tab/context";
 import { message } from "antd";
 import { GlobalContext } from "@/common/global-context";
 
 export const prefix = "/__api__/";
 export const tokenName = "access_token";
 
+function onRequest(request: Request) {
+    const token = localStorage.getItem(tokenName);
+    if (token) {
+        request.headers.set("Authorization", `Bearer ${token}`)
+    }
+    return request;
+}
+
+async function onResponse(response: Response) {
+    const bearer = response.headers.get("www-authenticate")
+    if (bearer && response.ok) {
+        localStorage.setItem(tokenName, bearer)
+    }
+
+    if (!response.ok) {
+        const error = await response.json();
+        message.error(error);
+    }
+
+    return response;
+}
+
 export function useHttpClient() {
-    const tabContext = useContext(TabContext)
-    const globalContext = useContext(GlobalContext)
+    const { loading } = useContext(TabContext);
+    const { loading: globalLoading } = useContext(GlobalContext);
 
-    const httpClient = createClient({
+    const httpClient = useMemo(() => createClient({
         prefix,
-        onRequest(request) {
-            const token = localStorage.getItem(tokenName);
-            if (token) {
-                request.headers.set("Authorization", `Bearer ${token}`)
-            }
-            return request;
-        },
-        async onResponse(response) {
-            const bearer = response.headers.get("www-authenticate")
-            if (bearer && response.ok) {
-                localStorage.setItem(tokenName, bearer)
-            }
-
-            if (!response.ok) {
-                const error = await response.json();
-                message.error(error);
-            }
-
-            return response;
-        },
+        onRequest,
+        onResponse,
         async onSend(action) {
-            if (tabContext.loading) {
-                return await tabContext.loading(action)
+            if (loading) {
+                return await loading(action)
             }
 
-            if (globalContext.loading) {
-                return await globalContext.loading(action)
+            if (globalLoading) {
+                return await globalLoading(action)
             }
 
             return await action;
         }
-    });
+    }), [loading, globalLoading]);
 
     return { httpClient }
 }

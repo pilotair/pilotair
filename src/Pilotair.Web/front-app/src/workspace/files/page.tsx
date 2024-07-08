@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useEffect, useMemo, useState } from "react"
+import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { Button, Checkbox } from "antd"
 import EntryItem from "./entry-item"
 import CreateFolderBtn from "./create-folder-btn"
@@ -6,7 +6,7 @@ import UploadFilesBtn from "./upload-files-btn"
 import { DeleteOutlined } from "@ant-design/icons"
 import FolderBreadcrumb from "./folder-breadcrumb"
 import { useHttpClient } from "@/utils/http/use-client"
-import { TabContext } from "@/common/tab/tab-panel"
+import { TabContext } from "@/common/tab/context"
 import Empty from "@/common/empty"
 import { Pilotair } from "@/schema"
 import ToolbarLayout from "@/common/layout/toolbar-layout"
@@ -21,18 +21,18 @@ export default function File() {
     const [selectedFiles, setSelectedFiles] = useState<Pilotair.Core.Stores.Files.Entry[]>([])
     const { openConfirm } = useContext(TabContext)
 
-    async function load() {
+    const load = useCallback(async () => {
         const response = await httpClient.get<Pilotair.Core.Stores.Files.Entry[]>("file", {
             folder
         });
         setEntries(response)
-    }
+    }, [folder, httpClient])
 
     useEvent(reloadFiles, load)
 
     useEffect(() => {
         load();
-    }, [folder])
+    }, [folder, load])
 
     useEffect(() => {
         setSelectedFiles([])

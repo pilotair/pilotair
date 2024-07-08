@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd"
-import { TabContext } from "@/common/tab/tab-panel";
+import { TabContext } from "@/common/tab/context";
 import { useContext } from "react";
 import { useHttpClient } from "@/utils/http/use-client";
 import { combine } from "@/utils/path";
