@@ -11,7 +11,7 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     return (
         <TabContextProvider name={name}>
             <div
-                className={"bg-white rounded-md h-full overflow-auto relative" + ` tab-panel-${name}`}
+                className={"bg-white rounded-md h-full overflow-auto" + ` tab-panel-${name}`}
                 style={{ display: isActive ? 'block' : 'none' }}
             >
                 <div className="h-full overflow-auto">

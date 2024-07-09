@@ -28,7 +28,7 @@ export function TabContextProvider({ children, name }: Props) {
         styles: {
             mask: { position: "absolute" }
         },
-        getContainer: false
+        getContainer: modalContainer.current!
     });
 
     const { isLoading, loading, showLoading } = useLoading()
@@ -62,8 +62,10 @@ export function TabContextProvider({ children, name }: Props) {
         showLoading,
         name
     }}>
-        {children}
-        <div ref={modalContainer}>{modals}</div>
-        <Loading show={isLoading} className="absolute inset-0" />
+        <div className="relative h-full">
+            {children}
+            <div ref={modalContainer}>{modals}</div>
+            <Loading show={isLoading} className="absolute inset-0" />
+        </div>
     </TabContext.Provider>
 }

@@ -59,6 +59,7 @@ export default function File() {
             entry={entry}
             onSelected={(value) => setSelectedFiles(value ? [...selectedFiles, entry] : selectedFiles.filter(f => f !== entry))}
             onClick={() => entry.type == "Folder" && setFolder(combine(folder, entry.name))}
+            onDelete={() => onDelete([entry.name])}
         />)
     }
 
@@ -70,11 +71,11 @@ export default function File() {
         }
     }
 
-    async function onDelete() {
+    async function onDelete(entries?: string[]) {
         await openConfirm({
-            title: "Are you sure delete?"
+            title: "Are you sure delete?",
         })
-        const entries = selectedFiles.map(m => m.name);
+        entries = entries || selectedFiles.map(m => m.name);
         await httpClient.delete("file", { entries, folder });
         load();
     }
@@ -84,7 +85,7 @@ export default function File() {
 
         <div className="flex-1"></div>
         <div className="flex gap-2">
-            {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={onDelete}>Delete</Button>}
+            {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={() => onDelete()}>Delete</Button>}
             <CreateFolderBtn folder={folder} />
             <UploadFilesBtn folder={folder} />
         </div>
