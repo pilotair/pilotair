@@ -5,8 +5,9 @@ import {
     ClockCircleOutlined,
     ExclamationCircleOutlined
 } from "@ant-design/icons";
-import { Button, Progress, Segmented, SegmentedProps, UploadFile, GetProp } from "antd";
+import { Button, Progress, Segmented, SegmentedProps, UploadFile, GetProp, Alert } from "antd";
 import { useMemo, useState } from "react";
+import { maxUploadFile } from "./upload-files-btn";
 
 interface Props {
     files: UploadFile[],
@@ -61,13 +62,24 @@ export function UploadingModal({ files, onClose }: Props) {
         <Segmented block value={status} onChange={setStatus} options={options} />
     </div>
 
+    let content = <Empty />;
+
+    if (files.length > maxUploadFile) {
+        content = <Alert
+            message="Error"
+            description={`A maximum of ${maxUploadFile} files can be uploaded at one time. If more files are uploaded, please use upload from zip!`}
+            type="error"
+            showIcon
+        />
+    } else {
+        content = <div className="max-h-96 rounded p-2 overflow-auto">
+            {items}
+        </div>
+    }
+
     return (
         <TabModal closable={false} open={!!files.length} footer={footer} title={title}>
-            {items.length ?
-                <div className="max-h-96 rounded p-2 overflow-auto">
-                    {items}
-                </div>
-                : <Empty />}
+            {content}
         </TabModal>
     )
 }

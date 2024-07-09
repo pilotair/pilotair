@@ -42,5 +42,5 @@ export default function FolderBreadcrumb({ path, className, setFolder }: Props) 
         return items;
     }, [path])
 
-    return <Breadcrumb className={className} items={Items} />
+    return <Breadcrumb className={"w-full" + className} items={Items} />
 }

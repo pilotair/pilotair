@@ -12,6 +12,7 @@ interface Props {
     folder: string
 }
 
+export const maxUploadFile = 100;
 
 export default function UploadFilesBtn({ folder }: Props) {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -26,24 +27,24 @@ export default function UploadFilesBtn({ folder }: Props) {
         showUploadList: false,
         fileList,
         beforeUpload(_file, files) {
-            if (files.length > 500) return false
+            if (files.length > maxUploadFile) return false
             setFileList(files)
             return true;
         },
         onChange(info) {
-            if (info.fileList.length > 500) return false
             setFileList(info.fileList)
         },
         customRequest(options) {
             const file = options.file as File;
             const webkitRelativePath = file.webkitRelativePath;
+            let currentFolder = folder
             if (webkitRelativePath) {
                 const fragments = webkitRelativePath.split("/");
                 fragments.shift();
                 fragments.pop();
-                folder = combine(folder, ...fragments);
+                currentFolder = combine(folder, ...fragments);
             }
-            options.action = options.action + `?folder=${folder}`
+            options.action = options.action + `?folder=${currentFolder}`
             upload(options);
         }
     }
