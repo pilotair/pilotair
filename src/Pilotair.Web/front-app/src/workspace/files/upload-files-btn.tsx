@@ -1,12 +1,12 @@
 import { FileZipOutlined, FolderOpenOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Progress, Segmented, Upload, UploadFile, UploadProps } from "antd";
+import { Button, Dropdown, Upload, UploadFile, UploadProps } from "antd";
 import { ReactNode, useRef, useState } from "react";
-import TabModal from "@/common/tab/modal"
 import { combine } from "@/utils/path";
 import upload from "rc-upload/es/request"
 import { prefix } from "@/utils/http/use-client";
 import { useEvent } from "@/common/events/event";
 import { reloadFiles } from "@/common/events/sources";
+import { UploadingModal } from "./uploading-modal";
 
 interface Props {
     folder: string
@@ -15,7 +15,6 @@ interface Props {
 
 export default function UploadFilesBtn({ folder }: Props) {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [status, setStatus] = useState('all');
     const folderUpload = useRef<HTMLSpanElement>(null)
     const zipUpload = useRef<HTMLSpanElement>(null)
     const emitReloadFiles = useEvent(reloadFiles)
@@ -26,11 +25,13 @@ export default function UploadFilesBtn({ folder }: Props) {
         multiple: true,
         showUploadList: false,
         fileList,
-        beforeUpload(_file, fileList) {
-            setFileList(fileList)
+        beforeUpload(_file, files) {
+            if (files.length > 500) return false
+            setFileList(files)
             return true;
         },
         onChange(info) {
+            if (info.fileList.length > 500) return false
             setFileList(info.fileList)
         },
         customRequest(options) {
@@ -47,21 +48,10 @@ export default function UploadFilesBtn({ folder }: Props) {
         }
     }
 
-    const fileItems: ReactNode[] = [];
-
     function onClose() {
         setFileList([]);
         emitReloadFiles();
     }
-
-    for (const file of fileList) {
-        if (file.status == status || status == 'all') fileItems.push(<div key={file.name}>{file.name} <Progress percent={file.percent} /></div>)
-    }
-
-    const footer = (
-        <div className="text-center"><Button className="w-full" onClick={onClose}>Close</Button></div>
-    )
-    const title = (<div className="text-center"><Segmented value={status} onChange={(value) => setStatus(value)} options={["all", 'uploading', 'done', "error"]} /></div>)
 
     const items = [
         {
@@ -102,10 +92,6 @@ export default function UploadFilesBtn({ folder }: Props) {
             ...props, directory: true, multiple: false
         }}><span ref={folderUpload} /></Upload>
         <Upload className="hidden" {...{ ...props, name: "file", action: combine(prefix, "file", "zip"), accept: ".zip", multiple: false }}><span ref={zipUpload} /></Upload>
-        <TabModal closable={false} open={!!fileList.length} footer={footer} title={title}>
-            <div className="max-h-96 overflow-auto">
-                {fileItems}
-            </div>
-        </TabModal>
+        <UploadingModal files={fileList} onClose={onClose} />
     </div>
 }
