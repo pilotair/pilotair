@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function FieldsEditor({ list, setList }: Props) {
-    const { openModal } = useContext(TabContext)
+    const { modal } = useContext(TabContext)
 
     function add(field: Pilotair.Web.DataModels.Field) {
         setList([...list, field])
@@ -22,7 +22,7 @@ export default function FieldsEditor({ list, setList }: Props) {
     }
 
     function onAdd() {
-        openModal({
+        modal.open({
             title: "New field",
             children: <NewFieldForm addField={add} />
         })

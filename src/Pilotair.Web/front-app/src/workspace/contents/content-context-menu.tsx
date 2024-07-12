@@ -1,7 +1,6 @@
 import { DeleteOutlined, EditOutlined, FormOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
-import { ReactNode, useContext } from "react";
-import { GlobalContext } from "@/common/global-context";
+import { ReactNode } from "react";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 import { useTab } from "@/workspace/use-tab";
@@ -15,7 +14,6 @@ interface Props {
 }
 
 export default function ContentContextMenu({ children, path, name }: Props) {
-    const { modal } = useContext(GlobalContext)
     const { loadMenus } = useMenu()
     const { openTab } = useTab()
     const { httpClient } = useHttpClient()
@@ -30,7 +28,7 @@ export default function ContentContextMenu({ children, path, name }: Props) {
         })
     }
 
-    function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
+    async function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();
 
         switch (key) {
@@ -38,13 +36,8 @@ export default function ContentContextMenu({ children, path, name }: Props) {
                 edit();
                 break;
             case "delete":
-                modal.confirm({
-                    title: "Are you sure delete?",
-                    onOk: async () => {
-                        await httpClient.delete(`content-collection?name=${name}`);
-                        loadMenus()
-                    }
-                })
+                await httpClient.delete(`content-collection?name=${name}`);
+                loadMenus()
                 break;
             default:
                 break;

@@ -5,13 +5,13 @@ type SupportMethods = "GET" | "POST" | "PUT" | "DELETE";
 type SearchParams = Record<string, string | string[] | undefined>;
 type SendResponse<T> = Promise<T extends void ? void : T>
 
-
 interface SendParams {
     searchParams?: SearchParams
     body?: unknown,
     headers?: Record<string, string>,
-    onResponse?: (response: Response) => Promise<Response> | Response,
-    onRequest?: (request: Request) => Promise<Request> | Request
+    onResponse?: (response: Response, request: Request) => Promise<Response> | Response,
+    onRequest?: (request: Request) => Promise<Request> | Request,
+    onSend?: (action: Promise<Response>) => Promise<Response>
 }
 
 async function send<T>(url: string, method: SupportMethods, sendParams?: SendParams): SendResponse<T> {
@@ -48,13 +48,17 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
     });
 
     if (sendParams?.onRequest) {
-        request = await Promise.resolve(sendParams.onRequest(request));
+        request = await sendParams.onRequest(request)
+    }
+    let response: Response | undefined
+    if (sendParams?.onSend) {
+        response = await sendParams.onSend(fetch(request))
+    } else {
+        response = await fetch(request)
     }
 
-    let response = await fetch(request)
-
     if (sendParams?.onResponse) {
-        response = await Promise.resolve(sendParams.onResponse(response))
+        response = await sendParams.onResponse(response, request)
     }
 
     return bodyParse(response) as SendResponse<T>;
@@ -62,9 +66,9 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
 
 interface ClientOptions {
     prefix?: string,
-    onResponse?: (response: Response) => Promise<Response> | Response
+    onResponse?: (response: Response, request: Request) => Promise<Response> | Response
     onRequest?: (request: Request) => Promise<Request> | Request,
-    onSend?: (action: Promise<unknown>) => Promise<unknown>
+    onSend?: (action: Promise<Response>) => Promise<Response>
 }
 
 export function createClient(options?: ClientOptions) {
@@ -73,18 +77,19 @@ export function createClient(options?: ClientOptions) {
             url = combine(options.prefix, url)
         }
 
-        if (options?.onResponse) {
-            if (!sendParams) sendParams = {};
-            if (!sendParams.onResponse) sendParams.onResponse = options.onResponse
-        }
-
         if (options?.onRequest) {
             if (!sendParams) sendParams = {};
             if (!sendParams.onRequest) sendParams.onRequest = options.onRequest
         }
 
+        if (options?.onResponse) {
+            if (!sendParams) sendParams = {};
+            if (!sendParams.onResponse) sendParams.onResponse = options.onResponse
+        }
+
         if (options?.onSend) {
-            return options.onSend(send<T>(url, method, sendParams)) as SendResponse<T>
+            if (!sendParams) sendParams = {};
+            if (!sendParams.onSend) sendParams.onSend = options.onSend
         }
 
         return send<T>(url, method, sendParams)

@@ -71,7 +71,7 @@ export function UploadingModal({ files, onClose }: Props) {
             type="error"
             showIcon
         />
-    } else {
+    } else if (items.length > 0) {
         content = <div className="max-h-96 rounded p-2 overflow-auto">
             {items}
         </div>

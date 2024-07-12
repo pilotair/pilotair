@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { Button, Checkbox } from "antd"
 import EntryItem from "./entry-item"
 import CreateFolderBtn from "./create-folder-btn"
@@ -6,7 +6,6 @@ import UploadFilesBtn from "./upload-files-btn"
 import { DeleteOutlined } from "@ant-design/icons"
 import FolderBreadcrumb from "./folder-breadcrumb"
 import { useHttpClient } from "@/utils/http/use-client"
-import { TabContext } from "@/common/tab/context"
 import Empty from "@/common/empty"
 import { Pilotair } from "@/schema"
 import ToolbarLayout from "@/common/layout/toolbar-layout"
@@ -19,7 +18,6 @@ export default function File() {
     const [entries, setEntries] = useState<Pilotair.Core.Stores.Files.Entry[]>();
     const { httpClient } = useHttpClient()
     const [selectedFiles, setSelectedFiles] = useState<Pilotair.Core.Stores.Files.Entry[]>([])
-    const { openConfirm } = useContext(TabContext)
 
     const load = useCallback(async () => {
         const response = await httpClient.get<Pilotair.Core.Stores.Files.Entry[]>("file", {
@@ -72,9 +70,6 @@ export default function File() {
     }
 
     async function onDelete(entries?: string[]) {
-        await openConfirm({
-            title: "Are you sure delete?",
-        })
         entries = entries || selectedFiles.map(m => m.name);
         await httpClient.delete("file", { entries, folder });
         load();

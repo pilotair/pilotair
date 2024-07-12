@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function CreateFolderBtn({ folder }: Props) {
-    const { openModal } = useContext(TabContext)
+    const { modal } = useContext(TabContext)
     const [form] = Form.useForm();
     const emitReloadFiles = useEvent(reloadFiles)
     let closeModal: () => void
@@ -29,7 +29,7 @@ export default function CreateFolderBtn({ folder }: Props) {
     }
 
     function onCreateFolder() {
-        closeModal = openModal({
+        closeModal = modal.open({
             title: "New Folder",
             children: <>
                 <Form form={form} onFinish={onFinish} preserve={false}>

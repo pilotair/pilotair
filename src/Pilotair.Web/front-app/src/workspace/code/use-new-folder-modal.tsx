@@ -5,7 +5,7 @@ import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 
 export function useNewFolderModal() {
-    const { openModal } = useContext(GlobalContext)
+    const { modal } = useContext(GlobalContext)
     const { loadMenus } = useMenu()
     const [form] = Form.useForm();
     let closeModal: () => void
@@ -22,7 +22,7 @@ export function useNewFolderModal() {
     }
 
     return function () {
-        closeModal = openModal({
+        closeModal = modal.open({
             title: "New code folder",
             children: <>
                 <Form form={form} onFinish={onFinish} preserve={false}>

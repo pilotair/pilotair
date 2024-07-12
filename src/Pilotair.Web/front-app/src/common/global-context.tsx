@@ -1,23 +1,29 @@
-import { ReactNode, createContext } from "react"
+import { ReactNode, createContext, useMemo } from "react"
 import { useModal } from "./use-modal"
 import { Modal } from "antd"
 import { useLoading } from "./use-loading"
 import Loading from "./loading"
 
 interface GlobalContextProps {
-    openModal: ReturnType<typeof useModal>["openModal"],
-    modal: ReturnType<typeof Modal.useModal>[0],
+    modal: GlobalModal,
     loading: (action: Promise<unknown>) => Promise<unknown>;
     showLoading: (show: boolean) => void;
 }
 
+type GlobalModal = ReturnType<typeof Modal.useModal>[0] & { open: ReturnType<typeof useModal>["openModal"] }
 export const GlobalContext = createContext<GlobalContextProps>({} as GlobalContextProps)
 
 export default function GlobalModal({ children }: { children: ReactNode }) {
     const { modals, openModal } = useModal()
     const [modal, contextHolder] = Modal.useModal();
     const { showLoading, isLoading, loading } = useLoading()
-    return <GlobalContext.Provider value={{ openModal, modal, showLoading, loading }}>
+    const globalModal = useMemo(() => ({ ...modal, open: openModal }), [modal, openModal])
+    
+    return <GlobalContext.Provider value={{
+        modal: globalModal,
+        showLoading,
+        loading
+    }}>
         {contextHolder}
         {children}
         {modals}

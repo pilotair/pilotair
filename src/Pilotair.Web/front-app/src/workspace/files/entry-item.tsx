@@ -17,11 +17,11 @@ interface Props {
 
 export default function EntryItem({ entry, selected, onSelected, onClick, onDelete }: Props) {
     const { Text } = Typography;
-    const { openModal } = useContext(TabContext)
+    const { modal } = useContext(TabContext)
     const [preview, setPreview] = useState(false)
 
     function rename() {
-        openModal({
+        modal.open({
             title: "Rename",
             children: <RenameForm path={entry.relationPath} />
         })

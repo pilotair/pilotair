@@ -13,17 +13,17 @@ interface Props {
 }
 
 export default function FolderContextMenu({ children, path }: Props) {
-    const { openModal, modal } = useContext(GlobalContext)
+    const { modal } = useContext(GlobalContext)
     const openNewFolderModal = useNewFolderModal();
     const { loadMenus } = useMenu()
     const { httpClient } = useHttpClient()
 
-    function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
+    async function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();
 
         switch (key) {
             case "file":
-                openModal({
+                modal.open({
                     title: "Create file",
                     children: <CreateFileForm path={path} />,
                 })
@@ -32,15 +32,10 @@ export default function FolderContextMenu({ children, path }: Props) {
                 openNewFolderModal()
                 break;
             case "delete":
-                modal.confirm({
-                    title: "Are you sure delete?",
-                    onOk: async () => {
-                        await httpClient.delete("code", {
-                            paths: [path]
-                        });
-                        loadMenus();
-                    }
-                })
+                await httpClient.delete("code", {
+                    paths: [path]
+                });
+                loadMenus();
                 break;
             default:
                 break;
