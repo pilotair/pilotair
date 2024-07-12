@@ -1,5 +1,5 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
-import { Button, Form, Input } from "antd"
+import { Button, Form, Input, message } from "antd"
 import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
 import { useMenu } from "@/workspace/use-menu";
@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Pilotair } from "@/schema";
 import FieldsEditor from "./fields-editor";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
+import { useTabSave } from "@/common/tab/use-tab-save";
 
 interface Props {
     path: string
@@ -18,9 +19,14 @@ export default function NewCollection({ path }: Props) {
     const { loadMenus } = useMenu();
     const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
     const { httpClient } = useHttpClient()
+    useTabSave(onSave)
 
     async function onSave() {
         await form.validateFields();
+        if (!fields.length) {
+            message.error("Please add some fields");
+            return
+        }
         const model = form.getFieldsValue();
         model.fields = fields
         await httpClient.post("content-collection", model)
@@ -28,14 +34,19 @@ export default function NewCollection({ path }: Props) {
         closeTab(path);
     }
 
+    function onReset() {
+        form.resetFields();
+        setFields([])
+    }
+
     const header = <>
-        <Button icon={<ReloadOutlined />}>Reset</Button>
+        <Button icon={<ReloadOutlined />} onClick={onReset}>Reset</Button>
         <div className="flex-1"></div>
         <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
     </>
 
     return (
-        <ToolbarLayout header={header}>
+        <ToolbarLayout header={header} >
             <Form
                 form={form}
                 layout="vertical"

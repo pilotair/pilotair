@@ -14,7 +14,15 @@ export default function ContextMenu({ children, items }: Props) {
         const result: MenuItem[] = [];
         for (const item of items) {
             const constantItem = getMenuItem(item?.key);
-            result.push({ ...constantItem, ...item } as MenuItem)
+            const mergedItem = { ...constantItem, ...item } as MenuItem;
+            if (mergedItem && "onClick" in mergedItem) {
+                const onClick = mergedItem.onClick
+                mergedItem.onClick = e => {
+                    e.domEvent.stopPropagation();
+                    onClick?.(e)
+                }
+            }
+            result.push(mergedItem)
         }
         return result;
     }, [items])

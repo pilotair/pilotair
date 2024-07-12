@@ -33,10 +33,14 @@ export default function NewContent({ collection, path }: Props) {
         emitReloadContents(collection)
     }
 
+    function onReset() {
+        dataForm.current?.reset()
+    }
+
     return (
         <div className="p-4 h-full flex flex-col space-y-4">
             <div className="flex items-center gap-2 flex-shrink-0">
-                <Button icon={<ReloadOutlined />}>Reset</Button>
+                <Button icon={<ReloadOutlined />} onClick={onReset}>Reset</Button>
                 <div className="flex-1"></div>
                 <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
             </div>

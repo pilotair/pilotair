@@ -9,7 +9,8 @@ interface Props {
 }
 
 export interface DataFormRef {
-    getValue(): Promise<unknown>
+    getValue(): Promise<unknown>,
+    reset: () => void
 }
 
 const DataForm = forwardRef<DataFormRef | undefined, Props>(function DataForm({ fields, initValues }, ref) {
@@ -22,8 +23,13 @@ const DataForm = forwardRef<DataFormRef | undefined, Props>(function DataForm({ 
         return value;
     }
 
+    function reset() {
+        form.resetFields()
+    }
+
     useImperativeHandle(ref, () => ({
-        getValue
+        getValue,
+        reset
     }))
 
     for (const field of fields) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 
 interface Shortcut {
@@ -7,10 +7,13 @@ interface Shortcut {
     key: string
 }
 
-export function useShortcut(shortcut: Shortcut, callback: () => void | Promise<void>) {
-    const [element, setElement] = useState<HTMLElement>();
+export const shortcuts = {
+    save: { ctrlOrMeta: true, key: "s" } as Shortcut
+}
+
+export function useShortcut(shortcut: Shortcut, callback: () => void | Promise<void>, element?: HTMLElement) {
     useEffect(() => {
-        if (!element) return;
+        const target = element ?? document.body
         const onKeydown = (e: KeyboardEvent) => {
             if (shortcut.ctrlOrMeta && !e.ctrlKey && !e.metaKey) {
                 return;
@@ -21,10 +24,7 @@ export function useShortcut(shortcut: Shortcut, callback: () => void | Promise<v
             e.preventDefault();
             callback();
         }
-        element.addEventListener("keydown", onKeydown)
-        return () => element.removeEventListener("keydown", onKeydown)
+        target.addEventListener("keydown", onKeydown)
+        return () => target.removeEventListener("keydown", onKeydown)
     }, [element])
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (element: any) => setElement(element);
 }

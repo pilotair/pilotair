@@ -9,15 +9,17 @@ interface TabPanelProps {
 
 export default function TabPanel({ children, name, isActive }: TabPanelProps) {
     return (
-        <TabContextProvider name={name}>
-            <div
-                className={"bg-white rounded-md h-full overflow-auto" + ` tab-panel-${name}`}
-                style={{ display: isActive ? 'block' : 'none' }}
-            >
+
+        <div
+            className={"bg-white rounded-md h-full overflow-auto" + ` tab-panel-${name}`}
+            style={{ display: isActive ? 'block' : 'none' }}
+        >
+            <TabContextProvider name={name}>
                 <div className="h-full overflow-auto">
                     {children}
                 </div>
-            </div>
-        </TabContextProvider>
+            </TabContextProvider>
+        </div>
+
     )
 }

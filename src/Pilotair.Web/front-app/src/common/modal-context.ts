@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
-export interface ModalContextValue {
+export interface ModalContextProps {
     setOk: (e: () => (Promise<void> | void)) => void;
 }
 
-export const ModalContext = createContext<ModalContextValue>({} as ModalContextValue)
+export const ModalContext = createContext<ModalContextProps>({} as ModalContextProps)

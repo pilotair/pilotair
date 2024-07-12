@@ -4,7 +4,6 @@ import { Pilotair } from "@/schema"
 import { useHttpClient } from "@/utils/http/use-client";
 import { Breadcrumb } from "antd"
 import { ReloadOutlined, RightOutlined, SaveOutlined } from "@ant-design/icons";
-import { useShortcut } from "@/utils/shortcuts";
 
 interface Props {
     name: string,
@@ -15,7 +14,6 @@ export default function Code({ name, folder }: Props) {
     const [content, setContent] = useState("");
     const newContent = useRef<string>()
     const [isChange, setIsChange] = useState(false)
-    const shortcutRef = useShortcut({ ctrlOrMeta: true, key: "s" }, onSave);
     const { httpClient } = useHttpClient()
 
     useEffect(() => {
@@ -40,7 +38,7 @@ export default function Code({ name, folder }: Props) {
         setIsChange(content != newContent.current)
     }, [content])
 
-    return <div className="h-full flex flex-col" ref={shortcutRef}>
+    return <div className="h-full flex flex-col">
         <div className="px-2 flex" >
             <Breadcrumb className="flex-1" separator={<RightOutlined className="transform scale-75" />} items={[...folder?.split("/") ?? [], name].map(m => ({ title: m, key: m, className: "text-slate-500" }))} />
             <div className="flex-shrink-0 flex gap-2 text-slate-500">

@@ -21,7 +21,7 @@ interface Props {
 }
 
 export function TabContextProvider({ children, name }: Props) {
-    const modalContainer = useRef<HTMLDivElement>(null)
+    const modalContainer = useRef<HTMLDivElement>(null);
 
     const { modals, openModal } = useModal({
         wrapClassName: "!absolute",

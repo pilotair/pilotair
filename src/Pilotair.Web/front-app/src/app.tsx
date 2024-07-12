@@ -5,9 +5,15 @@ import Account from './account/page.tsx'
 import Workspace from "./workspace/page.tsx"
 import { base } from "@/common/router.tsx"
 import { useChallenge } from '@/account/use-challenge.ts'
+import { shortcuts, useShortcut } from './utils/shortcuts.ts'
+import { useEvent } from './common/events/event.tsx'
+import { save } from './common/events/sources.tsx'
 
 export default function App() {
     const { challenge } = useChallenge();
+    const emitSave = useEvent(save)
+    useShortcut(shortcuts.save, emitSave)
+
     challenge();
 
     return (

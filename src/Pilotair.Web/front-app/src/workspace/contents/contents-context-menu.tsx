@@ -1,8 +1,10 @@
-import { FormOutlined, PlusOutlined } from "@ant-design/icons";
-import { Dropdown, MenuProps } from "antd";
+import { FormOutlined } from "@ant-design/icons";
 import { ReactNode } from "react";
 import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/async-component";
+import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
+import { MenuItemKeys } from "@/common/menus/constants";
+import { combine } from "@/utils/path";
 
 interface Props {
     children: ReactNode,
@@ -12,41 +14,29 @@ interface Props {
 export default function ContentsContextMenu({ children, path }: Props) {
     const { openTab } = useTab()
 
-    function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
-        domEvent.stopPropagation();
-
-        switch (key) {
-            case "add":
-                openTab({
-                    name: path,
-                    label: "New collection",
-                    panel: <AsyncComponent component={() => import("./new-collection")} props={{
-                        path
-                    }} />,
-                    icon: <FormOutlined />
-                })
-                break;
-            default:
-                break;
-        }
+    function onNew() {
+        path = combine("new", path)
+        openTab({
+            name: path,
+            label: "New collection",
+            panel: <AsyncComponent
+                component={() => import("./new-collection")}
+                props={{
+                    path
+                }} />,
+            icon: <FormOutlined />
+        })
     }
 
-    const menu: MenuProps = {
-        items: [
-            {
-                key: "add",
-                label: <span>Add collection</span>,
-                icon: <PlusOutlined />,
-                title: ""
-            }],
-        onClick: onItemClick
-    }
+    const items: MenuItem[] = [
+        { key: MenuItemKeys.new, label: "New Collection", onClick: onNew }
+    ]
 
     return (
-        <Dropdown trigger={["contextMenu"]} menu={menu}>
+        <ContextMenu items={items}>
             <div>
                 {children}
             </div>
-        </Dropdown>
+        </ContextMenu>
     )
 }
