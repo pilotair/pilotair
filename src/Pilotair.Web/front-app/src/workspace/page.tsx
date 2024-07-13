@@ -11,6 +11,8 @@ import { useNavigate } from "@/common/router";
 import FoldUp from "@/assets/fold-up.svg"
 import Menu from "./menu"
 import { useMenu } from "./use-menu";
+import { useEvent } from "@/common/events/event";
+import { reloadMenus } from "@/common/events/sources";
 
 
 function Sider() {
@@ -19,6 +21,7 @@ function Sider() {
     const { loadMenus } = useMenu()
     const nav = useNavigate()
     const [openKeys, setOpenKeys] = useState<string[]>([])
+    useEvent(reloadMenus, loadMenus)
 
     useEffect(() => {
         loadMenus();

@@ -11,7 +11,7 @@ interface Props {
     path: string
 }
 
-export default function ContentsContextMenu({ children, path }: Props) {
+export default function CollectionsContextMenu({ children, path }: Props) {
     const { openTab } = useTab()
 
     function onNew() {

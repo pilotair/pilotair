@@ -2,11 +2,12 @@ import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
 import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
-import { useMenu } from "@/workspace/use-menu";
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import FieldsEditor from "./fields-editor";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
+import { useEvent } from "@/common/events/event";
+import { reloadMenus } from "@/common/events/sources";
 
 interface Props {
     name: string,
@@ -18,8 +19,8 @@ export default function EditCollection({ name, path }: Props) {
     const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
     const { closeTab } = useTab();
-    const { loadMenus } = useMenu();
     const { httpClient } = useHttpClient()
+    const emitReloadMenus = useEvent(reloadMenus)
 
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(rsp => {
@@ -28,14 +29,12 @@ export default function EditCollection({ name, path }: Props) {
         })
     }, [])
 
-
-
     async function onSave() {
         await form.validateFields();
         const model = form.getFieldsValue();
         model.fields = fields
         await httpClient.put("content-collection", model)
-        await loadMenus()
+        emitReloadMenus()
         closeTab(path);
     }
 

@@ -5,7 +5,7 @@ import { Pilotair } from "../schema"
 import { getCodeFolderMenu, getCodeMenu, getCodesMenu } from "./code/code-menu"
 import { ControlOutlined, FolderOutlined } from "@ant-design/icons"
 import AsyncComponent from "../common/async-component"
-import { getContentCollectionMenu, getContentsMenu } from "./contents/content-menu"
+import { getCollectionMenu, getCollectionsMenu } from "./contents/collection-menu"
 
 export type MenuItem = {
     key: string,
@@ -67,9 +67,9 @@ function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
                 tab: <AsyncComponent component={() => import("./files/page")} />,
             };
         case "Contents":
-            return getContentsMenu(menu)
+            return getCollectionsMenu(menu)
         case "ContentCollection":
-            return getContentCollectionMenu(menu)
+            return getCollectionMenu(menu)
         case "Options":
             return {
                 key: menu.type,

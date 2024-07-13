@@ -7,10 +7,11 @@ import { useControls } from "../data-models/use-controls";
 type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>
 
 interface Props {
-    addField(field: Pilotair.Web.DataModels.Field): void;
+    field: Pilotair.Web.DataModels.Field,
+    updateField(field: Pilotair.Web.DataModels.Field): void;
 }
 
-export default function NewFieldForm({ addField }: Props) {
+export default function EditFieldForm({ field, updateField }: Props) {
     const { setOk } = useContext(ModalContext);
     const [form] = Form.useForm<Pilotair.Web.DataModels.Field>();
     const { controls } = useControls();
@@ -18,7 +19,7 @@ export default function NewFieldForm({ addField }: Props) {
     setOk(async () => {
         await form.validateFields();
         const value = form.getFieldsValue();
-        addField(value);
+        updateField(value);
     })
 
     const items: TabItems = [{
@@ -52,7 +53,5 @@ export default function NewFieldForm({ addField }: Props) {
     }]
 
 
-    return <Form initialValues={{
-        controlType: "TextBox"
-    }} labelCol={{ span: 4 }} form={form}><Tabs items={items} /></Form>
+    return <Form initialValues={field} labelCol={{ span: 4 }} form={form}><Tabs items={items} /></Form>
 }
