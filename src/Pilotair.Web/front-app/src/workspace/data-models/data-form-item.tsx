@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Switch } from "antd";
+import { Button, DatePicker, Form, Input, InputNumber, Select, Switch } from "antd";
 import { Pilotair } from "@/schema";
 
 interface Props {
@@ -13,6 +13,15 @@ function getControl(type: Pilotair.Web.DataModels.ControlTypes) {
             return <InputNumber />
         case "TextArea":
             return <Input.TextArea />
+        case "Datetime":
+            return <DatePicker />
+        case "Select":
+            return <Select />
+        case "Collection":
+            return <Select />
+        case "File":
+            return <Button type="primary">Select file</Button>
+        case "TextBox":
         default:
             return <Input />
     }

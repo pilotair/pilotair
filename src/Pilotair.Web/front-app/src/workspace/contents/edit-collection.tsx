@@ -16,7 +16,6 @@ interface Props {
 
 export default function EditCollection({ name, path }: Props) {
     const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>()
-    const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
     const { closeTab } = useTab();
     const { httpClient } = useHttpClient()
@@ -25,14 +24,12 @@ export default function EditCollection({ name, path }: Props) {
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(rsp => {
             setCollection(rsp!)
-            setFields(rsp!.fields)
         })
     }, [])
 
     async function onSave() {
         await form.validateFields();
         const model = form.getFieldsValue();
-        model.fields = fields
         await httpClient.put("content-collection", model)
         emitReloadMenus()
         closeTab(path);
@@ -61,8 +58,11 @@ export default function EditCollection({ name, path }: Props) {
                         <Input />
                     </Form.Item>
                 </div>
+                <Form.Item label="Fields" rules={[{ required: true, type: "array" }]} name="fields">
+                    <FieldsEditor />
+                </Form.Item>
             </Form>
-            <FieldsEditor list={fields} setList={setFields} />
+
         </ToolbarLayout>
     )
 }

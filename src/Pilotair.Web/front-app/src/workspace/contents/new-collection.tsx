@@ -1,8 +1,7 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
-import { Button, Form, Input, message } from "antd"
+import { Button, Form, Input } from "antd"
 import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
-import { useState } from "react";
 import { Pilotair } from "@/schema";
 import FieldsEditor from "./fields-editor";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
@@ -17,19 +16,13 @@ interface Props {
 export default function NewCollection({ path }: Props) {
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
     const { closeTab } = useTab();
-    const [fields, setFields] = useState<Pilotair.Web.DataModels.Field[]>([])
     const { httpClient } = useHttpClient()
     const emitReloadMenus = useEvent(reloadMenus)
     useTabSave(onSave)
 
     async function onSave() {
         await form.validateFields();
-        if (!fields.length) {
-            message.error("Please add some fields");
-            return
-        }
         const model = form.getFieldsValue();
-        model.fields = fields
         await httpClient.post("content-collection", model)
         emitReloadMenus()
         closeTab(path);
@@ -37,7 +30,6 @@ export default function NewCollection({ path }: Props) {
 
     function onReset() {
         form.resetFields();
-        setFields([])
     }
 
     const header = <>
@@ -60,8 +52,10 @@ export default function NewCollection({ path }: Props) {
                         <Input />
                     </Form.Item>
                 </div>
+                <Form.Item label="Fields" rules={[{ required: true, type: "array" }]} name="fields">
+                    <FieldsEditor />
+                </Form.Item>
             </Form>
-            <FieldsEditor list={fields} setList={setFields} />
         </ToolbarLayout>
     )
 }

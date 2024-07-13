@@ -7,5 +7,8 @@ public enum ControlTypes
     RichText,
     Switch,
     Number,
+    Datetime,
+    Select,
+    File,
     Collection
 }

@@ -1,25 +1,33 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Pilotair } from "@/schema";
-import { Button, Table } from "antd";
-import { useContext } from "react";
+import { Button, Form, Table, theme } from "antd";
+import { useContext, useState } from "react";
 import { TabContext } from "@/common/tab/context";
 import NewFieldForm from "./new-field-form";
 import EditFieldForm from "./edit-field-form";
 
+
 interface Props {
-    list: Pilotair.Web.DataModels.Field[],
-    setList: (value: Pilotair.Web.DataModels.Field[]) => void;
+    value?: Pilotair.Web.DataModels.Field[],
+    onChange?: (value: Pilotair.Web.DataModels.Field[]) => void;
 }
 
-export default function FieldsEditor({ list, setList }: Props) {
+export default function FieldsEditor({ value, onChange }: Props) {
     const { modal } = useContext(TabContext)
+    const [list, setList] = useState(value || [])
+    const { status } = Form.Item.useStatus();
+    const { token } = theme.useToken();
 
     function onDelete(value: Pilotair.Web.DataModels.Field) {
-        setList(list.filter(f => f.name != value.name))
+        const result = list.filter(f => f.name != value.name);
+        setList(result)
+        onChange?.(result)
     }
 
     function onAddField(field: Pilotair.Web.DataModels.Field) {
-        setList([...list, field])
+        const result = [...list, field];
+        setList(result)
+        onChange?.(result)
     }
 
     function onAdd() {
@@ -32,8 +40,10 @@ export default function FieldsEditor({ list, setList }: Props) {
     function onUpdateField(value: Pilotair.Web.DataModels.Field) {
         const index = list.findIndex(f => f.name == value.name);
         if (index > -1) {
-            list.splice(index, 1, value)
-            setList([...list])
+            list.splice(index, 1, value);
+            const result = [...list];
+            setList(result)
+            onChange?.(result)
         }
     }
 
@@ -44,7 +54,9 @@ export default function FieldsEditor({ list, setList }: Props) {
         })
     }
 
-    return <Table dataSource={list} size="small" rowKey="name" pagination={false} columns={[
+    return <Table style={{
+        border: status == 'error' ? (token.colorError + " solid 1px") : undefined
+    }} dataSource={list} size="small" rowKey="name" pagination={false} columns={[
         { title: "Name", dataIndex: "name" },
         { title: "Display", dataIndex: "display" },
         { title: "Control", dataIndex: "controlType" },
