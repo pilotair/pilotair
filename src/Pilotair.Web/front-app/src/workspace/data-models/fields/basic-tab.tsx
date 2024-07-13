@@ -1,9 +1,10 @@
 import { Form, Input, Select } from "antd";
 import { useControls } from "../use-controls";
-
+import KeyValueList from "@/common/key-value-list";
 
 export default function BasicTab() {
     const { controls } = useControls();
+    const controlType = Form.useWatch("controlType")
 
     return (<>
         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Missing field name' }]}>
@@ -20,5 +21,14 @@ export default function BasicTab() {
                 value: m
             }))} />
         </Form.Item>
+
+        {controlType == "Select" &&
+            <Form.Item
+                label="Options"
+                name="options"
+                rules={[{ required: true, type: "array", message: 'options can not be empty' }]}
+            >
+                <KeyValueList />
+            </Form.Item>}
     </>)
 }

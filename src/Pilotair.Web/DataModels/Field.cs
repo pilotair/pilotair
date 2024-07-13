@@ -7,7 +7,7 @@ public class Field
     public required ControlTypes ControlType { get; set; }
     public bool IsArray { get; set; } = false;
     public string? Collection { get; set; }
-    public Dictionary<string, string>? Options { get; set; }
+    public KeyValuePair<string, string>[] Options { get; set; } = [];
     public object? DefaultValue { get; set; }
     public ValidateRule[] ValidateRules { get; set; } = [];
 }
