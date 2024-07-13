@@ -3,8 +3,8 @@ import { Pilotair } from "@/schema";
 import { Button, Form, Table, theme } from "antd";
 import { useContext, useState } from "react";
 import { TabContext } from "@/common/tab/context";
-import NewFieldForm from "./new-field-form";
-import EditFieldForm from "./edit-field-form";
+import NewForm from "./new-form";
+import EditForm from "./edit-form";
 
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
     onChange?: (value: Pilotair.Web.DataModels.Field[]) => void;
 }
 
-export default function FieldsEditor({ value, onChange }: Props) {
+export default function FieldList({ value, onChange }: Props) {
     const { modal } = useContext(TabContext)
     const [list, setList] = useState(value || [])
     const { status } = Form.Item.useStatus();
@@ -33,7 +33,7 @@ export default function FieldsEditor({ value, onChange }: Props) {
     function onAdd() {
         modal.open({
             title: "New field",
-            children: <NewFieldForm addField={onAddField} />
+            children: <NewForm addField={onAddField} />
         })
     }
 
@@ -50,7 +50,7 @@ export default function FieldsEditor({ value, onChange }: Props) {
     function onEdit(value: Pilotair.Web.DataModels.Field) {
         modal.open({
             title: "Edit field",
-            children: <EditFieldForm field={value} updateField={onUpdateField} />
+            children: <EditForm field={value} updateField={onUpdateField} />
         })
     }
 

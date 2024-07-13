@@ -3,7 +3,7 @@ import { Button, Form, Input } from "antd"
 import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
 import { Pilotair } from "@/schema";
-import FieldsEditor from "./fields-editor";
+import FieldsList from "@/workspace/data-models/fields/field-list";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { useTabSave } from "@/common/tab/use-tab-save";
 import { useEvent } from "@/common/events/event";
@@ -53,7 +53,7 @@ export default function NewCollection({ path }: Props) {
                     </Form.Item>
                 </div>
                 <Form.Item label="Fields" rules={[{ required: true, type: "array" }]} name="fields">
-                    <FieldsEditor />
+                    <FieldsList />
                 </Form.Item>
             </Form>
         </ToolbarLayout>

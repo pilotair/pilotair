@@ -9,4 +9,5 @@ public class Field
     public string? Collection { get; set; }
     public Dictionary<string, string>? Options { get; set; }
     public object? DefaultValue { get; set; }
+    public ValidateRule[] ValidateRules { get; set; } = [];
 }

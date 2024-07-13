@@ -4,7 +4,7 @@ import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
-import FieldsEditor from "./fields-editor";
+import FieldsList from "@/workspace/data-models/fields/field-list";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { useEvent } from "@/common/events/event";
 import { reloadMenus } from "@/common/events/sources";
@@ -38,7 +38,7 @@ export default function EditCollection({ name, path }: Props) {
     if (!collection) return
 
     const header = <>
-        <Button icon={<ReloadOutlined />}>Reset</Button>
+        <Button icon={<ReloadOutlined />} onClick={() => form.resetFields()}>Reset</Button>
         <div className="flex-1"></div>
         <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
     </>
@@ -59,7 +59,7 @@ export default function EditCollection({ name, path }: Props) {
                     </Form.Item>
                 </div>
                 <Form.Item label="Fields" rules={[{ required: true, type: "array" }]} name="fields">
-                    <FieldsEditor />
+                    <FieldsList />
                 </Form.Item>
             </Form>
 
