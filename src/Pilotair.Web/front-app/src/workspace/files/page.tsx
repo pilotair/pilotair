@@ -1,9 +1,8 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { Button, Checkbox } from "antd"
 import EntryItem from "./entry-item"
-import CreateFolderBtn from "./create-folder-btn"
 import UploadFilesBtn from "./upload-files-btn"
-import { DeleteOutlined } from "@ant-design/icons"
+import { DeleteOutlined, FolderAddOutlined } from "@ant-design/icons"
 import FolderBreadcrumb from "./folder-breadcrumb"
 import { useHttpClient } from "@/utils/http/use-client"
 import Empty from "@/common/empty"
@@ -12,12 +11,15 @@ import ToolbarLayout from "@/common/layout/toolbar-layout"
 import { combine } from "@/utils/path"
 import { useEvent } from "@/common/events/event"
 import { reloadFiles } from "@/common/events/sources"
+import { TabContext } from "@/common/tab/context"
+import NewFolderModal from "./new-folder-modal"
 
 export default function File() {
     const [folder, setFolder] = useState('');
     const [entries, setEntries] = useState<Pilotair.Core.Stores.Files.Entry[]>();
     const { httpClient } = useHttpClient()
     const [selectedFiles, setSelectedFiles] = useState<Pilotair.Core.Stores.Files.Entry[]>([])
+    const { modal } = useContext(TabContext)
 
     const load = useCallback(async () => {
         const response = await httpClient.get<Pilotair.Core.Stores.Files.Entry[]>("file", {
@@ -45,7 +47,7 @@ export default function File() {
     }, [entries, selectedFiles.length])
 
     if (!entries) {
-        return ""
+        return
     }
 
     const entryItems: ReactNode[] = [];
@@ -69,6 +71,13 @@ export default function File() {
         }
     }
 
+    function onNewFolder() {
+        modal.open({
+            title: "New folder",
+            children: <NewFolderModal folder={folder} />
+        })
+    }
+
     async function onDelete(entries?: string[]) {
         entries = entries || selectedFiles.map(m => m.name);
         await httpClient.delete("file", { entries, folder });
@@ -81,7 +90,7 @@ export default function File() {
         <div className="flex-1"></div>
         <div className="flex gap-2">
             {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={() => onDelete()}>Delete</Button>}
-            <CreateFolderBtn folder={folder} />
+            <Button ghost icon={<FolderAddOutlined />} type="primary" onClick={onNewFolder}>Create Folder</Button>
             <UploadFilesBtn folder={folder} />
         </div>
     </>
