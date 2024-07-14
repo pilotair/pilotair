@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Pilotair } from "@/schema";
-import { Button, Form, Table, theme } from "antd";
+import { Button, Form, Table } from "antd";
 import { useContext, useState } from "react";
 import { TabContext } from "@/common/tab/context";
 import NewForm from "./new-form";
@@ -16,7 +16,6 @@ export default function FieldList({ value, onChange }: Props) {
     const { modal } = useContext(TabContext)
     const [list, setList] = useState(value || [])
     const { status } = Form.Item.useStatus();
-    const { token } = theme.useToken();
 
     function onDelete(value: Pilotair.Web.DataModels.Field) {
         const result = list.filter(f => f.name != value.name);
@@ -54,23 +53,23 @@ export default function FieldList({ value, onChange }: Props) {
         })
     }
 
-    return <Table style={{
-        border: status == 'error' ? (token.colorError + " solid 1px") : undefined
-    }} dataSource={list} size="small" rowKey="name" pagination={false} columns={[
-        { title: "Name", dataIndex: "name" },
-        { title: "Display", dataIndex: "display" },
-        { title: "Control", dataIndex: "controlType" },
-        {
-            title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={onAdd} />,
-            render(value) {
-                return <div>
-                    <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => onEdit(value)} />
-                    <Button type="text" shape="circle" danger icon={<DeleteOutlined />} onClick={() => onDelete(value)} />
-                </div>
-            },
-            fixed: "right",
-            width: 100,
-            align: "end"
-        }
-    ]} />
+    return (<div className={"overflow-hidden" + (status == "error" ? "field-valid-error" : "")}>
+        <Table dataSource={list} size="small" rowKey="name" pagination={false} columns={[
+            { title: "Name", dataIndex: "name" },
+            { title: "Display", dataIndex: "display" },
+            { title: "Control", dataIndex: "controlType" },
+            {
+                title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={onAdd} />,
+                render(value) {
+                    return <div>
+                        <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => onEdit(value)} />
+                        <Button type="text" shape="circle" danger icon={<DeleteOutlined />} onClick={() => onDelete(value)} />
+                    </div>
+                },
+                fixed: "right",
+                width: 100,
+                align: "end"
+            }
+        ]} />
+    </div>)
 }

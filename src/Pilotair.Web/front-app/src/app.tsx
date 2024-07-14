@@ -17,7 +17,7 @@ export default function App() {
     challenge();
 
     return (
-        <ConfigProvider>
+        <ConfigProvider theme={{ cssVar: true }}>
             <GlobalContext>
                 <Router base={base}>
                     <Switch>
