@@ -4,7 +4,7 @@ import { Key, useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
-import AsyncComponent from "@/common/async-component";
+import AsyncComponent from "@/common/basic/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { combine } from "@/utils/path";
 import { useEvent } from "@/common/events/event";

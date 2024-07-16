@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { createClient } from "./client";
+import { createClient, SendParams } from "./client";
 import { TabContext } from "@/common/tab/context";
 import { message } from "antd";
 import { GlobalContext } from "@/common/global-context";
@@ -27,7 +27,7 @@ export function useHttpClient() {
             }
             return request;
         },
-        async onResponse(response: Response, request: Request) {
+        async onResponse(response: Response, request: Request, sendParams: SendParams) {
             const bearer = response.headers.get("www-authenticate")
             if (bearer && response.ok) {
                 localStorage.setItem(tokenName, bearer)
@@ -36,12 +36,12 @@ export function useHttpClient() {
             if (!response.ok) {
                 const error = await response.json();
                 message.error(error);
-            } else if (request.method == "POST") {
-                message.success("Save success")
-            } else if (request.method == "PUT") {
-                message.success("Modify success")
-            } else if (request.method == "DELETE") {
-                message.success("Delete success")
+            } else if (request.method == "POST" && sendParams?.postSuccessMessage !== false) {
+                message.success(sendParams?.postSuccessMessage || "Save success")
+            } else if (request.method == "PUT" && sendParams?.putSuccessMessage !== false) {
+                message.success(sendParams?.putSuccessMessage || "Modify success")
+            } else if (request.method == "DELETE" && sendParams?.deleteSuccessMessage !== false) {
+                message.success(sendParams?.deleteSuccessMessage || "Delete success")
             }
 
             return response;

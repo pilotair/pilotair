@@ -2,7 +2,7 @@ import { Modal, ModalFuncProps, ModalProps } from "antd";
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { useModal } from "../use-modal";
 import { useLoading } from "../use-loading";
-import Loading from "../loading";
+import Loading from "@/common/basic/loading";
 
 interface Tab {
     modalContainer: HTMLDivElement | null

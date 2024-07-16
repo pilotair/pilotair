@@ -1,5 +1,5 @@
 import { Button, Form, Input, Space } from "antd";
-import { KeyValue } from "./types";
+import { KeyValue } from "@/common/types";
 import { ReactNode, useState } from "react";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 

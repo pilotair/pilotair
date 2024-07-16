@@ -2,7 +2,7 @@ import { FormOutlined } from "@ant-design/icons";
 import { ReactNode } from "react";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
-import AsyncComponent from "@/common/async-component";
+import AsyncComponent from "@/common/basic/async-component";
 import { combine } from "@/utils/path";
 import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
 import { MenuItemKeys } from "@/common/menus/constants";

@@ -1,4 +1,4 @@
-import Empty from "@/common/empty";
+import Empty from "@/common/basic/empty";
 import TabModal from "@/common/tab/modal";
 import {
     CheckCircleOutlined,

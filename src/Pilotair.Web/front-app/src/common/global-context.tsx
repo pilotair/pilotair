@@ -2,7 +2,7 @@ import { ReactNode, createContext, useMemo } from "react"
 import { useModal } from "./use-modal"
 import { Modal } from "antd"
 import { useLoading } from "./use-loading"
-import Loading from "./loading"
+import Loading from "@/common/basic/loading"
 
 interface GlobalContextProps {
     modal: GlobalModal,

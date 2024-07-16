@@ -1,9 +1,9 @@
 import SiderLayout from "../common/layout/sider-layout"
 import { useTab } from "./use-tab";
 import { memo, useContext, useEffect, useState } from "react";
-import Tabs from "../common/tab/tabs";
-import AsyncComponent from "../common/async-component";
-import Empty from "../common/empty";
+import Tabs from "@/common/tab/tabs";
+import AsyncComponent from "@/common/basic/async-component";
+import Empty from "@/common/basic/empty";
 import { AppstoreOutlined, BranchesOutlined, SettingOutlined } from "@ant-design/icons";
 import { SiderLayoutContext } from "../common/layout/sider-layout-context";
 import Avatar from "@/common/profile/avatar";

@@ -1,4 +1,4 @@
-import TagGroup, { TagItem } from "../tag-group"
+import TagGroup, { TagItem } from "@/common/basic/tag-group"
 import { ReactNode } from "react"
 import TabPanel from "./panel"
 

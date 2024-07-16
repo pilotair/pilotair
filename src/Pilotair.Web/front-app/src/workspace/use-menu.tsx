@@ -4,7 +4,7 @@ import { useHttpClient } from "../utils/http/use-client"
 import { Pilotair } from "../schema"
 import { getCodeFolderMenu, getCodeMenu, getCodesMenu } from "./code/code-menu"
 import { ControlOutlined, FolderOutlined } from "@ant-design/icons"
-import AsyncComponent from "../common/async-component"
+import AsyncComponent from "@/common/basic/async-component"
 import { getCollectionMenu, getCollectionsMenu } from "./contents/collection-menu"
 
 export type MenuItem = {

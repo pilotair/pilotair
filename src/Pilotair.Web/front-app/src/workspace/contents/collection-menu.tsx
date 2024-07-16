@@ -3,7 +3,7 @@ import CollectionsContextMenu from "./collections-context-menu";
 import { FormOutlined } from "@ant-design/icons";
 import { MenuItem } from "@/workspace/use-menu";
 import CollectionContextMenu from "./collection-context-menu";
-import AsyncComponent from "@/common/async-component";
+import AsyncComponent from "@/common/basic/async-component";
 
 export function getCollectionsMenu(menu: Pilotair.Web.MenuItem): MenuItem {
     return {

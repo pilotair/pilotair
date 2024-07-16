@@ -5,13 +5,19 @@ type SupportMethods = "GET" | "POST" | "PUT" | "DELETE";
 type SearchParams = Record<string, string | string[] | undefined>;
 type SendResponse<T> = Promise<T extends void ? void : T>
 
-interface SendParams {
+interface CommonParams {
+    onResponse?: (response: Response, request: Request, sendParams: SendParams) => Promise<Response> | Response,
+    onRequest?: (request: Request) => Promise<Request> | Request,
+    onSend?: (action: Promise<Response>) => Promise<Response>,
+    postSuccessMessage?: string | false,
+    putSuccessMessage?: string | false,
+    deleteSuccessMessage?: string | false,
+}
+
+export interface SendParams extends CommonParams {
     searchParams?: SearchParams
     body?: unknown,
     headers?: Record<string, string>,
-    onResponse?: (response: Response, request: Request) => Promise<Response> | Response,
-    onRequest?: (request: Request) => Promise<Request> | Request,
-    onSend?: (action: Promise<Response>) => Promise<Response>
 }
 
 async function send<T>(url: string, method: SupportMethods, sendParams?: SendParams): SendResponse<T> {
@@ -58,17 +64,14 @@ async function send<T>(url: string, method: SupportMethods, sendParams?: SendPar
     }
 
     if (sendParams?.onResponse) {
-        response = await sendParams.onResponse(response, request)
+        response = await sendParams.onResponse(response, request, sendParams)
     }
 
     return bodyParse(response) as SendResponse<T>;
 }
 
-interface ClientOptions {
+interface ClientOptions extends CommonParams {
     prefix?: string,
-    onResponse?: (response: Response, request: Request) => Promise<Response> | Response
-    onRequest?: (request: Request) => Promise<Request> | Request,
-    onSend?: (action: Promise<Response>) => Promise<Response>
 }
 
 export function createClient(options?: ClientOptions) {

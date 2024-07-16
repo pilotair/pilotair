@@ -11,7 +11,9 @@ export default function Login() {
     async function sign() {
         await form.validateFields();
         const model = form.getFieldsValue();
-        await httpClient.post<string>("account/password-sign", model);
+        await httpClient.post<string>("account/password-sign", model, {
+            postSuccessMessage: "Sign success"
+        });
         navigate("@/")
     }
 

@@ -1,6 +1,6 @@
 import { Form, Input, Select } from "antd";
 import { useControls } from "../use-controls";
-import KeyValueList from "@/common/key-value-list";
+import KeyValueList from "@/common/basic/key-value-list";
 
 export default function BasicTab() {
     const { controls } = useControls();
