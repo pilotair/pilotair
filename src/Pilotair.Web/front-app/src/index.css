@@ -27,7 +27,8 @@
 /* antd*/
 .field-valid-error {
     border-radius: var(--ant-border-radius);
-    border: var(--ant-color-error) solid 1px;
+    outline: var(--ant-color-error) solid 1px;
+    outline-offset: 2px;
 }
 
 .hover-danger-button:hover {

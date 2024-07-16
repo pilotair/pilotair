@@ -34,7 +34,7 @@ public class Collection<T>
             Enabled,
             DataHash,
             Note
-        FROM {Name} WHERE Id=@Id LIMIT 1
+        FROM `{Name}` WHERE Id=@Id LIMIT 1
         """, new { Id = id });
 
         if (result == default)
@@ -65,7 +65,7 @@ public class Collection<T>
 
         using var connection = Connection;
         var returnModel = await connection.QueryFirstAsync<DocumentModel>($"""
-        INSERT INTO {Name} (
+        INSERT INTO `{Name}` (
             Id,
             ParentId,
             CreationTime,
@@ -117,7 +117,7 @@ public class Collection<T>
 
         using var connection = Connection;
         var returnModel = await connection.QueryFirstAsync<DocumentModel>($"""
-        UPDATE {Name} 
+        UPDATE `{Name}` 
         SET Data = jsonb(@Data),
             Enabled = @Enabled,
             DataHash = @DataHash,
@@ -153,7 +153,7 @@ public class Collection<T>
     {
         using var connection = Connection;
         await connection.ExecuteAsync($"""
-        DELETE FROM {Name}
+        DELETE FROM `{Name}`
         WHERE Id IN @Ids;
         """, new { Ids = ids });
     }
@@ -162,7 +162,7 @@ public class Collection<T>
     {
         using var connection = Connection;
         connection.Execute($"""
-        CREATE TABLE IF NOT EXISTS {Name} (
+        CREATE TABLE IF NOT EXISTS `{Name}` (
             Id TEXT PRIMARY KEY,
             ParentId TEXT,
             CreationTime INTEGER NOT NULL,
@@ -174,25 +174,25 @@ public class Collection<T>
         );
 
         CREATE TRIGGER IF NOT EXISTS {Name}_TRIGGER
-        AFTER UPDATE ON {Name}
+        AFTER UPDATE ON `{Name}`
         FOR EACH ROW
         BEGIN
-            UPDATE {Name}
+            UPDATE `{Name}`
             SET LastWriteTime = unixepoch('subsec') * 1000
             WHERE Id = OLD.Id;
         END;
 
         CREATE INDEX IF NOT EXISTS {Name}_ParentId_INDEX
-        ON {Name}(ParentId);
+        ON `{Name}`(ParentId);
 
         CREATE INDEX IF NOT EXISTS {Name}_CreationTime_INDEX
-        ON {Name}(CreationTime);
+        ON `{Name}`(CreationTime);
 
         CREATE INDEX IF NOT EXISTS {Name}_LastWriteTime_INDEX
-        ON {Name}(LastWriteTime);
+        ON `{Name}`(LastWriteTime);
 
         CREATE INDEX IF NOT EXISTS {Name}_Enabled_INDEX
-        ON {Name}(Enabled);
+        ON `{Name}`(Enabled);
         """);
     }
 }

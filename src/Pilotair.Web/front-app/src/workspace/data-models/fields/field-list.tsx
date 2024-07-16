@@ -53,7 +53,7 @@ export default function FieldList({ value, onChange }: Props) {
         })
     }
 
-    return (<div className={"overflow-hidden" + (status == "error" ? "field-valid-error" : "")}>
+    return (<div className={ (status == "error" ? "field-valid-error" : "")}>
         <Table dataSource={list} size="small" rowKey="name" pagination={false} columns={[
             { title: "Name", dataIndex: "name" },
             { title: "Display", dataIndex: "display" },

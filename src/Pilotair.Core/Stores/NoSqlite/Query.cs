@@ -106,7 +106,7 @@ public class Query<T>(SqliteConnection connection, string name)
         }
 
         sqlBuilder.AppendLine();
-        sqlBuilder.AppendLine($"FROM {name}");
+        sqlBuilder.AppendLine($"FROM `{name}`");
         sqlBuilder.AppendLine(GetWhere());
 
         if (order.Count > 0)
@@ -143,7 +143,7 @@ public class Query<T>(SqliteConnection connection, string name)
     public async Task<long> CountAsync()
     {
         var sqlBuilder = new StringBuilder();
-        sqlBuilder.AppendLine($"SELECT COUNT(1) FROM {name}");
+        sqlBuilder.AppendLine($"SELECT COUNT(1) FROM `{name}`");
         sqlBuilder.AppendLine(GetWhere());
 
         if (skip > 0)

@@ -10,5 +10,5 @@ public enum ControlTypes
     Datetime,
     Select,
     File,
-    Collection
+    Content
 }

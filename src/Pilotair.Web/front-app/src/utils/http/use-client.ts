@@ -39,7 +39,7 @@ export function useHttpClient() {
             } else if (request.method == "POST" && sendParams?.postSuccessMessage !== false) {
                 message.success(sendParams?.postSuccessMessage || "Save success")
             } else if (request.method == "PUT" && sendParams?.putSuccessMessage !== false) {
-                message.success(sendParams?.putSuccessMessage || "Modify success")
+                message.success(sendParams?.putSuccessMessage || "Update success")
             } else if (request.method == "DELETE" && sendParams?.deleteSuccessMessage !== false) {
                 message.success(sendParams?.deleteSuccessMessage || "Delete success")
             }

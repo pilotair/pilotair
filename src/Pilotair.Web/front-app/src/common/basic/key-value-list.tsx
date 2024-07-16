@@ -26,12 +26,19 @@ export default function KeyValueList({ value, onChange }: Props) {
         onChange?.(newValue)
     }
 
+    function onInputChange(index: number, property: keyof KeyValue, target: HTMLInputElement) {
+        const item = list[index];
+        item[property] = target.value;
+        setList(list);
+        onChange?.(list)
+    }
+
     for (let i = 0; i < list.length; i++) {
         const item = list[i];
         items.push(
             <Space.Compact key={i}>
-                <Input placeholder="key" value={item.key} />
-                <Input placeholder="value" value={item.key} />
+                <Input status={"disable" as unknown as ""} placeholder="key" value={item.key} onChange={e => onInputChange(i, "key", e.target)} />
+                <Input status={"disable" as unknown as ""} placeholder="value" value={item.value} onChange={e => onInputChange(i, "value", e.target)} />
                 <Button className="hover-danger-button" onClick={() => onRemove(i)} icon={<DeleteOutlined />}></Button>
             </Space.Compact>
         )
