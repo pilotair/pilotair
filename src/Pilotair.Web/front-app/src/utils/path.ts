@@ -20,7 +20,7 @@ export function removeFragment(path: string, start: number) {
     return fragments.join('/')
 }
 
-export function splitPath(path: string) {
+export function splitFolderEntry(path: string) {
     const breakIndex = path.lastIndexOf('/')
     if (breakIndex == -1) {
         return { folder: '', entry: path }

@@ -1,5 +1,7 @@
 import { atom, useAtom } from "jotai";
 import { TabItem } from "../common/tab/tabs";
+import { useContext } from "react";
+import { TabContext } from "@/common/tab/context";
 
 const activeNameAtom = atom("")
 const tabsAtom = atom<TabItem[]>([])
@@ -7,8 +9,10 @@ const tabsAtom = atom<TabItem[]>([])
 export function useTab() {
     const [activeName, setActiveName] = useAtom(activeNameAtom);
     const [tabs, setTabs] = useAtom(tabsAtom);
+    const { name: currentTabName } = useContext(TabContext)
 
-    function closeTab(name: string) {
+    function closeTab(name?: string) {
+        name = name || currentTabName
         const tab = tabs.find(f => f.name == name);
         if (!tab) return;
 

@@ -2,7 +2,7 @@ import { Form, Input } from "antd"
 import { useHttpClient } from "@/utils/http/use-client";
 import { useContext } from "react";
 import { ModalContext } from "@/common/modal-context";
-import { combine, splitPath } from "@/utils/path";
+import { combine, splitFolderEntry } from "@/utils/path";
 import { useEvent } from "@/common/events/event";
 import { reloadFiles } from "@/common/events/sources";
 
@@ -14,7 +14,7 @@ export default function RenameForm({ path }: Props) {
     const [form] = Form.useForm<{ name: string }>();
     const { setOk } = useContext(ModalContext)
     const { httpClient } = useHttpClient()
-    const { folder, entry } = splitPath(path)
+    const { folder, entry } = splitFolderEntry(path)
     const emitReloadFiles = useEvent(reloadFiles)
 
     setOk(async () => {

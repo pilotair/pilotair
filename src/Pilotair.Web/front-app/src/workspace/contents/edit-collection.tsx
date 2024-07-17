@@ -29,7 +29,7 @@ export default function EditCollection({ name }: Props) {
         await form.validateFields();
         const model = form.getFieldsValue();
         await httpClient.put("content-collection", model)
-        emitReloadMenus()
+        emitReloadMenus();
     }
 
     if (!collection) return

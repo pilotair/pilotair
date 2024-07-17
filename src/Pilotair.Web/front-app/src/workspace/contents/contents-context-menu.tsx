@@ -11,7 +11,7 @@ interface Props {
     path: string
 }
 
-export default function CollectionsContextMenu({ children, path }: Props) {
+export default function ContentsContextMenu({ children, path }: Props) {
     const { openTab } = useTab()
 
     function onNew() {
@@ -19,11 +19,7 @@ export default function CollectionsContextMenu({ children, path }: Props) {
         openTab({
             name: path,
             label: "New collection",
-            panel: <AsyncComponent
-                component={() => import("./new-collection")}
-                props={{
-                    path
-                }} />,
+            panel: <AsyncComponent component={() => import("./new-collection")} />,
             icon: <FormOutlined />
         })
     }
