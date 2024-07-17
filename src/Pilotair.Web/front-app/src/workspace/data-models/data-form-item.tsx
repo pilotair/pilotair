@@ -5,30 +5,35 @@ interface Props {
     field: Pilotair.Web.DataModels.Field;
 }
 
-function getControl(type: Pilotair.Web.DataModels.ControlTypes) {
-    switch (type) {
-        case "Switch":
-            return <Switch />
-        case "Number":
-            return <InputNumber />
-        case "TextArea":
-            return <Input.TextArea />
-        case "Datetime":
-            return <DatePicker />
-        case "Select":
-            return <Select />
-        case "Collection":
-            return <Select />
-        case "File":
-            return <Button type="primary">Select file</Button>
-        case "TextBox":
-        default:
-            return <Input />
-    }
-}
+
 
 export default function DataFormItem({ field }: Props) {
+    function getControl() {
+        switch (field.controlType) {
+            case "Switch":
+                return <Switch />
+            case "Number":
+                return <InputNumber />
+            case "TextArea":
+                return <Input.TextArea />
+            case "Datetime":
+                return <DatePicker />
+            case "Select":
+                return <Select mode="multiple" allowClear options={field.options?.map(m => ({
+                    label: m.value,
+                    value: m.key
+                }))} />
+            case "Content":
+                return <Select />
+            case "File":
+                return <Button type="primary">Select file</Button>
+            case "TextBox":
+            default:
+                return <Input />
+        }
+    }
+
     return <Form.Item label={field.display || field.name} name={field.name}>
-        {getControl(field.controlType)}
+        {getControl()}
     </Form.Item>
 }

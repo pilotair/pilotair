@@ -1,38 +1,35 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons"
 import { Button, Form, Input } from "antd"
 import { useHttpClient } from "@/utils/http/use-client";
-import { useTab } from "@/workspace/use-tab";
 import { useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import FieldsList from "@/workspace/data-models/fields/field-list";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { useEvent } from "@/common/events/event";
 import { reloadMenus } from "@/common/events/sources";
+import { useTabSave } from "@/common/tab/use-tab-save";
 
 interface Props {
     name: string,
     path: string
 }
 
-export default function EditCollection({ name, path }: Props) {
+export default function EditCollection({ name }: Props) {
     const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>()
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
-    const { closeTab } = useTab();
     const { httpClient } = useHttpClient()
-    const emitReloadMenus = useEvent(reloadMenus)
+    const emitReloadMenus = useEvent(reloadMenus);
+    useTabSave(onSave)
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(rsp => {
-            setCollection(rsp!)
-        })
-    }, [])
+        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(setCollection)
+    }, [httpClient, name])
 
     async function onSave() {
         await form.validateFields();
         const model = form.getFieldsValue();
         await httpClient.put("content-collection", model)
         emitReloadMenus()
-        closeTab(path);
     }
 
     if (!collection) return

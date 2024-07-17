@@ -2,10 +2,19 @@ import { Form, Input, Select, Switch } from "antd";
 import { controls, useControls, multipleControls } from "../use-controls";
 import KeyValueList from "@/common/basic/key-value-list";
 import { KeyValue } from "@/common/types";
+import { useEffect, useState } from "react";
+import { useHttpClient } from "@/utils/http/use-client";
 
 export default function BasicTab() {
     const { controls: controlList } = useControls();
     const controlType = Form.useWatch("controlType")
+    const [collections, setCollections] = useState<KeyValue[]>([])
+    const { httpClient } = useHttpClient();
+
+    useEffect(() => {
+        if (controlType != controls.Content) return
+        httpClient.get<KeyValue[]>("data-model/content-collections").then(setCollections)
+    }, [httpClient, controlType])
 
     return (<>
         <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Missing field name' }]}>
@@ -23,11 +32,14 @@ export default function BasicTab() {
             }))} />
         </Form.Item>
 
-        {multipleControls.includes(controlType) && <Form.Item label="Multiple" name="multiple">
-            <Switch />
-        </Form.Item>}
+        {
+            multipleControls.includes(controlType) && <Form.Item label="Multiple" name="multiple">
+                <Switch />
+            </Form.Item>
+        }
 
-        {controlType == controls.Select &&
+        {
+            controlType == controls.Select &&
             <Form.Item
                 label="Options"
                 name="options"
@@ -42,6 +54,23 @@ export default function BasicTab() {
                 ]}
             >
                 <KeyValueList />
-            </Form.Item>}
+            </Form.Item>
+        }
+
+        {
+            controlType == controls.Content &&
+            <Form.Item
+                label="Content"
+                name="collection"
+                rules={[
+                    { required: true, message: 'collection can not be empty' }
+                ]}
+            >
+                <Select options={collections.map(m => ({
+                    label: m.value,
+                    value: m.key
+                }))} />
+            </Form.Item>
+        }
     </>)
 }

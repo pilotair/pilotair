@@ -38,11 +38,25 @@ export function useTab() {
         setTabs([...tabs, value]);
     }
 
+    function replaceTab(oldPath: string, value: TabItem) {
+        const index = tabs.findIndex(f => f.name == oldPath);
+
+        if (index == -1) {
+            tabs.push(value)
+        } else {
+            tabs.splice(index, 1, value);
+        }
+
+        setTabs([...tabs])
+        if (activeName == oldPath) setActiveName(value.name);
+    }
+
     return {
         activeName,
         tabs,
         setActiveName,
         closeTab,
         openTab,
+        replaceTab
     }
 }

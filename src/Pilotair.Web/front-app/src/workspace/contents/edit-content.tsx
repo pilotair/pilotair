@@ -4,7 +4,6 @@ import { useHttpClient } from "@/utils/http/use-client";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
-import { useTab } from "../use-tab";
 
 interface Props {
     collection: string,
@@ -12,10 +11,9 @@ interface Props {
     id: string
 }
 
-export default function EditContent({ collection, path, id }: Props) {
+export default function EditContent({ collection, id }: Props) {
     const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
     const dataForm = useRef<DataFormRef>();
-    const { closeTab } = useTab()
     const [content, SetContent] = useState<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>()
     const { httpClient } = useHttpClient()
 
@@ -29,7 +27,6 @@ export default function EditContent({ collection, path, id }: Props) {
     async function onSave() {
         const value = await dataForm.current?.getValue();
         await httpClient.put(`/content/${collection}/${id}`, value)
-        closeTab(path)
     }
 
     return (
