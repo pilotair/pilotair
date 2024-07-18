@@ -15,7 +15,7 @@ const items: MenuProps['items'] = [
 export default function Avatar() {
 
     const navigate = useNavigate();
-    function onMenuClick({ key }: { key: string }) {
+    function handleMenuClick({ key }: { key: string }) {
         switch (key) {
             case "logout":
                 navigate("@/account/login")
@@ -27,7 +27,7 @@ export default function Avatar() {
     }
 
     return (
-        <Dropdown menu={{ items, onClick: onMenuClick }} >
+        <Dropdown menu={{ items, onClick: handleMenuClick }} >
             <AntdAvatar className="bg-slate-300" icon={<UserOutlined />} />
         </Dropdown>
     )

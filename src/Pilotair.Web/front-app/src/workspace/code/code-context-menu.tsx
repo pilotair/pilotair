@@ -13,7 +13,7 @@ export default function CodeContextMenu({ children, path }: Props) {
     const { loadMenus } = useMenu()
     const { httpClient } = useHttpClient()
 
-    async function onItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
+    async function handleItemClick({ key, domEvent }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
         domEvent.stopPropagation();
 
         switch (key) {
@@ -37,7 +37,7 @@ export default function CodeContextMenu({ children, path }: Props) {
                 title: "",
                 danger: true
             }],
-        onClick: onItemClick
+        onClick: handleItemClick
     }
 
     return (

@@ -49,7 +49,7 @@ export default function UploadFilesBtn({ folder }: Props) {
         }
     }
 
-    function onClose() {
+    function handleClose() {
         setFileList([]);
         emitReloadFiles();
     }
@@ -67,7 +67,7 @@ export default function UploadFilesBtn({ folder }: Props) {
         }
     ];
 
-    function onMenuClick({ key }: { key: string }) {
+    function handleMenuClick({ key }: { key: string }) {
         switch (key) {
             case "folder":
                 folderUpload.current?.click()
@@ -88,11 +88,11 @@ export default function UploadFilesBtn({ folder }: Props) {
     }
 
     return <div className="flex">
-        <Dropdown.Button trigger={["click"]} type="primary" menu={{ items, onClick: onMenuClick }} buttonsRender={buttonsRender}></Dropdown.Button>
+        <Dropdown.Button trigger={["click"]} type="primary" menu={{ items, onClick: handleMenuClick }} buttonsRender={buttonsRender}></Dropdown.Button>
         <Upload className="hidden" {...{
             ...props, directory: true, multiple: false
         }}><span ref={folderUpload} /></Upload>
         <Upload className="hidden" {...{ ...props, name: "file", action: combine(prefix, "file", "zip"), accept: ".zip", multiple: false }}><span ref={zipUpload} /></Upload>
-        <UploadingModal files={fileList} onClose={onClose} />
+        <UploadingModal files={fileList} onClose={handleClose} />
     </div>
 }

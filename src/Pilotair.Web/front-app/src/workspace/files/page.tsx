@@ -42,7 +42,7 @@ export default function File() {
         return !!selectedFiles.length && selectedFiles.length !== entries?.length;
     }, [entries, selectedFiles.length])
 
-    const checkAll = useMemo(() => {
+    const handleCheckAll = useMemo(() => {
         return !!selectedFiles.length && selectedFiles.length === entries?.length
     }, [entries, selectedFiles.length])
 
@@ -59,38 +59,38 @@ export default function File() {
             entry={entry}
             onSelected={(value) => setSelectedFiles(value ? [...selectedFiles, entry] : selectedFiles.filter(f => f !== entry))}
             onClick={() => entry.type == "Folder" && setFolder(combine(folder, entry.name))}
-            onDelete={() => onDelete([entry.name])}
+            onDelete={() => handleDelete([entry.name])}
         />)
     }
 
-    function onCheckAllClick() {
-        if (checkAll) {
+    function handleCheckAllClick() {
+        if (handleCheckAll) {
             setSelectedFiles([])
         } else {
             setSelectedFiles(entries ?? [])
         }
     }
 
-    function onNewFolder() {
+    function handleNewFolder() {
         modal.open({
             title: "New folder",
             children: <NewFolderModal folder={folder} />
         })
     }
 
-    async function onDelete(entries?: string[]) {
+    async function handleDelete(entries?: string[]) {
         entries = entries || selectedFiles.map(m => m.name);
         await httpClient.delete("file", { entries, folder });
         load();
     }
 
     const header = <>
-        <Checkbox indeterminate={indeterminate} checked={checkAll} className="flex items-center" onClick={onCheckAllClick} disabled={!entries.length}>Check all</Checkbox>
+        <Checkbox indeterminate={indeterminate} checked={handleCheckAll} className="flex items-center" onClick={handleCheckAllClick} disabled={!entries.length}>Check all</Checkbox>
 
         <div className="flex-1"></div>
         <div className="flex gap-2">
-            {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={() => onDelete()}>Delete</Button>}
-            <Button ghost icon={<FolderAddOutlined />} type="primary" onClick={onNewFolder}>Create Folder</Button>
+            {!!selectedFiles.length && <Button danger type="primary" icon={<DeleteOutlined />} onClick={() => handleDelete()}>Delete</Button>}
+            <Button ghost icon={<FolderAddOutlined />} type="primary" onClick={handleNewFolder}>Create Folder</Button>
             <UploadFilesBtn folder={folder} />
         </div>
     </>

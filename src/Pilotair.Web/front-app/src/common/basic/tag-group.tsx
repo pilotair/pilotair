@@ -22,7 +22,7 @@ interface Props {
 export default function TagGroup({ items, activeName, onTagClose, onTagClick }: Props) {
     const tags: ReactNode[] = [];
 
-    function onClose(name: string, e: React.MouseEvent) {
+    function handleClose(name: string, e: React.MouseEvent) {
         e.preventDefault();
         onTagClose?.(name)
     }
@@ -33,7 +33,7 @@ export default function TagGroup({ items, activeName, onTagClose, onTagClick }: 
         let tag = <Tag
             key={item.name}
             closeIcon={closeIcon}
-            onClose={(e) => onClose(item.name, e)}
+            onClose={(e) => handleClose(item.name, e)}
             bordered={false}
             icon={item.icon}
             className="cursor-pointer inline-flex"

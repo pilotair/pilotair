@@ -20,7 +20,7 @@ export default function EntryItem({ entry, selected, onSelected, onClick, onDele
     const { modal } = useContext(TabContext)
     const [preview, setPreview] = useState(false)
 
-    function rename() {
+    function handleRename() {
         modal.open({
             title: "Rename",
             children: <RenameForm path={entry.relationPath} />
@@ -28,7 +28,7 @@ export default function EntryItem({ entry, selected, onSelected, onClick, onDele
     }
 
     const commonContextMenus = [
-        { key: MenuItemKeys.rename, onClick: rename },
+        { key: MenuItemKeys.rename, onClick: handleRename },
         { key: MenuItemKeys.delete, onClick: onDelete }
     ]
 
@@ -58,7 +58,7 @@ export default function EntryItem({ entry, selected, onSelected, onClick, onDele
         }
     }
 
-    function onCheckboxClick(e: MouseEvent) {
+    function handleCheckboxClick(e: MouseEvent) {
         e.stopPropagation();
         onSelected(!selected)
     }
@@ -70,7 +70,7 @@ export default function EntryItem({ entry, selected, onSelected, onClick, onDele
                     {getPreview()}
                 </div>
                 <Text className="px-1" ellipsis={true}>{entry.name}</Text>
-                <Checkbox checked={selected} className={"absolute top-1 left-1 opacity-0 group-hover:opacity-100" + (selected ? " opacity-100" : "")} onClick={onCheckboxClick} />
+                <Checkbox checked={selected} className={"absolute top-1 left-1 opacity-0 group-hover:opacity-100" + (selected ? " opacity-100" : "")} onClick={handleCheckboxClick} />
             </div>
         </ContextMenu>
     )

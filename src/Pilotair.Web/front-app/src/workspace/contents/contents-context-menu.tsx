@@ -14,7 +14,7 @@ interface Props {
 export default function ContentsContextMenu({ children, path }: Props) {
     const { openTab } = useTab()
 
-    function onNew() {
+    function handleNew() {
         path = combine("new", path)
         openTab({
             name: path,
@@ -25,7 +25,7 @@ export default function ContentsContextMenu({ children, path }: Props) {
     }
 
     const items: MenuItem[] = [
-        { key: MenuItemKeys.new, label: "New Collection", onClick: onNew }
+        { key: MenuItemKeys.new, label: "New Collection", onClick: handleNew }
     ]
 
     return (

@@ -7,9 +7,9 @@ interface Props {
     children: ReactNode
 }
 
-export default function ContainerLayout({ header, children }: Props) {
-    const { Content, Header } = Layout
+const { Content, Header } = Layout
 
+export default function ContainerLayout({ header, children }: Props) {
     return (
         <Layout className="absolute inset-0">
             <Header className="flex items-center space-x-2 shadow-md relative">

@@ -19,13 +19,13 @@ export default function EditCollection({ name }: Props) {
     const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
     const { httpClient } = useHttpClient()
     const emitReloadMenus = useEvent(reloadMenus);
-    useTabSave(onSave)
+    useTabSave(handleSave)
 
     useEffect(() => {
         httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(setCollection)
     }, [httpClient, name])
 
-    async function onSave() {
+    async function handleSave() {
         await form.validateFields();
         const model = form.getFieldsValue();
         await httpClient.put("content-collection", model)
@@ -37,7 +37,7 @@ export default function EditCollection({ name }: Props) {
     const header = <>
         <Button icon={<ReloadOutlined />} onClick={() => form.resetFields()}>Reset</Button>
         <div className="flex-1"></div>
-        <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+        <Button icon={<SaveOutlined />} type="primary" onClick={handleSave}>Save</Button>
     </>
 
     return (

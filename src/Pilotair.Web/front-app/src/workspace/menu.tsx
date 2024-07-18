@@ -27,7 +27,7 @@ export default function Menu() {
         return result;
     }, [menus])
 
-    function onMenuItemClick(key: string) {
+    function handleMenuItemClick(key: string) {
         const menu = expandMenus.find(f => f.key == key);
         if (!menu || !menu.tab) return;
         openTab({
@@ -50,7 +50,7 @@ export default function Menu() {
     return <AntdMenu
         mode="inline"
         items={getItems(menus)}
-        onClick={({ key }) => onMenuItemClick(key)}
+        onClick={({ key }) => handleMenuItemClick(key)}
         selectedKeys={[activeName]}
         theme="dark"
         inlineIndent={12}

@@ -22,7 +22,7 @@ export default function Code({ name, folder }: Props) {
         })
     }, [])
 
-    async function onSave() {
+    async function handleSave() {
         await httpClient.put("code", {
             content: newContent.current
         }, {
@@ -33,7 +33,7 @@ export default function Code({ name, folder }: Props) {
         })
     }
 
-    const onChange = useCallback((value: string) => {
+    const handleChange = useCallback((value: string) => {
         newContent.current = value;
         setIsChange(content != newContent.current)
     }, [content])
@@ -43,12 +43,12 @@ export default function Code({ name, folder }: Props) {
             <Breadcrumb className="flex-1" separator={<RightOutlined className="transform scale-75" />} items={[...folder?.split("/") ?? [], name].map(m => ({ title: m, key: m, className: "text-slate-500" }))} />
             <div className="flex-shrink-0 flex gap-2 text-slate-500">
                 {isChange && <>
-                    <SaveOutlined onClick={onSave} />  <ReloadOutlined />
+                    <SaveOutlined onClick={handleSave} />  <ReloadOutlined />
                 </>}
 
             </div>
         </div>
 
-        <CodeEditor value={content} onChange={onChange} />
+        <CodeEditor value={content} onChange={handleChange} />
     </div>
 }

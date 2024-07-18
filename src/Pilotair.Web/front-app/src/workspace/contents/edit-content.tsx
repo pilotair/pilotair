@@ -24,7 +24,7 @@ export default function EditContent({ collection, id }: Props) {
 
     if (!contentCollection || !content) return
 
-    async function onSave() {
+    async function handleSave() {
         const value = await dataForm.current?.getValue();
         await httpClient.put(`/content/${collection}/${id}`, value)
     }
@@ -34,7 +34,7 @@ export default function EditContent({ collection, id }: Props) {
             <div className="flex items-center gap-2 flex-shrink-0">
                 <Button icon={<ReloadOutlined />}>Reset</Button>
                 <div className="flex-1"></div>
-                <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+                <Button icon={<SaveOutlined />} type="primary" onClick={handleSave}>Save</Button>
             </div>
             <Divider className="flex-shrink-0" />
             <DataForm initValues={content.data} fields={contentCollection.fields} ref={dataForm} />

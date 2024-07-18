@@ -19,17 +19,17 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
     const [siderWidth, setSiderWidth] = useState(200)
     const [resizableWidth, setResizableWidth] = useState(siderWidth)
 
-    function onResize(_e: unknown, { size }: { size: { width: number } }) {
+    function handleResize(_e: unknown, { size }: { size: { width: number } }) {
         setResizableWidth(size.width);
         setSiderWidth(size.width < 200 ? 200 : size.width > 480 ? 480 : size.width)
     }
 
-    function onResizeStart() {
+    function handleResizeStart() {
         setResizing(true);
         setResizableWidth(siderWidth)
     }
 
-    function onResizeStop() {
+    function handleResizeStop() {
         setResizing(false);
         setResizableWidth(siderWidth)
     }
@@ -37,7 +37,7 @@ export default function LeftMenuLayout({ sider, content, header }: Props) {
     return (
         <SiderLayoutContext.Provider value={{ collapsed: collapsed }}>
             <Layout className="absolute inset-0 min-h-[500px] min-w-[1280px]">
-                <Resizable className={resizing ? "!transition-none" : ""} width={resizableWidth} onResize={onResize} axis="x" handle={<div className="absolute w-1 top-0 bottom-0 right-[-2px] cursor-ew-resize hover:bg-sky-500 z-50" />} onResizeStart={onResizeStart} onResizeStop={onResizeStop}>
+                <Resizable className={resizing ? "!transition-none" : ""} width={resizableWidth} onResize={handleResize} axis="x" handle={<div className="absolute w-1 top-0 bottom-0 right-[-2px] cursor-ew-resize hover:bg-sky-500 z-50" />} onResizeStart={handleResizeStart} onResizeStop={handleResizeStop}>
                     <Sider
                         collapsible
                         theme="dark"

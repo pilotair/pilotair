@@ -20,9 +20,9 @@ export default function NewCollection({ path }: Props) {
     const { replaceTab } = useTab();
     const { httpClient } = useHttpClient()
     const emitReloadMenus = useEvent(reloadMenus)
-    useTabSave(onSave)
+    useTabSave(handleSave)
 
-    async function onSave() {
+    async function handleSave() {
         await form.validateFields();
         const model = form.getFieldsValue();
         await httpClient.post("content-collection", model)
@@ -36,14 +36,14 @@ export default function NewCollection({ path }: Props) {
         });
     }
 
-    function onReset() {
+    function handleReset() {
         form.resetFields();
     }
 
     const header = <>
-        <Button icon={<ReloadOutlined />} onClick={onReset}>Reset</Button>
+        <Button icon={<ReloadOutlined />} onClick={handleReset}>Reset</Button>
         <div className="flex-1"></div>
-        <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+        <Button icon={<SaveOutlined />} type="primary" onClick={handleSave}>Save</Button>
     </>
 
     return (

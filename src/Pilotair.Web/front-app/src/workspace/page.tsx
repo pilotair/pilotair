@@ -27,7 +27,7 @@ function Sider() {
         loadMenus();
     }, [])
 
-    function onMoreClick() {
+    function handleMoreClick() {
         openTab({
             name: "features",
             label: "Features",
@@ -53,7 +53,7 @@ function Sider() {
                     <SettingOutlined className="text-xl" />
                     <span className="text-xs transform scale-75">Settings</span>
                 </div>
-                <div className="flex flex-1 flex-col items-center cursor-pointer hover:bg-slate-50/10 p-2" onClick={onMoreClick}>
+                <div className="flex flex-1 flex-col items-center cursor-pointer hover:bg-slate-50/10 p-2" onClick={handleMoreClick}>
                     <AppstoreOutlined className="text-xl" />
                     <span className="text-xs transform scale-75">More</span>
                 </div>

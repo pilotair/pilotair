@@ -9,17 +9,17 @@ import ValidationTab from "./validation-tab";
 type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>
 
 interface Props {
-    addField(field: Pilotair.Web.DataModels.Field): void;
+    onAddField(field: Pilotair.Web.DataModels.Field): void;
 }
 
-export default function NewFieldForm({ addField }: Props) {
+export default function NewFieldForm({ onAddField }: Props) {
     const { setOk } = useContext(ModalContext);
     const [form] = Form.useForm<Pilotair.Web.DataModels.Field>();
 
     setOk(async () => {
         await form.validateFields();
         const value = form.getFieldsValue();
-        addField(value);
+        onAddField(value);
     })
 
     const items: TabItems = [{

@@ -11,7 +11,7 @@ export function useNewFolderModal() {
     let closeModal: () => void
     const { httpClient } = useHttpClient()
 
-    async function onFinish(value: { name: string }) {
+    async function handleFinish(value: { name: string }) {
 
         await httpClient.post("code/folder", undefined, {
             searchParams: { path: value.name }
@@ -25,7 +25,7 @@ export function useNewFolderModal() {
         closeModal = modal.open({
             title: "New code folder",
             children: <>
-                <Form form={form} onFinish={onFinish} preserve={false}>
+                <Form form={form} onFinish={handleFinish} preserve={false}>
                     <Form.Item
                         name="name"
                         rules={[{ required: true, message: 'Please input folder name!' }]}>

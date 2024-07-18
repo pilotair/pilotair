@@ -20,7 +20,7 @@ export default function CollectionContextMenu({ children, path, name }: Props) {
     const { httpClient } = useHttpClient()
     const emitReloadMenus = useEvent(reloadMenus)
 
-    function onEdit() {
+    function handleEdit() {
         const editPath = combine('edit', path);
         openTab({
             name: editPath,
@@ -30,14 +30,14 @@ export default function CollectionContextMenu({ children, path, name }: Props) {
         })
     }
 
-    async function onDelete() {
+    async function handleDelete() {
         await httpClient.delete(`content-collection?name=${name}`);
         emitReloadMenus()
     }
 
     const items: MenuItem[] = [
-        { key: MenuItemKeys.edit, label: "Edit Collection", onClick: onEdit },
-        { key: MenuItemKeys.delete, onClick: onDelete },
+        { key: MenuItemKeys.edit, label: "Edit Collection", onClick: handleEdit },
+        { key: MenuItemKeys.delete, onClick: handleDelete },
     ]
 
 

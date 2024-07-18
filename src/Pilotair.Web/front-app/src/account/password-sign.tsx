@@ -8,11 +8,11 @@ export default function Login() {
     const navigate = useNavigate()
     const { httpClient } = useHttpClient();
 
-    async function sign() {
+    async function handleSignIn() {
         await form.validateFields();
         const model = form.getFieldsValue();
         await httpClient.post<string>("account/password-sign", model, {
-            postSuccessMessage: "Sign success"
+            postSuccessMessage: false
         });
         navigate("@/")
     }
@@ -47,8 +47,8 @@ export default function Login() {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button className="w-full" size="large" type="primary" onClick={sign}>
-                            Sign
+                        <Button className="w-full" size="large" type="primary" onClick={handleSignIn}>
+                            Sign in
                         </Button>
                     </Form.Item>
                 </Form>

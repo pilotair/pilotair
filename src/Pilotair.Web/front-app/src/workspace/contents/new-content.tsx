@@ -26,23 +26,23 @@ export default function NewContent({ collection, path }: Props) {
 
     if (!contentCollection) return
 
-    async function onSave() {
+    async function handleSave() {
         const value = await dataForm.current?.getValue();
         await httpClient.post(`/content/${collection}`, value);
         closeTab(path)
         emitReloadContents(collection)
     }
 
-    function onReset() {
+    function handleReset() {
         dataForm.current?.reset()
     }
 
     return (
         <div className="p-4 h-full flex flex-col space-y-4">
             <div className="flex items-center gap-2 flex-shrink-0">
-                <Button icon={<ReloadOutlined />} onClick={onReset}>Reset</Button>
+                <Button icon={<ReloadOutlined />} onClick={handleReset}>Reset</Button>
                 <div className="flex-1"></div>
-                <Button icon={<SaveOutlined />} type="primary" onClick={onSave}>Save</Button>
+                <Button icon={<SaveOutlined />} type="primary" onClick={handleSave}>Save</Button>
             </div>
             <Divider className="flex-shrink-0" />
             <DataForm fields={contentCollection.fields} ref={dataForm} />

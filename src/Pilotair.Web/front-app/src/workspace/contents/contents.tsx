@@ -42,7 +42,7 @@ export default function Contents({ name, display, path }: Props) {
         loadContents();
     })
 
-    function onAdd() {
+    function handleNew() {
         const addPath = combine('new', path)
         openTab({
             name: addPath,
@@ -55,7 +55,7 @@ export default function Contents({ name, display, path }: Props) {
         })
     }
 
-    function onEdit(id: string) {
+    function handleEdit(id: string) {
         const editPath = combine('edit', path)
         openTab({
             name: editPath,
@@ -73,7 +73,7 @@ export default function Contents({ name, display, path }: Props) {
     if (!collection) return 
     if (!data) return 
 
-    async function deleteContents() {
+    async function handleDelete() {
         await httpClient.delete("/content", {
             collection: name,
             ids: selectedRowKeys as string[]
@@ -88,10 +88,10 @@ export default function Contents({ name, display, path }: Props) {
             dataIndex: ["data", m.name]
         })),
         {
-            title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={onAdd} />,
+            title: <Button type="text" shape="circle" icon={<PlusOutlined />} onClick={handleNew} />,
             render(value) {
                 return <div>
-                    <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => onEdit(value.id)} />
+                    <Button type="text" shape="circle" icon={<EditOutlined />} onClick={() => handleEdit(value.id)} />
                 </div>
             },
             fixed: "right",
@@ -101,7 +101,7 @@ export default function Contents({ name, display, path }: Props) {
     ]
 
     const barRight = <>
-        {!!selectedRowKeys.length && <Button danger onClick={deleteContents}>Delete</Button>}
+        {!!selectedRowKeys.length && <Button danger onClick={handleDelete}>Delete</Button>}
         <div className="flex-1"></div>
         <Search className="w-64" placeholder="input search text" />
     </>
