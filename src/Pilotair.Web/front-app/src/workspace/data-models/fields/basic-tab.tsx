@@ -44,12 +44,17 @@ export default function BasicTab() {
                 label="Options"
                 name="options"
                 rules={[
-                    { required: true, type: "array", message: 'options can not be empty' },
+                    { required: true, type: "array", message: 'Options can not be empty' },
                     {
                         async validator(_rule, value: KeyValue[]) {
                             const keys = value.map(m => m.key?.toLowerCase());
                             if (keys.length != new Set(keys).size) throw new Error()
                         }, message: "Key must be unique"
+                    },
+                    {
+                        async validator(_rule, value: KeyValue[]) {
+                            if (value.some(s => !s.key)) throw new Error()
+                        }, message: "Key can not be empty"
                     }
                 ]}
             >
