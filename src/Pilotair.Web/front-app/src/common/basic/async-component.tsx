@@ -1,26 +1,21 @@
-import { ComponentType, lazy, LazyExoticComponent, Suspense, useState } from "react"
+import { lazy, Suspense, useState } from "react"
 import Loading from "@/common/basic/loading"
 import { Button, Result } from "antd";
 import { ReloadOutlined } from "@ant-design/icons"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Module = { default: ComponentType<any> };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type LazyComponent = LazyExoticComponent<ComponentType<any>>
-
 interface Props {
-    component: () => Promise<Module>,
+    component: Parameters<typeof lazy>[0],
     props?: Record<string, unknown>
 }
 
 export default function AsyncComponent({ component, props }: Props) {
-    const [Component, setComponent] = useState<LazyComponent>(lazy(withErrorBoundary))
+    const [Component, setComponent] = useState<ReturnType<typeof lazy>>(lazy(withErrorBoundary));
 
-    const ErrorFallback = () => (
+    const errorFallback = (
         <div className="h-full flex items-center justify-center">
             <Result
                 status="500"
-                title="Sorry, something went wrong."
+                title="Loading error, please try again."
                 extra={
                     <Button
                         icon={<ReloadOutlined />}
@@ -39,10 +34,14 @@ export default function AsyncComponent({ component, props }: Props) {
             return await component();
         } catch (error) {
             return {
-                default: ErrorFallback
+                default: () => errorFallback
             }
         }
     }
 
-    return <Suspense fallback={<Loading className="bg-transparent" show={true} />} children={<Component {...props} />} />
+    return (
+        <Suspense fallback={<Loading className="bg-transparent" show={true} />} >
+            <Component {...props} />
+        </Suspense>
+    )
 }
