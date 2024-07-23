@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { GlobalContext } from "@/common/global-context";
+import { ModalContext } from "@/common/modal-context";
 import { Form, Input } from "antd";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
 
 export function useNewFolderModal() {
-    const { modal } = useContext(GlobalContext)
+    const { open } = useContext(ModalContext)
     const { loadMenus } = useMenu()
     const [form] = Form.useForm();
     let closeModal: () => void
@@ -22,7 +22,7 @@ export function useNewFolderModal() {
     }
 
     return function () {
-        closeModal = modal.open({
+        closeModal = open({
             title: "New code folder",
             children: <>
                 <Form form={form} onFinish={handleFinish} preserve={false}>

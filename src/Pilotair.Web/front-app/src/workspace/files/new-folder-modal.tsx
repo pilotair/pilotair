@@ -1,6 +1,6 @@
 import { useEvent } from "@/common/events/event";
 import { reloadFiles } from "@/common/events/sources";
-import { ModalContext } from "@/common/modal-context";
+import { UseModalContext } from "@/common/use-modal";
 import { useHttpClient } from "@/utils/http/use-client";
 import { combine } from "@/utils/path";
 import { Form, Input } from "antd";
@@ -12,7 +12,7 @@ interface Props {
 
 export default function NewFolderModal({ folder }: Props) {
     const [form] = Form.useForm();
-    const { setOk } = useContext(ModalContext)
+    const { setOk } = useContext(UseModalContext)
     const { httpClient } = useHttpClient();
     const emitReloadFiles = useEvent(reloadFiles)
 

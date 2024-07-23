@@ -1,8 +1,8 @@
 import { Form, Input } from "antd"
 import { useHttpClient } from "@/utils/http/use-client";
 import { useContext } from "react";
-import { ModalContext } from "@/common/modal-context";
 import { useMenu } from "@/workspace/use-menu";
+import { UseModalContext } from "@/common/use-modal";
 
 interface Props {
     path: string
@@ -10,7 +10,7 @@ interface Props {
 
 export default function CreateFileForm({ path }: Props) {
     const [form] = Form.useForm<{ name: string }>();
-    const { setOk } = useContext(ModalContext)
+    const { setOk } = useContext(UseModalContext)
     const { loadMenus } = useMenu()
     const { httpClient } = useHttpClient()
 

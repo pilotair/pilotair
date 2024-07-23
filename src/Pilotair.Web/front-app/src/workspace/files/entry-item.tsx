@@ -3,9 +3,9 @@ import { MouseEvent, useContext, useState } from "react";
 import { Pilotair } from "@/schema";
 import { MenuItemKeys } from "@/common/menus/constants";
 import RenameForm from "./rename-form";
-import { TabContext } from "@/common/tab/context";
 import ContextMenu from "@/common/menus/context-menu";
 import { FileOutlined, FolderTwoTone } from "@ant-design/icons";
+import { ModalContext } from "@/common/modal-context";
 
 interface Props {
     entry: Pilotair.Core.Stores.Files.Entry,
@@ -17,7 +17,7 @@ interface Props {
 
 export default function EntryItem({ entry, selected, onSelected, onClick, onDelete }: Props) {
     const { Text } = Typography;
-    const { modal } = useContext(TabContext)
+    const modal = useContext(ModalContext)
     const [preview, setPreview] = useState(false)
 
     function handleRename() {

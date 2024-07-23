@@ -8,7 +8,7 @@ import { shortcuts, useShortcut } from './utils/shortcuts.ts'
 import { useEvent } from './common/events/event.tsx'
 import { save } from './common/events/sources.tsx'
 import { LoadingProvider } from './common/loading-context.tsx'
-import GlobalModal from './common/global-context.tsx'
+import { ModalProvider } from './common/modal-context.tsx'
 
 export default function App() {
     const { challenge } = useChallenge();
@@ -19,7 +19,7 @@ export default function App() {
 
     return (
         <ConfigProvider theme={{ cssVar: true }}>
-            <GlobalModal>
+            <ModalProvider>
                 <LoadingProvider>
                     <Router base={base}>
                         <Switch>
@@ -29,7 +29,7 @@ export default function App() {
                         </Switch>
                     </Router>
                 </LoadingProvider>
-            </GlobalModal>
+            </ModalProvider>
         </ConfigProvider>
     )
 }

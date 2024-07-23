@@ -2,20 +2,20 @@ import { useContext, useMemo } from "react";
 import { createClient, SendParams } from "./client";
 import { message } from "antd";
 import { LoadingContext } from "@/common/loading-context";
-import { GlobalContext } from "@/common/global-context";
+import { ModalContext } from "@/common/modal-context";
 
 export const prefix = "/__api__/";
 export const tokenName = "access_token";
 
 export function useHttpClient() {
     const { onLoading } = useContext(LoadingContext);
-    const { modal } = useContext(GlobalContext);
+    const { confirm } = useContext(ModalContext);
 
     const httpClient = useMemo(() => createClient({
         prefix,
         async onRequest(request: Request) {
             if (request.method == "DELETE") {
-                const ok = await modal.confirm({
+                const ok = await confirm({
                     title: "Are you sure delete?",
                 })
                 if (!ok) throw new Error("Cancel delete")
@@ -48,7 +48,7 @@ export function useHttpClient() {
         onSend(action) {
             return onLoading(action) as typeof action
         }
-    }), [onLoading]);
+    }), [onLoading, confirm]);
 
     return { httpClient }
 }

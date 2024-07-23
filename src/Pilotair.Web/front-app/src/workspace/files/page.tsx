@@ -11,15 +11,15 @@ import ToolbarLayout from "@/common/layout/toolbar-layout"
 import { combine } from "@/utils/path"
 import { useEvent } from "@/common/events/event"
 import { reloadFiles } from "@/common/events/sources"
-import { TabContext } from "@/common/tab/context"
 import NewFolderModal from "./new-folder-modal"
+import { ModalContext } from "@/common/modal-context"
 
 export default function File() {
     const [folder, setFolder] = useState('');
     const [entries, setEntries] = useState<Pilotair.Core.Stores.Files.Entry[]>();
     const { httpClient } = useHttpClient()
     const [selectedFiles, setSelectedFiles] = useState<Pilotair.Core.Stores.Files.Entry[]>([])
-    const { modal } = useContext(TabContext)
+    const modal = useContext(ModalContext)
 
     const load = useCallback(async () => {
         const response = await httpClient.get<Pilotair.Core.Stores.Files.Entry[]>("file", {

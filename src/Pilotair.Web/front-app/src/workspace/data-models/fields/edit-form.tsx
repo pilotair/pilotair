@@ -1,10 +1,10 @@
 import { Form, GetProps, Tabs } from "antd";
 import { useContext } from "react";
-import { ModalContext } from "@/common/modal-context";
 import { Pilotair } from "@/schema";
 import BasicTab from "./basic-tab";
 import AdvancedTab from "./advanced-tab";
 import ValidationTab from "./validation-tab";
+import { UseModalContext } from "@/common/use-modal";
 
 type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function EditFieldForm({ field, updateField }: Props) {
-    const { setOk } = useContext(ModalContext);
+    const { setOk } = useContext(UseModalContext);
     const [form] = Form.useForm<Pilotair.Web.DataModels.Field>();
 
     setOk(async () => {

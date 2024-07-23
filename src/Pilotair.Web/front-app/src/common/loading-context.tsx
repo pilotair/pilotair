@@ -2,12 +2,10 @@ import { createContext, useCallback, useRef, useState } from "react";
 import { ChildrenProps } from "./types";
 import Loading from "./basic/loading";
 
-interface Props {
+export const LoadingContext = createContext({} as {
     setLoading: (loading: boolean) => void;
     onLoading: (action: Promise<unknown>) => Promise<unknown>;
-}
-
-export const LoadingContext = createContext<Props>({} as Props);
+});
 
 export function LoadingProvider({ children }: ChildrenProps) {
     const [loading, setLoading] = useState(false);

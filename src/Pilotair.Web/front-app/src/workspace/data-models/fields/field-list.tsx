@@ -2,9 +2,9 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Pilotair } from "@/schema";
 import { Button, Form, Table } from "antd";
 import { useContext, useState } from "react";
-import { TabContext } from "@/common/tab/context";
 import NewForm from "./new-form";
 import EditForm from "./edit-form";
+import { ModalContext } from "@/common/modal-context";
 
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function FieldList({ value, onChange }: Props) {
-    const { modal } = useContext(TabContext)
+    const modal = useContext(ModalContext)
     const [list, setList] = useState(value || [])
     const { status } = Form.Item.useStatus();
 
