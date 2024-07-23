@@ -1,6 +1,6 @@
 import { useEvent } from "@/common/events/event";
 import { reloadFiles } from "@/common/events/sources";
-import { UseModalContext } from "@/common/use-modal";
+import { UseModalContext } from "@/common/modals/use-modal";
 import { useHttpClient } from "@/utils/http/use-client";
 import { combine } from "@/utils/path";
 import { Form, Input } from "antd";

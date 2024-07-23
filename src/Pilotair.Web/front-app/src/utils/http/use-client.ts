@@ -2,7 +2,7 @@ import { useContext, useMemo } from "react";
 import { createClient, SendParams } from "./client";
 import { message } from "antd";
 import { LoadingContext } from "@/common/loading-context";
-import { ModalContext } from "@/common/modal-context";
+import { ModalContext } from "@/common/modals/context";
 
 export const prefix = "/__api__/";
 export const tokenName = "access_token";

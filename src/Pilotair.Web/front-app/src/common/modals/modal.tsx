@@ -1,6 +1,6 @@
 import { Modal as AntdModal, ModalProps } from "antd";
 import { useContext } from "react";
-import { ModalContext } from "../modal-context";
+import { ModalContext } from "@/common/modals/context";
 
 export default function Modal(props: ModalProps) {
     const { container } = useContext(ModalContext)

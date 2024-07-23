@@ -1,12 +1,11 @@
 import { Modal, ModalFuncProps } from "antd";
 import { createContext, useMemo, useState } from "react";
-import { ChildrenProps } from "./types";
+import { ChildrenProps } from "@/common/types";
 import { useModal } from "./use-modal";
 
 type ModalFunc = ReturnType<typeof Modal.useModal>[0];
 
 export const ModalContext = createContext({} as ModalFunc & {
-    // setOk: (e: () => (Promise<void> | void)) => void;
     open: ReturnType<typeof useModal>["openModal"],
     container: HTMLDivElement | null
 })

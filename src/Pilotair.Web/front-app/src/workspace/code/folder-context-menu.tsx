@@ -1,7 +1,7 @@
 import { DeleteOutlined, FileAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 import { Dropdown, MenuProps } from "antd";
 import { ReactNode, useContext } from "react";
-import { ModalContext } from "@/common/modal-context";
+import { ModalContext } from "@/common/modals/context";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
 import { useHttpClient } from "@/utils/http/use-client";

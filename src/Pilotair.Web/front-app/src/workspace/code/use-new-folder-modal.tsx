@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ModalContext } from "@/common/modal-context";
+import { ModalContext } from "@/common/modals/context";
 import { Form, Input } from "antd";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";

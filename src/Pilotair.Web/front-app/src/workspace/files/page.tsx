@@ -12,7 +12,7 @@ import { combine } from "@/utils/path"
 import { useEvent } from "@/common/events/event"
 import { reloadFiles } from "@/common/events/sources"
 import NewFolderModal from "./new-folder-modal"
-import { ModalContext } from "@/common/modal-context"
+import { ModalContext } from "@/common/modals/context"
 
 export default function File() {
     const [folder, setFolder] = useState('');

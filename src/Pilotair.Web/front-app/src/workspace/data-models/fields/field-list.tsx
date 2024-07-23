@@ -4,7 +4,7 @@ import { Button, Form, Table } from "antd";
 import { useContext, useState } from "react";
 import NewForm from "./new-form";
 import EditForm from "./edit-form";
-import { ModalContext } from "@/common/modal-context";
+import { ModalContext } from "@/common/modals/context";
 
 
 interface Props {

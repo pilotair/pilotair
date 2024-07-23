@@ -7,7 +7,7 @@ import {
 import { Button, Progress, Segmented, SegmentedProps, UploadFile, GetProp, Alert } from "antd";
 import { useMemo, useState } from "react";
 import { maxUploadFile } from "./upload-files-btn";
-import Modal from "@/common/basic/modal";
+import Modal from "@/common/modals/modal";
 
 interface Props {
     files: UploadFile[],

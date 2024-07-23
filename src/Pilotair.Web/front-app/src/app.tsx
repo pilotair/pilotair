@@ -1,14 +1,14 @@
 import { ConfigProvider } from 'antd'
 import { Redirect, Route, Router, Switch } from "wouter"
-import Account from './account/page.tsx'
-import Workspace from "./workspace/page.tsx"
-import { base } from "@/common/router.tsx"
-import { useChallenge } from '@/account/use-challenge.ts'
-import { shortcuts, useShortcut } from './utils/shortcuts.ts'
-import { useEvent } from './common/events/event.tsx'
-import { save } from './common/events/sources.tsx'
-import { LoadingProvider } from './common/loading-context.tsx'
-import { ModalProvider } from './common/modal-context.tsx'
+import Account from './account/page'
+import Workspace from "./workspace/page"
+import { base } from "@/common/router"
+import { useChallenge } from '@/account/use-challenge'
+import { shortcuts, useShortcut } from './utils/shortcuts'
+import { useEvent } from './common/events/event'
+import { save } from './common/events/sources'
+import { LoadingProvider } from './common/loading-context'
+import { ModalProvider } from "@/common/modals/context";
 
 export default function App() {
     const { challenge } = useChallenge();

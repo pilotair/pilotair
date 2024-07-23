@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { combine, splitFolderEntry } from "@/utils/path";
 import { useEvent } from "@/common/events/event";
 import { reloadFiles } from "@/common/events/sources";
-import { UseModalContext } from "@/common/use-modal";
+import { UseModalContext } from "@/common/modals/use-modal";
 
 interface Props {
     path: string

@@ -5,7 +5,7 @@ import { MenuItemKeys } from "@/common/menus/constants";
 import RenameForm from "./rename-form";
 import ContextMenu from "@/common/menus/context-menu";
 import { FileOutlined, FolderTwoTone } from "@ant-design/icons";
-import { ModalContext } from "@/common/modal-context";
+import { ModalContext } from "@/common/modals/context";
 
 interface Props {
     entry: Pilotair.Core.Stores.Files.Entry,

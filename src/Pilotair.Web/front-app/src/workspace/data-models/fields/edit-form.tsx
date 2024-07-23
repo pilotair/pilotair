@@ -4,7 +4,7 @@ import { Pilotair } from "@/schema";
 import BasicTab from "./basic-tab";
 import AdvancedTab from "./advanced-tab";
 import ValidationTab from "./validation-tab";
-import { UseModalContext } from "@/common/use-modal";
+import { UseModalContext } from "@/common/modals/use-modal";
 
 type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>
 

@@ -1,5 +1,5 @@
 import { createContext, ReactNode } from "react";
-import { ModalProvider } from "../modal-context";
+import { ModalProvider } from "@/common/modals/context";
 
 interface Tab {
     name: string
