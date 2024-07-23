@@ -1,10 +1,11 @@
-import { Modal, ModalProps } from "antd";
+import { Modal as AntdModal, ModalProps } from "antd";
 import { useContext } from "react";
-import { TabContext } from "./context";
+import { TabContext } from "@/common/tab/context";
 
-export default function TabModal(props: ModalProps) {
+export default function Modal(props: ModalProps) {
     const { modalContainer } = useContext(TabContext)
-    return <Modal
+    
+    return <AntdModal
         wrapClassName="!absolute"
         styles={{
             mask: { position: "absolute" }

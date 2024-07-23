@@ -1,5 +1,4 @@
 import Empty from "@/common/basic/empty";
-import TabModal from "@/common/tab/modal";
 import {
     CheckCircleOutlined,
     ClockCircleOutlined,
@@ -8,6 +7,7 @@ import {
 import { Button, Progress, Segmented, SegmentedProps, UploadFile, GetProp, Alert } from "antd";
 import { useMemo, useState } from "react";
 import { maxUploadFile } from "./upload-files-btn";
+import Modal from "@/common/basic/modal";
 
 interface Props {
     files: UploadFile[],
@@ -78,8 +78,8 @@ export function UploadingModal({ files, onClose }: Props) {
     }
 
     return (
-        <TabModal closable={false} open={!!files.length} footer={footer} title={title}>
+        <Modal closable={false} open={!!files.length} footer={footer} title={title}>
             {content}
-        </TabModal>
+        </Modal>
     )
 }
