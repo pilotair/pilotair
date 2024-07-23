@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { TabContextProvider } from "./context";
+import { LoadingProvider } from "../loading-context";
 
 interface TabPanelProps {
     children: ReactNode,
@@ -15,9 +16,11 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
             style={{ display: isActive ? 'block' : 'none' }}
         >
             <TabContextProvider name={name}>
-                <div className="h-full overflow-auto">
-                    {children}
-                </div>
+                <LoadingProvider>
+                    <div className="h-full overflow-auto">
+                        {children}
+                    </div>
+                </LoadingProvider>
             </TabContextProvider>
         </div>
 

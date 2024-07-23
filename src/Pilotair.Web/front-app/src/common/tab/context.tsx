@@ -1,14 +1,10 @@
 import { Modal, ModalFuncProps, ModalProps } from "antd";
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { useModal } from "../use-modal";
-import { useLoading } from "../use-loading";
-import Loading from "@/common/basic/loading";
 
 interface Tab {
     modalContainer: HTMLDivElement | null
     modal: TabModal,
-    loading: (action: Promise<unknown>) => Promise<unknown>;
-    showLoading: (show: boolean) => void;
     name: string
 }
 
@@ -36,8 +32,6 @@ export function TabContextProvider({ children, name }: Props) {
 
     const [modal, ModalContextHolder] = Modal.useModal();
 
-    const { isLoading, loading, showLoading } = useLoading();
-
     const tabModal = useMemo(() => {
         const result = {
             open: openModal
@@ -60,8 +54,6 @@ export function TabContextProvider({ children, name }: Props) {
     return <TabContext.Provider value={{
         modalContainer: modalContainer,
         modal: tabModal,
-        loading,
-        showLoading,
         name
     }}>
         <div className="relative h-full">
@@ -70,7 +62,6 @@ export function TabContextProvider({ children, name }: Props) {
                 {modals}
                 {ModalContextHolder}
             </div>
-            <Loading show={isLoading} className="absolute inset-0" />
         </div>
     </TabContext.Provider>
 }
