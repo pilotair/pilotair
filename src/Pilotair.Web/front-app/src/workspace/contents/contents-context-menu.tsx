@@ -7,32 +7,30 @@ import { MenuItemKeys } from "@/common/menus/constants";
 import { combine } from "@/utils/path";
 
 interface Props {
-    children: ReactNode,
-    path: string
+  children: ReactNode;
+  path: string;
 }
 
 export default function ContentsContextMenu({ children, path }: Props) {
-    const { openTab } = useTab()
+  const { openTab } = useTab();
 
-    function handleNew() {
-        path = combine("new", path)
-        openTab({
-            name: path,
-            label: "New collection",
-            panel: <AsyncComponent component={() => import("./new-collection")} />,
-            icon: <FormOutlined />
-        })
-    }
+  function handleNew() {
+    path = combine("new", path);
+    openTab({
+      name: path,
+      label: "New collection",
+      panel: <AsyncComponent component={() => import("./new-collection")} />,
+      icon: <FormOutlined />,
+    });
+  }
 
-    const items: MenuItem[] = [
-        { key: MenuItemKeys.new, label: "New Collection", onClick: handleNew }
-    ]
+  const items: MenuItem[] = [
+    { key: MenuItemKeys.new, label: "New Collection", onClick: handleNew },
+  ];
 
-    return (
-        <ContextMenu items={items}>
-            <div>
-                {children}
-            </div>
-        </ContextMenu>
-    )
+  return (
+    <ContextMenu items={items}>
+      <div>{children}</div>
+    </ContextMenu>
+  );
 }

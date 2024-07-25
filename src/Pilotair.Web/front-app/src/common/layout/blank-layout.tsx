@@ -1,18 +1,18 @@
-import { Layout } from "antd"
-import { ReactNode } from "react"
+import { Layout } from "antd";
+import { ReactNode } from "react";
 
-const { Content } = Layout
+const { Content } = Layout;
 
 interface Props {
-    children: ReactNode
+  children: ReactNode;
 }
 
 export default function BlankLayout({ children }: Props) {
-    return (
-        <Layout className="absolute inset-0">
-            <Content className="flex flex-col justify-center items-center">
-                {children}
-            </Content>
-        </Layout>
-    )
+  return (
+    <Layout className="absolute inset-0">
+      <Content className="flex flex-col justify-center items-center">
+        {children}
+      </Content>
+    </Layout>
+  );
 }

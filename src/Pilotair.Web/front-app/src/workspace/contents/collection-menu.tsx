@@ -6,25 +6,38 @@ import CollectionContextMenu from "./collection-context-menu";
 import AsyncComponent from "@/common/basic/async-component";
 
 export function getCollectionsMenu(menu: Pilotair.Web.MenuItem): MenuItem {
-    return {
-        icon: <span><ContentsContextMenu path={menu.path}><FormOutlined /></ContentsContextMenu></span>,
-        label: <ContentsContextMenu path={menu.path}>Contents</ContentsContextMenu>,
-        key: menu.type,
-    }
+  return {
+    icon: (
+      <span>
+        <ContentsContextMenu path={menu.path}>
+          <FormOutlined />
+        </ContentsContextMenu>
+      </span>
+    ),
+    label: <ContentsContextMenu path={menu.path}>Contents</ContentsContextMenu>,
+    key: menu.type,
+  };
 }
 
 export function getCollectionMenu(menu: Pilotair.Web.MenuItem): MenuItem {
-    return {
-        label: <CollectionContextMenu path={menu.path} name={menu.name}>
-            {menu.display || menu.name}
-        </CollectionContextMenu>,
-        key: menu.path,
-        tab: <AsyncComponent component={() => import("./contents")} props={{
-            name: menu.name,
-            display: menu.display,
-            path: menu.path
-        }} />,
-        tabIcon: <FormOutlined />,
-        tabLabel: menu.display || menu.name
-    }
+  return {
+    label: (
+      <CollectionContextMenu path={menu.path} name={menu.name}>
+        {menu.display || menu.name}
+      </CollectionContextMenu>
+    ),
+    key: menu.path,
+    tab: (
+      <AsyncComponent
+        component={() => import("./contents")}
+        props={{
+          name: menu.name,
+          display: menu.display,
+          path: menu.path,
+        }}
+      />
+    ),
+    tabIcon: <FormOutlined />,
+    tabLabel: menu.display || menu.name,
+  };
 }

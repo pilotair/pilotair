@@ -6,41 +6,49 @@ import AdvancedTab from "./advanced-tab";
 import ValidationTab from "./validation-tab";
 import { UseModalContext } from "@/common/modals/use-modal";
 
-type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>
+type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>;
 
 interface Props {
-    onAddField(field: Pilotair.Application.DataModels.Field): void;
+  onAddField(field: Pilotair.Application.DataModels.Field): void;
 }
 
 export default function NewFieldForm({ onAddField }: Props) {
-    const { setOk } = useContext(UseModalContext);
-    const [form] = Form.useForm<Pilotair.Application.DataModels.Field>();
+  const { setOk } = useContext(UseModalContext);
+  const [form] = Form.useForm<Pilotair.Application.DataModels.Field>();
 
-    setOk(async () => {
-        await form.validateFields();
-        const value = form.getFieldsValue();
-        onAddField(value);
-    })
+  setOk(async () => {
+    await form.validateFields();
+    const value = form.getFieldsValue();
+    onAddField(value);
+  });
 
-    const items: TabItems = [{
-        key: "basic",
-        label: "Basic",
-        children: <BasicTab />
+  const items: TabItems = [
+    {
+      key: "basic",
+      label: "Basic",
+      children: <BasicTab />,
     },
     {
-        key: "advanced",
-        label: "Advanced",
-        children: <AdvancedTab />
+      key: "advanced",
+      label: "Advanced",
+      children: <AdvancedTab />,
     },
     {
-        key: "validation",
-        label: "Validation",
-        children: <ValidationTab />
+      key: "validation",
+      label: "Validation",
+      children: <ValidationTab />,
     },
-    ]
+  ];
 
-
-    return <Form initialValues={{
-        controlType: "TextBox"
-    }} labelCol={{ span: 4 }} form={form}><Tabs items={items} /></Form>
+  return (
+    <Form
+      initialValues={{
+        controlType: "TextBox",
+      }}
+      labelCol={{ span: 4 }}
+      form={form}
+    >
+      <Tabs items={items} />
+    </Form>
+  );
 }
