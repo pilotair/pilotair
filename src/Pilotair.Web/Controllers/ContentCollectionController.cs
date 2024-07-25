@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Pilotair.Web.Contents;
+using Pilotair.Application.Contents;
 
 namespace Pilotair.Web.Controllers;
 

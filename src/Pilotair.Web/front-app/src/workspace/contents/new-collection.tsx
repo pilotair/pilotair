@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function NewCollection({ path }: Props) {
-    const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
+    const [form] = Form.useForm<Pilotair.Application.Contents.ContentCollectionModel>();
     const { replaceTab } = useTab();
     const { httpClient } = useHttpClient()
     const emitReloadMenus = useEvent(reloadMenus)

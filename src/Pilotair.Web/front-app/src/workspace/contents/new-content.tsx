@@ -14,14 +14,14 @@ interface Props {
 }
 
 export default function NewContent({ collection, path }: Props) {
-    const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
+    const [contentCollection, setContentCollection] = useState<Pilotair.Application.Contents.ContentCollectionModel>();
     const dataForm = useRef<DataFormRef>();
     const { closeTab } = useTab()
     const emitReloadContents = useEvent(reloadContents);
     const { httpClient } = useHttpClient()
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
+        httpClient.get<Pilotair.Application.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
     }, [])
 
     if (!contentCollection) return

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Pilotair.Web.Contents;
-using Pilotair.Web.DataModels;
+using Pilotair.Application.Contents;
+using Pilotair.Application.DataModels;
 
 namespace Pilotair.Web.Controllers;
 

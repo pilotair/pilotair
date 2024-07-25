@@ -20,19 +20,19 @@ interface Props {
 const { Search } = Input;
 
 export default function Contents({ name, display, path }: Props) {
-    const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
-    const [data, setData] = useState<Pilotair.Web.Contents.ContentPagingResult>()
+    const [collection, setCollection] = useState<Pilotair.Application.Contents.ContentCollectionModel>();
+    const [data, setData] = useState<Pilotair.Application.Contents.ContentPagingResult>()
     const { openTab } = useTab()
     const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
     const { httpClient } = useHttpClient()
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name }).then(rsp => setCollection(rsp!))
+        httpClient.get<Pilotair.Application.Contents.ContentCollectionModel>("content-collection", { name }).then(rsp => setCollection(rsp!))
         loadContents()
     }, [])
 
     function loadContents() {
-        httpClient.get<Pilotair.Web.Contents.ContentPagingResult>("content", {
+        httpClient.get<Pilotair.Application.Contents.ContentPagingResult>("content", {
             collection: name,
         }).then(rsp => setData(rsp!))
     }

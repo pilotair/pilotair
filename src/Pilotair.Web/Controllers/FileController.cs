@@ -3,7 +3,7 @@ using Pilotair.Core.Stores.Files;
 
 namespace Pilotair.Web.Controllers;
 
-public class FileController(Files.FileStore store) : ApiController
+public class FileController(Application.Files.FileStore store) : ApiController
 {
     [HttpGet]
     public IEnumerable<Entry> Get(string? folder = "")

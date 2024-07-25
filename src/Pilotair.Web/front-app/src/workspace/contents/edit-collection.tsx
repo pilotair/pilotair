@@ -15,14 +15,14 @@ interface Props {
 }
 
 export default function EditCollection({ name }: Props) {
-    const [collection, setCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>()
-    const [form] = Form.useForm<Pilotair.Web.Contents.ContentCollectionModel>();
+    const [collection, setCollection] = useState<Pilotair.Application.Contents.ContentCollectionModel>()
+    const [form] = Form.useForm<Pilotair.Application.Contents.ContentCollectionModel>();
     const { httpClient } = useHttpClient()
     const emitReloadMenus = useEvent(reloadMenus);
     useTabSave(handleSave)
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(setCollection)
+        httpClient.get<Pilotair.Application.Contents.ContentCollectionModel>(`/content-collection?name=${name}`).then(setCollection)
     }, [httpClient, name])
 
     async function handleSave() {

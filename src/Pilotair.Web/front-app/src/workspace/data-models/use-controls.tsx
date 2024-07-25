@@ -6,7 +6,7 @@ import { Pilotair } from "@/schema";
 
 const controlsAtom = atom<string[]>([]);
 
-export const controls = createDynamicValueIsKeyObject<Pilotair.Web.DataModels.ControlTypes>();
+export const controls = createDynamicValueIsKeyObject<Pilotair.Application.DataModels.ControlTypes>();
 
 export const multipleControls = [controls.File, controls.Select, controls.Content]
 

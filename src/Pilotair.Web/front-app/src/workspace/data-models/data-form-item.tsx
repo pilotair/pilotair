@@ -2,7 +2,7 @@ import { Button, DatePicker, Form, Input, InputNumber, Select, Switch } from "an
 import { Pilotair } from "@/schema";
 
 interface Props {
-    field: Pilotair.Web.DataModels.Field;
+    field: Pilotair.Application.DataModels.Field;
 }
 
 

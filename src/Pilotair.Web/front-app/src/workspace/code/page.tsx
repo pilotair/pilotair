@@ -17,7 +17,7 @@ export default function Code({ name, folder }: Props) {
     const { httpClient } = useHttpClient()
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Codes.Code>("code", { name, folder }).then(rsp => {
+        httpClient.get<Pilotair.Application.Codes.Code>("code", { name, folder }).then(rsp => {
             setContent(rsp!.content!)
         })
     }, [])

@@ -12,13 +12,13 @@ interface Props {
 }
 
 export default function EditContent({ collection, id }: Props) {
-    const [contentCollection, setContentCollection] = useState<Pilotair.Web.Contents.ContentCollectionModel>();
+    const [contentCollection, setContentCollection] = useState<Pilotair.Application.Contents.ContentCollectionModel>();
     const dataForm = useRef<DataFormRef>();
     const [content, SetContent] = useState<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>()
     const { httpClient } = useHttpClient()
 
     useEffect(() => {
-        httpClient.get<Pilotair.Web.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
+        httpClient.get<Pilotair.Application.Contents.ContentCollectionModel>("content-collection", { name: collection }).then(rsp => setContentCollection(rsp!))
         httpClient.get<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>(`content/${collection}/${id}`).then(rsp => SetContent(rsp!))
     }, [])
 

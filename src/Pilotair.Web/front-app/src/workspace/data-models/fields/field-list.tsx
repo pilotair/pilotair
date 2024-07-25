@@ -8,8 +8,8 @@ import { ModalContext } from "@/common/modals/context";
 
 
 interface Props {
-    value?: Pilotair.Web.DataModels.Field[],
-    onChange?: (value: Pilotair.Web.DataModels.Field[]) => void;
+    value?: Pilotair.Application.DataModels.Field[],
+    onChange?: (value: Pilotair.Application.DataModels.Field[]) => void;
 }
 
 export default function FieldList({ value, onChange }: Props) {
@@ -17,13 +17,13 @@ export default function FieldList({ value, onChange }: Props) {
     const [list, setList] = useState(value || [])
     const { status } = Form.Item.useStatus();
 
-    function handleDelete(value: Pilotair.Web.DataModels.Field) {
+    function handleDelete(value: Pilotair.Application.DataModels.Field) {
         const result = list.filter(f => f.name != value.name);
         setList(result)
         onChange?.(result)
     }
 
-    function handleNewField(field: Pilotair.Web.DataModels.Field) {
+    function handleNewField(field: Pilotair.Application.DataModels.Field) {
         const result = [...list, field];
         setList(result)
         onChange?.(result)
@@ -36,7 +36,7 @@ export default function FieldList({ value, onChange }: Props) {
         })
     }
 
-    function handleUpdateField(value: Pilotair.Web.DataModels.Field) {
+    function handleUpdateField(value: Pilotair.Application.DataModels.Field) {
         const index = list.findIndex(f => f.name == value.name);
         if (index > -1) {
             list.splice(index, 1, value);
@@ -46,7 +46,7 @@ export default function FieldList({ value, onChange }: Props) {
         }
     }
 
-    function handleEdit(value: Pilotair.Web.DataModels.Field) {
+    function handleEdit(value: Pilotair.Application.DataModels.Field) {
         modal.open({
             title: "Edit field",
             children: <EditForm field={value} updateField={handleUpdateField} />

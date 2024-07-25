@@ -9,12 +9,12 @@ import { UseModalContext } from "@/common/modals/use-modal";
 type TabItems = NonNullable<GetProps<typeof Tabs>["items"]>
 
 interface Props {
-    onAddField(field: Pilotair.Web.DataModels.Field): void;
+    onAddField(field: Pilotair.Application.DataModels.Field): void;
 }
 
 export default function NewFieldForm({ onAddField }: Props) {
     const { setOk } = useContext(UseModalContext);
-    const [form] = Form.useForm<Pilotair.Web.DataModels.Field>();
+    const [form] = Form.useForm<Pilotair.Application.DataModels.Field>();
 
     setOk(async () => {
         await form.validateFields();

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Huanent.DependencyInjection" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+    <PackageReference Include="Esbuild" Version="0.0.9" />
+    <PackageReference Include="Esbuild.Native.linux-arm64" Version="0.21.3" />
+    <PackageReference Include="Esbuild.Native.linux-x64" Version="0.21.3" />
+    <PackageReference Include="Esbuild.Native.osx-arm64" Version="0.21.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pilotair.Core\Pilotair.Core.csproj" />
+  </ItemGroup>
+</Project>

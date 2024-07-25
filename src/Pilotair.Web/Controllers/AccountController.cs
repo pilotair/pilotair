@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Pilotair.Web.Accounts;
+using Pilotair.Application.Accounts;
 
 namespace Pilotair.Web.Controllers;
 

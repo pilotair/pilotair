@@ -4,7 +4,7 @@ import { ReactNode, forwardRef, useImperativeHandle } from "react";
 import DataFormItem from "./data-form-item";
 
 interface Props {
-    fields: Pilotair.Web.DataModels.Field[],
+    fields: Pilotair.Application.DataModels.Field[],
     initValues?: Record<string, unknown>
 }
 

@@ -12,19 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esbuild.Native.linux-arm64" Version="0.21.3" />
-    <PackageReference Include="Huanent.DependencyInjection" Version="2.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.1" />
-    <PackageReference Include="Esbuild" Version="0.0.9" />
-    <PackageReference Include="Esbuild.Native.linux-x64" Version="0.21.3" />
-    <PackageReference Include="Esbuild.Native.osx-arm64" Version="0.21.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pilotair.Core\Pilotair.Core.csproj" />
+    <ProjectReference Include="..\Pilotair.Application\Pilotair.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
