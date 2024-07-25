@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Pilotair.Application;
 using Pilotair.Web.Menus;
 
 namespace Pilotair.Web.Controllers;

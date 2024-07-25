@@ -1,4 +1,4 @@
-namespace Pilotair.Web;
+namespace Pilotair.Application;
 
 [Microsoft.AspNetCore.Mvc.ApiController]
 [Microsoft.AspNetCore.Mvc.Route("__api__/[controller]")]

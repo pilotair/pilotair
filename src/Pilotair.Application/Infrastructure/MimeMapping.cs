@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.StaticFiles;
 using Pilotair.Core.Stores.Files;
 
-namespace Pilotair.Web;
+namespace Pilotair.Application;
 
 [Singleton(typeof(IMimeMapping))]
 public class MimeMapping(IContentTypeProvider contentTypeProvider) : IMimeMapping

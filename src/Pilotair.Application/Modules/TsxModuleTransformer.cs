@@ -1,7 +1,7 @@
 using System.IO;
 using Pilotair.Core.Runtime;
 
-namespace Pilotair.Web;
+namespace Pilotair.Application.Modules;
 
 public class TsxModuleTransformer : IModuleTransformer
 {
