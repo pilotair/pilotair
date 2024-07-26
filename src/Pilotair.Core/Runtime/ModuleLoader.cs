@@ -1,4 +1,3 @@
-using Esprima;
 using Jint;
 using Jint.Runtime.Modules;
 
@@ -32,9 +31,14 @@ public class ModuleLoader() : IModuleLoader
                         }
                     }
 
-                    var javaScriptParser = new JavaScriptParser();
-                    var module = javaScriptParser.ParseModule(code, resolved.Uri!.ToString());
-                    return ModuleFactory.BuildSourceTextModule(engine, module);
+                    var moduleResolved = new ResolvedSpecifier(
+                        resolved.ModuleRequest,
+                        resolved.Key,
+                        default,
+                        resolved.Type
+                    );
+                    
+                    return ModuleFactory.BuildSourceTextModule(engine, moduleResolved, code);
                 }
             }
         }
