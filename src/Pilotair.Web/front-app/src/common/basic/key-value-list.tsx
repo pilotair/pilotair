@@ -77,9 +77,10 @@ export default function KeyValueList({ value, onChange }: Props) {
     >
       {items}
       <Button
-        shape="circle"
         icon={<PlusOutlined />}
         onClick={handleAdd}
+        type="dashed"
+        className="!w-full"
       ></Button>
     </div>
   );

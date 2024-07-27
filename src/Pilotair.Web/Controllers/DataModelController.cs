@@ -5,12 +5,12 @@ using Pilotair.Application.DataModels;
 
 namespace Pilotair.Web.Controllers;
 
-public class DataModelController(ContentCollectionStore collectionStore) : ApiController
+public class DataModelController(ContentCollectionStore collectionStore, DataModelService dataModelService) : ApiController
 {
-    [HttpGet("controls")]
-    public string[] Controls()
+    [HttpGet("components")]
+    public IComponent[] Components()
     {
-        return Enum.GetNames<ControlTypes>();
+        return dataModelService.GetComponents();
     }
 
     [HttpGet("content-collections")]

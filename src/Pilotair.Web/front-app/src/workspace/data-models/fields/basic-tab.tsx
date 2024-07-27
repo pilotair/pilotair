@@ -1,22 +1,26 @@
 import { Form, Input, Select, Switch } from "antd";
-import { controls, useControls, multipleControls } from "../use-controls";
+import { useComponents } from "../use-components";
 import KeyValueList from "@/common/basic/key-value-list";
 import { KeyValue } from "@/common/types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useHttpClient } from "@/utils/http/use-client";
 
 export default function BasicTab() {
-  const { controls: controlList } = useControls();
-  const controlType = Form.useWatch("controlType");
+  const { components } = useComponents();
+  const component = Form.useWatch("component");
   const [collections, setCollections] = useState<KeyValue[]>([]);
   const { httpClient } = useHttpClient();
 
+  const currentComponent = useMemo(() => {
+    return components.find((f) => f.name == component);
+  }, [component, components]);
+
   useEffect(() => {
-    if (controlType != controls.Content) return;
+    if (component != "content") return;
     httpClient
       .get<KeyValue[]>("data-model/content-collections")
       .then(setCollections);
-  }, [httpClient, controlType]);
+  }, [httpClient, component]);
 
   return (
     <>
@@ -29,26 +33,25 @@ export default function BasicTab() {
       </Form.Item>
 
       <Form.Item
-        label="Control"
-        name="controlType"
-        rules={[{ required: true, message: "Missing control type name" }]}
+        label="Type"
+        name="type"
+        rules={[{ required: true, message: "Missing field type" }]}
       >
         <Select
-          placeholder="Control type"
-          options={controlList.map((m) => ({
-            label: m,
-            value: m,
+          options={components.map((m) => ({
+            label: m.name,
+            value: m.name,
           }))}
         />
       </Form.Item>
 
-      {multipleControls.includes(controlType) && (
+      {currentComponent?.multiple && (
         <Form.Item label="Multiple" name="multiple">
           <Switch />
         </Form.Item>
       )}
 
-      {controlType == controls.Select && (
+      {component == "select" && (
         <Form.Item
           label="Options"
           name="options"
@@ -77,7 +80,7 @@ export default function BasicTab() {
         </Form.Item>
       )}
 
-      {controlType == controls.Content && (
+      {component == "content" && (
         <Form.Item
           label="Content"
           name="collection"
