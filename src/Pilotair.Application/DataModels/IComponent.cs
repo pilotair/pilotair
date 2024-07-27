@@ -5,4 +5,5 @@ public interface IComponent
     public string Name { get; }
     public ValueType Type { get; }
     public bool Multiple { get; }
+    public int Index { get; }
 }

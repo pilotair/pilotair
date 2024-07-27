@@ -8,4 +8,6 @@ public class File : IComponent
     public ValueType Type => ValueType.String;
 
     public bool Multiple => true;
+
+    public int Index => 70;
 }

@@ -8,4 +8,6 @@ public class Switch : IComponent
     public ValueType Type => ValueType.Boolean;
 
     public bool Multiple => false;
+
+    public int Index => 30;
 }

@@ -8,4 +8,6 @@ public class Content : IComponent
     public ValueType Type => ValueType.String;
 
     public bool Multiple => true;
+
+    public int Index => 80;
 }

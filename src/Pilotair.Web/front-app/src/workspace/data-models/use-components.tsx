@@ -12,9 +12,15 @@ export function useComponents() {
   const { httpClient } = useHttpClient();
 
   useEffect(() => {
-    httpClient
-      .get<Component[]>("/data-model/components")
-      .then((rsp) => setComponents(rsp));
+    async function load() {
+      let response = await httpClient.get<Component[]>(
+        "/data-model/components",
+      );
+      response = response.sort((left, right) => left.index - right.index);
+      setComponents(response);
+    }
+
+    load();
   }, [httpClient, setComponents]);
 
   return { components };

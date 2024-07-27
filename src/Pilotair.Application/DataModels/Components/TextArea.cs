@@ -8,4 +8,6 @@ public class TextArea : IComponent
     public ValueType Type => ValueType.String;
 
     public bool Multiple => false;
+
+    public int Index => 10;
 }

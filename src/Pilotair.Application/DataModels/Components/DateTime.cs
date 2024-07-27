@@ -8,4 +8,6 @@ public class DateTime : IComponent
     public ValueType Type => ValueType.DateTime;
 
     public bool Multiple => false;
+
+    public int Index => 50;
 }
