@@ -10,4 +10,6 @@ public class Select : IComponent
     public bool Multiple => true;
 
     public int Index => 60;
+    
+    public string Display => "Select";
 }

@@ -10,4 +10,6 @@ public class Number : IComponent
     public bool Multiple => false;
 
     public int Index => 40;
+
+    public string Display => "Number";
 }

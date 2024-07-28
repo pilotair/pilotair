@@ -10,4 +10,6 @@ public class TextBox : IComponent
     public bool Multiple => false;
 
     public int Index => 1;
+
+    public string Display => "TextBox";
 }

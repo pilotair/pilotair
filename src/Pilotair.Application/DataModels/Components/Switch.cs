@@ -10,4 +10,6 @@ public class Switch : IComponent
     public bool Multiple => false;
 
     public int Index => 30;
+
+    public string Display => "Switch";
 }

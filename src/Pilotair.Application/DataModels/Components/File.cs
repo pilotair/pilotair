@@ -10,4 +10,5 @@ public class File : IComponent
     public bool Multiple => true;
 
     public int Index => 70;
+    public string Display => "File";
 }

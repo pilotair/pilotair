@@ -10,4 +10,5 @@ public class TextArea : IComponent
     public bool Multiple => false;
 
     public int Index => 10;
+    public string Display => "TextArea";
 }
