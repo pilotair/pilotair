@@ -43,7 +43,7 @@ export default function NewFieldForm({ onAddField }: Props) {
   return (
     <Form
       initialValues={{
-        controlType: "TextBox",
+        type: "textBox",
       }}
       labelCol={{ span: 4 }}
       form={form}

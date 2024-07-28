@@ -7,20 +7,20 @@ import { useHttpClient } from "@/utils/http/use-client";
 
 export default function BasicTab() {
   const { components } = useComponents();
-  const component = Form.useWatch("component");
+  const type = Form.useWatch("type");
   const [collections, setCollections] = useState<KeyValue[]>([]);
   const { httpClient } = useHttpClient();
 
   const currentComponent = useMemo(() => {
-    return components.find((f) => f.name == component);
-  }, [component, components]);
+    return components.find((f) => f.name == type);
+  }, [type, components]);
 
   useEffect(() => {
-    if (component != "content") return;
+    if (type != "content") return;
     httpClient
       .get<KeyValue[]>("data-model/content-collections")
       .then(setCollections);
-  }, [httpClient, component]);
+  }, [httpClient, type]);
 
   return (
     <>
@@ -51,7 +51,7 @@ export default function BasicTab() {
         </Form.Item>
       )}
 
-      {component == "select" && (
+      {type == "select" && (
         <Form.Item
           label="Options"
           name="options"
@@ -80,7 +80,7 @@ export default function BasicTab() {
         </Form.Item>
       )}
 
-      {component == "content" && (
+      {type == "content" && (
         <Form.Item
           label="Content"
           name="collection"

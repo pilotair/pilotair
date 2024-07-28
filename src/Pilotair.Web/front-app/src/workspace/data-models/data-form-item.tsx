@@ -15,7 +15,7 @@ interface Props {
 
 export default function DataFormItem({ field }: Props) {
   function getControl() {
-    switch (field.component) {
+    switch (field.type) {
       case "Switch":
         return <Switch />;
       case "Number":

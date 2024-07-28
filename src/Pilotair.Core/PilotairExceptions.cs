@@ -8,6 +8,7 @@ public class PilotairException : Exception
 
     public PilotairException(string? message) : base(message)
     {
+        
     }
 }
 
