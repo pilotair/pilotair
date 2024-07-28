@@ -13,7 +13,7 @@ import {
   GetProp,
   Alert,
 } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { maxUploadFile } from "./upload-files-btn";
 import Modal from "@/common/modals/modal";
 
@@ -44,6 +44,7 @@ const segmentedOptions: SegmentedOptions = [
 
 export function UploadingModal({ files, onClose }: Props) {
   const [status, setStatus] = useState("uploading");
+  const finish = useRef(false);
 
   const options = useMemo(() => {
     const result = [];
@@ -55,7 +56,10 @@ export function UploadingModal({ files, onClose }: Props) {
           {i.label}({count}){" "}
         </div>
       );
-      result.push({ ...i, label });
+      result.push({
+        ...i,
+        label,
+      });
     }
     return result;
   }, [files]);
@@ -76,6 +80,14 @@ export function UploadingModal({ files, onClose }: Props) {
 
     return result;
   }, [files, status]);
+
+  useEffect(() => {
+    if (status != "uploading") return;
+    if (items.length) return;
+    if (finish.current) return;
+    finish.current = true;
+    setStatus("done");
+  }, [items, status]);
 
   const footer = (
     <div className="text-center">

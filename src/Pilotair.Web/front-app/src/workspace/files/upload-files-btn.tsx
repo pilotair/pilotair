@@ -126,6 +126,7 @@ export default function UploadFilesBtn({ folder }: Props) {
       >
         <span ref={zipUpload} />
       </Upload>
+
       <UploadingModal files={fileList} onClose={handleClose} />
     </div>
   );

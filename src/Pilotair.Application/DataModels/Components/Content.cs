@@ -3,7 +3,7 @@ using Microsoft.Extensions.Localization;
 namespace Pilotair.Application.DataModels.Components;
 
 [Singleton(typeof(IComponent))]
-public class Content(IStringLocalizer t) : IComponent
+public class Content() : IComponent
 {
     public string Name => "content";
 
@@ -13,5 +13,5 @@ public class Content(IStringLocalizer t) : IComponent
 
     public int Index => 80;
 
-    public string Display => t["Content"];
+    public string Display => "Content";
 }

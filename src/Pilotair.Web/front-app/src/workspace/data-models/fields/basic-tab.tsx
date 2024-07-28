@@ -39,7 +39,7 @@ export default function BasicTab() {
       >
         <Select
           options={components.map((m) => ({
-            label: m.name,
+            label: m.display,
             value: m.name,
           }))}
         />
