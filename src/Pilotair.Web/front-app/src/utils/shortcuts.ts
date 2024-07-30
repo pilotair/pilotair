@@ -8,12 +8,13 @@ interface Shortcut {
 
 export const shortcuts = {
   save: { ctrlOrMeta: true, key: "s" } as Shortcut,
+  enter: { key: "Enter" } as Shortcut,
 };
 
 export function useShortcut(
   shortcut: Shortcut,
   callback: () => void | Promise<void>,
-  element?: HTMLElement,
+  element?: HTMLElement | null,
 ) {
   useEffect(() => {
     const target = element ?? document.body;
@@ -29,5 +30,5 @@ export function useShortcut(
     };
     target.addEventListener("keydown", onKeydown);
     return () => target.removeEventListener("keydown", onKeydown);
-  }, [element]);
+  }, [element, shortcut, callback]);
 }

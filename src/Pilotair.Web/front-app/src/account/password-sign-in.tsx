@@ -2,11 +2,15 @@ import { Button, Card, Divider, Form, Input } from "antd";
 import LogoIcon from "@/assets/logo.svg";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useNavigate } from "@/common/router";
+import { shortcuts, useShortcut } from "@/utils/shortcuts";
+import { useRef } from "react";
 
 export default function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { httpClient } = useHttpClient();
+  const container = useRef<HTMLDivElement>(null);
+  useShortcut(shortcuts.enter, handleSignIn, container.current);
 
   async function handleSignIn() {
     await form.validateFields();
@@ -19,7 +23,10 @@ export default function Login() {
 
   return (
     <Card>
-      <div className="w-96 flex justify-center items-center flex-col p-4">
+      <div
+        className="w-96 flex justify-center items-center flex-col p-4"
+        ref={container}
+      >
         <img
           className="h-32 w-32 cursor-default"
           src={LogoIcon}
