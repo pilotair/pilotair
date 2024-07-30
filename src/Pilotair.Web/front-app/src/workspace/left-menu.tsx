@@ -6,7 +6,7 @@ import { ReloadOutlined } from "@ant-design/icons";
 
 type MenuItems = GetProps<typeof AntdMenu>["items"];
 
-export default function Menu() {
+export default function LeftMenu() {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   const { openTab, activeName } = useTab();
   const { menus } = useMenu();

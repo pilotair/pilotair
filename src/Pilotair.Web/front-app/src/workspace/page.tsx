@@ -13,7 +13,7 @@ import { SiderLayoutContext } from "../common/layout/sider-layout-context";
 import Avatar from "@/common/profile/avatar";
 import { useNavigate } from "@/common/router";
 import FoldUp from "@/assets/fold-up.svg";
-import Menu from "./menu";
+import LeftMenu from "./left-menu";
 import { useMenu } from "./use-menu";
 import { useEvent } from "@/common/events/event";
 import { reloadMenus } from "@/common/events/sources";
@@ -42,7 +42,7 @@ function Sider() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto ">
-        <Menu />
+        <LeftMenu />
       </div>
       {!!openKeys.length && !collapsed && (
         <div

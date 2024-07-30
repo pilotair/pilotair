@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { createClient, SendParams } from "./client";
+import { HttpClient } from "./client";
 import { message } from "antd";
 import { LoadingContext } from "@/common/loading-context";
 import { ModalContext } from "@/common/modals/context";
@@ -13,9 +13,9 @@ export function useHttpClient() {
 
   const httpClient = useMemo(
     () =>
-      createClient({
+      new HttpClient({
         prefix,
-        async onRequest(request: Request) {
+        async onSending(request) {
           if (request.method == "DELETE") {
             const ok = await confirm({
               title: "Are you sure delete?",
@@ -26,13 +26,8 @@ export function useHttpClient() {
           if (token) {
             request.headers.set("Authorization", `Bearer ${token}`);
           }
-          return request;
-        },
-        async onResponse(
-          response: Response,
-          request: Request,
-          sendParams: SendParams,
-        ) {
+
+          const response = (await onLoading(fetch(request))) as Response;
           const bearer = response.headers.get("www-authenticate");
           if (bearer && response.ok) {
             localStorage.setItem(tokenName, bearer);
@@ -41,29 +36,15 @@ export function useHttpClient() {
           if (!response.ok) {
             const error = await response.json();
             message.error(error);
-          } else if (
-            request.method == "POST" &&
-            sendParams?.postSuccessMessage !== false
-          ) {
-            message.success(sendParams?.postSuccessMessage || "Save success");
-          } else if (
-            request.method == "PUT" &&
-            sendParams?.putSuccessMessage !== false
-          ) {
-            message.success(sendParams?.putSuccessMessage || "Update success");
-          } else if (
-            request.method == "DELETE" &&
-            sendParams?.deleteSuccessMessage !== false
-          ) {
-            message.success(
-              sendParams?.deleteSuccessMessage || "Delete success",
-            );
+          } else if (request.method == "POST") {
+            message.success("Save success");
+          } else if (request.method == "PUT") {
+            message.success("Update success");
+          } else if (request.method == "DELETE") {
+            message.success("Delete success");
           }
 
           return response;
-        },
-        onSend(action) {
-          return onLoading(action) as typeof action;
         },
       }),
     [onLoading, confirm],
