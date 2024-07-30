@@ -8,7 +8,10 @@ import AsyncComponent from "@/common/basic/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { combine } from "@/utils/path";
 import { useEvent } from "@/common/events/event";
-import { reloadContents } from "@/common/events/sources";
+import {
+  deleteContentCollection,
+  reloadContents,
+} from "@/common/events/sources";
 
 type Columns = GetProp<typeof Table, "columns">;
 interface Props {
@@ -24,9 +27,10 @@ export default function Contents({ name, display, path }: Props) {
     useState<Pilotair.Application.Contents.ContentCollectionModel>();
   const [data, setData] =
     useState<Pilotair.Application.Contents.ContentPagingResult>();
-  const { openTab } = useTab();
+  const { openTab, closeTab } = useTab();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
   const { httpClient } = useHttpClient();
+  useEvent(deleteContentCollection, (e) => e == name && closeTab());
 
   useEffect(() => {
     httpClient

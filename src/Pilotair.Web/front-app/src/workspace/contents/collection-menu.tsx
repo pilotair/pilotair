@@ -20,12 +20,9 @@ export function getCollectionsMenu(menu: Pilotair.Web.MenuItem): MenuItem {
 }
 
 export function getCollectionMenu(menu: Pilotair.Web.MenuItem): MenuItem {
+  const name = menu.display || menu.name;
   return {
-    label: (
-      <CollectionContextMenu path={menu.path} name={menu.name}>
-        {menu.display || menu.name}
-      </CollectionContextMenu>
-    ),
+    label: <CollectionContextMenu menu={menu}>{name}</CollectionContextMenu>,
     key: menu.path,
     tab: (
       <AsyncComponent
@@ -38,6 +35,6 @@ export function getCollectionMenu(menu: Pilotair.Web.MenuItem): MenuItem {
       />
     ),
     tabIcon: <FormOutlined />,
-    tabLabel: menu.display || menu.name,
+    tabLabel: `${name} list`,
   };
 }
