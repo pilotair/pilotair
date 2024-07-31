@@ -11,7 +11,12 @@ export interface Options {
   searchParams?: SearchParams;
   body?: unknown;
   headers?: Record<string, string>;
-  onSending?: (request: Request) => Promise<Response> | Response;
+  onSending?: (
+    request: Request,
+    options: Options,
+  ) => Promise<Response> | Response;
+  successMessage?: false | string;
+  errorMessage?: false | string;
 }
 
 function parseUrl(url: string, search?: SearchParams) {
@@ -59,7 +64,7 @@ export async function send<T>(
   let response: Response | undefined;
 
   if (options?.onSending) {
-    response = await options.onSending(request);
+    response = await options.onSending(request, options);
   } else {
     response = await fetch(request);
   }

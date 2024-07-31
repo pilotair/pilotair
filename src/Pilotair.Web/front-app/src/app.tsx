@@ -9,6 +9,8 @@ import { useEvent } from "./common/events/event";
 import { save } from "./common/events/sources";
 import { LoadingProvider } from "./common/loading-context";
 import { ModalProvider } from "@/common/modals/context";
+import { MessageProvider } from "./common/message";
+import { ChildrenProps } from "./common/types";
 
 export default function App() {
   const { challenge } = useChallenge();
@@ -18,16 +20,24 @@ export default function App() {
   challenge();
 
   return (
+    <GlobalProvider>
+      <Router base={base}>
+        <Switch>
+          <Route path="/" component={Workspace} />
+          <Route path="/account" component={Account} nest />
+          <Redirect to="/" />
+        </Switch>
+      </Router>
+    </GlobalProvider>
+  );
+}
+
+function GlobalProvider({ children }: ChildrenProps) {
+  return (
     <ConfigProvider theme={{ cssVar: true }}>
       <ModalProvider>
         <LoadingProvider>
-          <Router base={base}>
-            <Switch>
-              <Route path="/" component={Workspace} />
-              <Route path="/account" component={Account} nest />
-              <Redirect to="/" />
-            </Switch>
-          </Router>
+          <MessageProvider>{children}</MessageProvider>
         </LoadingProvider>
       </ModalProvider>
     </ConfigProvider>

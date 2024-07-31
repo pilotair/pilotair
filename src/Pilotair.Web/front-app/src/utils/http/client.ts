@@ -21,6 +21,8 @@ export class HttpClient {
     return {
       headers: { ...this.options?.headers, ...options?.headers },
       onSending: options?.onSending || this.options?.onSending,
+      successMessage: options?.successMessage ?? this.options?.successMessage,
+      errorMessage: options?.errorMessage ?? this.options?.errorMessage,
     };
   }
 

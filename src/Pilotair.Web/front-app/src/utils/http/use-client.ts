@@ -1,22 +1,30 @@
 import { useContext, useMemo } from "react";
 import { HttpClient } from "./client";
-import { message } from "antd";
 import { LoadingContext } from "@/common/loading-context";
 import { ModalContext } from "@/common/modals/context";
+import { httpMethods } from "./request";
+import { MessageContext } from "@/common/message";
 
 export const prefix = "/__api__/";
 export const tokenName = "access_token";
 
+const successMessages = {
+  [httpMethods.POST]: "Save success",
+  [httpMethods.PUT]: "Update success",
+  [httpMethods.DELETE]: "Delete success",
+};
+
 export function useHttpClient() {
   const { onLoading } = useContext(LoadingContext);
   const { confirm } = useContext(ModalContext);
+  const { success, error } = useContext(MessageContext);
 
   const httpClient = useMemo(
     () =>
       new HttpClient({
         prefix,
-        async onSending(request) {
-          if (request.method == "DELETE") {
+        async onSending(request, option) {
+          if (request.method == httpMethods.DELETE) {
             const ok = await confirm({
               title: "Are you sure delete?",
             });
@@ -33,21 +41,22 @@ export function useHttpClient() {
             localStorage.setItem(tokenName, bearer);
           }
 
-          if (!response.ok) {
-            const error = await response.json();
-            message.error(error);
-          } else if (request.method == "POST") {
-            message.success("Save success");
-          } else if (request.method == "PUT") {
-            message.success("Update success");
-          } else if (request.method == "DELETE") {
-            message.success("Delete success");
+          if (!response.ok && option.errorMessage !== false) {
+            error?.(option.errorMessage || (await response.json()));
+          }
+
+          if (
+            response.ok &&
+            option.successMessage !== false &&
+            request.method != httpMethods.GET
+          ) {
+            success?.(option.successMessage || successMessages[request.method]);
           }
 
           return response;
         },
       }),
-    [onLoading, confirm],
+    [onLoading, confirm, success, error],
   );
 
   return { httpClient };
