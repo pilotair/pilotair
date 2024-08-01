@@ -11,7 +11,7 @@ interface Props {
 
 export default function CodeContextMenu({ children, path }: Props) {
   const { loadMenus } = useMenu();
-  const { httpClient } = useHttpClient();
+  const { httpDelete } = useHttpClient();
 
   async function handleItemClick({
     key,
@@ -21,7 +21,7 @@ export default function CodeContextMenu({ children, path }: Props) {
 
     switch (key) {
       case "delete":
-        await httpClient.delete("code", {
+        await httpDelete("code", {
           paths: [path],
         });
         loadMenus();

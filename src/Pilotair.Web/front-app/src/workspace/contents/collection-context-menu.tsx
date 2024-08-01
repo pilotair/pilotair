@@ -16,7 +16,7 @@ interface Props extends ChildrenProps {
 
 export default function CollectionContextMenu({ children, menu }: Props) {
   const { openTab } = useTab();
-  const { httpClient } = useHttpClient();
+  const { httpDelete } = useHttpClient();
   const emitReloadMenus = useEvent(reloadMenus);
   const emitDeleteContentCollection = useEvent(deleteContentCollection);
   const path = combine("edit", menu.path);
@@ -36,7 +36,7 @@ export default function CollectionContextMenu({ children, menu }: Props) {
   }
 
   async function handleDelete() {
-    await httpClient.delete(`content-collection?name=${menu.name}`);
+    await httpDelete(`content-collection?name=${menu.name}`);
     emitReloadMenus();
     emitDeleteContentCollection(menu.name);
   }

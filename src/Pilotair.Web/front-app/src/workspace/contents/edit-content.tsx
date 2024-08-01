@@ -17,27 +17,23 @@ export default function EditContent({ collection, id }: Props) {
   const dataForm = useRef<DataFormRef>();
   const [content, SetContent] =
     useState<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>();
-  const { httpClient } = useHttpClient();
+  const { httpGet, httpPut } = useHttpClient();
 
   useEffect(() => {
-    httpClient
-      .get<Pilotair.Application.Contents.ContentCollectionModel>(
-        "content-collection",
-        { name: collection },
-      )
-      .then((rsp) => setContentCollection(rsp!));
-    httpClient
-      .get<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>(
-        `content/${collection}/${id}`,
-      )
-      .then((rsp) => SetContent(rsp!));
+    httpGet<Pilotair.Application.Contents.ContentCollectionModel>(
+      "content-collection",
+      { name: collection },
+    ).then((rsp) => setContentCollection(rsp!));
+    httpGet<Pilotair.Core.Stores.NoSqlite.DocumentIDictionaryStringObject>(
+      `content/${collection}/${id}`,
+    ).then((rsp) => SetContent(rsp!));
   }, []);
 
   if (!contentCollection || !content) return;
 
   async function handleSave() {
     const value = await dataForm.current?.getValue();
-    await httpClient.put(`/content/${collection}/${id}`, value);
+    await httpPut(`/content/${collection}/${id}`, value);
   }
 
   return (

@@ -9,11 +9,11 @@ export function useNewFolderModal() {
   const { loadMenus } = useMenu();
   const [form] = Form.useForm();
   let closeModal: () => void;
-  const { httpClient } = useHttpClient();
+  const { httpPost } = useHttpClient();
 
   async function handleFinish(value: { name: string }) {
-    await httpClient.post("code/folder", undefined, {
-      searchParams: { path: value.name },
+    await httpPost("code/folder", undefined, {
+      path: value.name,
     });
 
     closeModal?.();

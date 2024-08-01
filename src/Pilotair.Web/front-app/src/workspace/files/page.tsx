@@ -24,21 +24,18 @@ import { ModalContext } from "@/common/modals/context";
 export default function File() {
   const [folder, setFolder] = useState("");
   const [entries, setEntries] = useState<Pilotair.Core.Stores.Files.Entry[]>();
-  const { httpClient } = useHttpClient();
+  const { httpGet, httpDelete } = useHttpClient();
   const [selectedFiles, setSelectedFiles] = useState<
     Pilotair.Core.Stores.Files.Entry[]
   >([]);
   const modal = useContext(ModalContext);
 
   const load = useCallback(async () => {
-    const response = await httpClient.get<Pilotair.Core.Stores.Files.Entry[]>(
-      "file",
-      {
-        folder,
-      },
-    );
+    const response = await httpGet<Pilotair.Core.Stores.Files.Entry[]>("file", {
+      folder,
+    });
     setEntries(response);
-  }, [folder, httpClient]);
+  }, [folder, httpGet]);
 
   useEvent(reloadFiles, load);
 
@@ -102,7 +99,7 @@ export default function File() {
 
   async function handleDelete(entries?: string[]) {
     entries = entries || selectedFiles.map((m) => m.name);
-    await httpClient.delete("file", { entries, folder });
+    await httpDelete("file", { entries, folder });
     load();
   }
 

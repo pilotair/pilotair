@@ -19,22 +19,20 @@ export default function NewContent({ collection, path }: Props) {
   const dataForm = useRef<DataFormRef>();
   const { closeTab } = useTab();
   const emitReloadContents = useEvent(reloadContents);
-  const { httpClient } = useHttpClient();
+  const { httpGet, httpPost } = useHttpClient();
 
   useEffect(() => {
-    httpClient
-      .get<Pilotair.Application.Contents.ContentCollectionModel>(
-        "content-collection",
-        { name: collection },
-      )
-      .then((rsp) => setContentCollection(rsp!));
+    httpGet<Pilotair.Application.Contents.ContentCollectionModel>(
+      "content-collection",
+      { name: collection },
+    ).then((rsp) => setContentCollection(rsp!));
   }, []);
 
   if (!contentCollection) return;
 
   async function handleSave() {
     const value = await dataForm.current?.getValue();
-    await httpClient.post(`/content/${collection}`, value);
+    await httpPost(`/content/${collection}`, value);
     closeTab(path);
     emitReloadContents(collection);
   }

@@ -1,63 +1,143 @@
-import { useContext, useMemo } from "react";
-import { HttpClient } from "./client";
+import { useCallback, useContext } from "react";
+import { HttpClient, SendOptions } from "./client";
 import { LoadingContext } from "@/common/loading-context";
 import { ModalContext } from "@/common/modals/context";
-import { httpMethods } from "./request";
+import { SearchParams } from "./request";
 import { MessageContext } from "@/common/message";
 
 export const prefix = "/__api__/";
 export const tokenName = "access_token";
 
-const successMessages = {
-  [httpMethods.POST]: "Save success",
-  [httpMethods.PUT]: "Update success",
-  [httpMethods.DELETE]: "Delete success",
+const httpClient = new HttpClient({
+  prefix,
+  onRequest(request) {
+    const token = localStorage.getItem(tokenName);
+    if (token) {
+      request.headers.set("Authorization", `Bearer ${token}`);
+    }
+    return request;
+  },
+  onResponse(response) {
+    const bearer = response.headers.get("www-authenticate");
+    if (bearer && response.ok) {
+      localStorage.setItem(tokenName, bearer);
+    }
+    return response;
+  },
+});
+
+type Options = SendOptions & {
+  successMessage?: false | string;
+  errorMessage?: false | string;
 };
 
 export function useHttpClient() {
-  const { onLoading } = useContext(LoadingContext);
+  const { setLoading } = useContext(LoadingContext);
   const { confirm } = useContext(ModalContext);
-  const { success, error } = useContext(MessageContext);
+  const { success: showSuccess, error: showError } = useContext(MessageContext);
 
-  const httpClient = useMemo(
-    () =>
-      new HttpClient({
-        prefix,
-        async onSending(request, option) {
-          if (request.method == httpMethods.DELETE) {
-            const ok = await confirm({
-              title: "Are you sure delete?",
-            });
-            if (!ok) throw new Error("Cancel delete");
-          }
-          const token = localStorage.getItem(tokenName);
-          if (token) {
-            request.headers.set("Authorization", `Bearer ${token}`);
-          }
-
-          const response = (await onLoading(fetch(request))) as Response;
-          const bearer = response.headers.get("www-authenticate");
-          if (bearer && response.ok) {
-            localStorage.setItem(tokenName, bearer);
-          }
-
-          if (!response.ok && option.errorMessage !== false) {
-            error?.(option.errorMessage || (await response.json()));
-          }
-
-          if (
-            response.ok &&
-            option.successMessage !== false &&
-            request.method != httpMethods.GET
-          ) {
-            success?.(option.successMessage || successMessages[request.method]);
-          }
-
-          return response;
-        },
-      }),
-    [onLoading, confirm, success, error],
+  const httpGet = useCallback(
+    async function httpGet<T>(
+      url: string,
+      searchParams?: SearchParams,
+      options?: Options,
+    ) {
+      try {
+        setLoading(true);
+        const result = await httpClient.get<T>(url, searchParams, options);
+        return result;
+      } catch (error) {
+        showError(error as string);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [showError, setLoading],
   );
 
-  return { httpClient };
+  const httpPost = useCallback(
+    async function httpPost<T>(
+      url: string,
+      body?: unknown,
+      searchParams?: SearchParams,
+      options?: Options,
+    ) {
+      try {
+        setLoading(true);
+        const result = await httpClient.post<T>(
+          url,
+          body,
+          searchParams,
+          options,
+        );
+        if (options?.successMessage !== false) {
+          showSuccess(options?.successMessage || "Save success");
+        }
+
+        return result;
+      } catch (error) {
+        showError(error as string);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [showSuccess, showError, setLoading],
+  );
+
+  const httpPut = useCallback(
+    async function httpPut<T>(
+      url: string,
+      body?: unknown,
+      searchParams?: SearchParams,
+      options?: Options,
+    ) {
+      try {
+        setLoading(true);
+        const result = await httpClient.put<T>(
+          url,
+          body,
+          searchParams,
+          options,
+        );
+        if (options?.successMessage !== false) {
+          showSuccess(options?.successMessage || "Update success");
+        }
+        return result;
+      } catch (error) {
+        showError(error as string);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [showSuccess, showError, setLoading],
+  );
+
+  const httpDelete = useCallback(
+    async function httpDelete<T>(
+      url: string,
+      searchParams?: SearchParams,
+      options?: Options,
+    ) {
+      const ok = await confirm({
+        title: "Are you sure delete?",
+      });
+      if (!ok) throw new Error("Cancel delete");
+      try {
+        setLoading(true);
+        const result = await httpClient.delete<T>(url, searchParams, options);
+        if (options?.successMessage !== false) {
+          showSuccess(options?.successMessage || "Delete success");
+        }
+        return result;
+      } catch (error) {
+        showError(error as string);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [confirm, setLoading, showSuccess, showError],
+  );
+
+  return { httpGet, httpPost, httpPut, httpDelete };
 }

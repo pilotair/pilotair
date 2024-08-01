@@ -13,14 +13,14 @@ export default function NewCollection() {
   const [form] =
     Form.useForm<Pilotair.Application.Contents.ContentCollectionModel>();
   const { closeTab } = useTab();
-  const { httpClient } = useHttpClient();
+  const { httpPost } = useHttpClient();
   const emitReloadMenus = useEvent(reloadMenus);
   useTabSave(handleSave);
 
   async function handleSave() {
     await form.validateFields();
     const model = form.getFieldsValue();
-    await httpClient.post("content-collection", model);
+    await httpPost("content-collection", model);
     emitReloadMenus();
     closeTab();
   }

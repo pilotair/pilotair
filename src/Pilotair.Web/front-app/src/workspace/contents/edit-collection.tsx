@@ -19,24 +19,22 @@ export default function EditCollection({ name }: Props) {
     useState<Pilotair.Application.Contents.ContentCollectionModel>();
   const [form] =
     Form.useForm<Pilotair.Application.Contents.ContentCollectionModel>();
-  const { httpClient } = useHttpClient();
+  const { httpGet, httpPut } = useHttpClient();
   const { closeTab } = useTab();
   const emitReloadMenus = useEvent(reloadMenus);
   useEvent(deleteContentCollection, (e) => e == name && closeTab());
   useTabSave(handleSave);
 
   useEffect(() => {
-    httpClient
-      .get<Pilotair.Application.Contents.ContentCollectionModel>(
-        `/content-collection?name=${name}`,
-      )
-      .then(setCollection);
-  }, [httpClient, name]);
+    httpGet<Pilotair.Application.Contents.ContentCollectionModel>(
+      `/content-collection?name=${name}`,
+    ).then(setCollection);
+  }, [httpGet, name]);
 
   async function handleSave() {
     await form.validateFields();
     const model = form.getFieldsValue();
-    await httpClient.put("content-collection", model);
+    await httpPut("content-collection", model);
     emitReloadMenus();
   }
 

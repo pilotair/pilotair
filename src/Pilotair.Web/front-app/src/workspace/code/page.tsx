@@ -14,27 +14,25 @@ export default function Code({ name, folder }: Props) {
   const [content, setContent] = useState("");
   const newContent = useRef<string>();
   const [isChange, setIsChange] = useState(false);
-  const { httpClient } = useHttpClient();
+  const { httpGet, httpPut } = useHttpClient();
 
   useEffect(() => {
-    httpClient
-      .get<Pilotair.Application.Codes.Code>("code", { name, folder })
-      .then((rsp) => {
+    httpGet<Pilotair.Application.Codes.Code>("code", { name, folder }).then(
+      (rsp) => {
         setContent(rsp!.content!);
-      });
+      },
+    );
   }, []);
 
   async function handleSave() {
-    await httpClient.put(
+    await httpPut(
       "code",
       {
         content: newContent.current,
       },
       {
-        searchParams: {
-          name,
-          folder,
-        },
+        name,
+        folder,
       },
     );
   }

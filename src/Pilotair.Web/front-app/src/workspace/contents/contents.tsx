@@ -29,25 +29,21 @@ export default function Contents({ name, display, path }: Props) {
     useState<Pilotair.Application.Contents.ContentPagingResult>();
   const { openTab, closeTab } = useTab();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
-  const { httpClient } = useHttpClient();
+  const { httpGet, httpDelete } = useHttpClient();
   useEvent(deleteContentCollection, (e) => e == name && closeTab());
 
   useEffect(() => {
-    httpClient
-      .get<Pilotair.Application.Contents.ContentCollectionModel>(
-        "content-collection",
-        { name },
-      )
-      .then((rsp) => setCollection(rsp!));
+    httpGet<Pilotair.Application.Contents.ContentCollectionModel>(
+      "content-collection",
+      { name },
+    ).then((rsp) => setCollection(rsp!));
     loadContents();
   }, []);
 
   function loadContents() {
-    httpClient
-      .get<Pilotair.Application.Contents.ContentPagingResult>("content", {
-        collection: name,
-      })
-      .then((rsp) => setData(rsp!));
+    httpGet<Pilotair.Application.Contents.ContentPagingResult>("content", {
+      collection: name,
+    }).then((rsp) => setData(rsp!));
   }
 
   useEvent(reloadContents, (e) => {
@@ -96,7 +92,7 @@ export default function Contents({ name, display, path }: Props) {
   if (!data) return;
 
   async function handleDelete() {
-    await httpClient.delete("/content", {
+    await httpDelete("/content", {
       collection: name,
       ids: selectedRowKeys as string[],
     });

@@ -9,7 +9,7 @@ export default function BasicTab() {
   const { components } = useComponents();
   const type = Form.useWatch("type");
   const [collections, setCollections] = useState<KeyValue[]>([]);
-  const { httpClient } = useHttpClient();
+  const { httpGet } = useHttpClient();
 
   const currentComponent = useMemo(() => {
     return components.find((f) => f.name == type);
@@ -17,10 +17,8 @@ export default function BasicTab() {
 
   useEffect(() => {
     if (type != "content") return;
-    httpClient
-      .get<KeyValue[]>("data-model/content-collections")
-      .then(setCollections);
-  }, [httpClient, type]);
+    httpGet<KeyValue[]>("data-model/content-collections").then(setCollections);
+  }, []);
 
   return (
     <>

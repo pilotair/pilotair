@@ -13,18 +13,16 @@ interface Props {
 export default function RenameForm({ path }: Props) {
   const [form] = Form.useForm<{ name: string }>();
   const { setOk } = useContext(UseModalContext);
-  const { httpClient } = useHttpClient();
+  const { httpPut } = useHttpClient();
   const { folder, entry } = splitFolderEntry(path);
   const emitReloadFiles = useEvent(reloadFiles);
 
   setOk(async () => {
     await form.validateFields();
     const value = form.getFieldsValue();
-    await httpClient.put("file/move", undefined, {
-      searchParams: {
-        path: path,
-        newPath: combine(folder, value.name),
-      },
+    await httpPut("file/move", undefined, {
+      path: path,
+      newPath: combine(folder, value.name),
     });
     emitReloadFiles();
   });

@@ -5,7 +5,7 @@ interface ClientOptions extends Omit<Options, "body" | "searchParams"> {
   prefix?: string;
 }
 
-type SendOptions = Omit<Options, "body" | "searchParams">;
+export type SendOptions = Omit<Options, "body" | "searchParams">;
 
 export class HttpClient {
   constructor(readonly options?: ClientOptions) {}
@@ -17,12 +17,20 @@ export class HttpClient {
     return url;
   }
 
-  private mergeOptions(options?: SendOptions) {
+  private mergeOptions(options?: SendOptions): SendOptions {
     return {
       headers: { ...this.options?.headers, ...options?.headers },
-      onSending: options?.onSending || this.options?.onSending,
-      successMessage: options?.successMessage ?? this.options?.successMessage,
-      errorMessage: options?.errorMessage ?? this.options?.errorMessage,
+      onRequest: (request: Request) => {
+        if (this.options?.onRequest) request = this.options.onRequest(request);
+        if (options?.onRequest) request = options.onRequest(request);
+        return request;
+      },
+      onResponse: (response: Response) => {
+        if (this.options?.onResponse)
+          response = this.options.onResponse(response);
+        if (options?.onResponse) response = options.onResponse(response);
+        return response;
+      },
     };
   }
 

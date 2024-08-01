@@ -50,5 +50,5 @@ export default function FolderBreadcrumb({
     return items;
   }, [path]);
 
-  return <Breadcrumb className={"w-full" + className} items={Items} />;
+  return <Breadcrumb className={"w-full px-4 " + className} items={Items} />;
 }

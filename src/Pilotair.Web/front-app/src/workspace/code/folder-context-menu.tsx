@@ -20,7 +20,7 @@ export default function FolderContextMenu({ children, path }: Props) {
   const { open } = useContext(ModalContext);
   const openNewFolderModal = useNewFolderModal();
   const { loadMenus } = useMenu();
-  const { httpClient } = useHttpClient();
+  const { httpDelete } = useHttpClient();
 
   async function onItemClick({
     key,
@@ -39,7 +39,7 @@ export default function FolderContextMenu({ children, path }: Props) {
         openNewFolderModal();
         break;
       case "delete":
-        await httpClient.delete("code", {
+        await httpDelete("code", {
           paths: [path],
         });
         loadMenus();

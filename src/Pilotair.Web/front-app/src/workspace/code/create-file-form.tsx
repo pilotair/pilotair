@@ -12,18 +12,18 @@ export default function CreateFileForm({ path }: Props) {
   const [form] = Form.useForm<{ name: string }>();
   const { setOk } = useContext(UseModalContext);
   const { loadMenus } = useMenu();
-  const { httpClient } = useHttpClient();
+  const { httpPost } = useHttpClient();
 
   setOk(async () => {
     await form.validateFields();
     const value = form.getFieldsValue();
-    await httpClient.post(
+    await httpPost(
       "code",
       {
         name: value.name,
       },
       {
-        searchParams: { folder: path },
+        folder: path,
       },
     );
     loadMenus();

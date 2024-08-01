@@ -13,16 +13,14 @@ interface Props {
 export default function NewFolderModal({ folder }: Props) {
   const [form] = Form.useForm();
   const { setOk } = useContext(UseModalContext);
-  const { httpClient } = useHttpClient();
+  const { httpPost } = useHttpClient();
   const emitReloadFiles = useEvent(reloadFiles);
 
   setOk(async () => {
     await form.validateFields();
     const model = form.getFieldsValue();
-    await httpClient.post("file", new FormData(), {
-      searchParams: {
-        folder: combine(folder, model.name),
-      },
+    await httpPost("file", new FormData(), {
+      folder: combine(folder, model.name),
     });
     emitReloadFiles();
   });

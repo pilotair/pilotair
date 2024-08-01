@@ -25,10 +25,10 @@ const menusAtom = atom<MenuItem[]>([]);
 
 export function useMenu() {
   const [menus, setMenus] = useAtom(menusAtom);
-  const { httpClient } = useHttpClient();
+  const { httpGet } = useHttpClient();
 
   const loadMenus = useCallback(async () => {
-    const response = await httpClient.get<Pilotair.Web.MenuItem[]>("menu");
+    const response = await httpGet<Pilotair.Web.MenuItem[]>("menu");
     setMenus(mapMenuItems(response ?? []) ?? []);
   }, []);
 

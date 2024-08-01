@@ -8,14 +8,14 @@ import { useRef } from "react";
 export default function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { httpClient } = useHttpClient();
+  const { httpPost } = useHttpClient();
   const container = useRef<HTMLDivElement>(null);
   useShortcut(shortcuts.enter, handleSignIn, container.current);
 
   async function handleSignIn() {
     await form.validateFields();
     const model = form.getFieldsValue();
-    await httpClient.post<string>("account/password-sign", model, undefined, {
+    await httpPost<string>("account/password-sign", model, undefined, {
       successMessage: false,
     });
     navigate("@/");
