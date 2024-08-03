@@ -8,7 +8,7 @@ type MenuItems = GetProps<typeof AntdMenu>["items"];
 
 export default function LeftMenu() {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
-  const { openTab, activeName } = useTab();
+  const { openTab, activeKey } = useTab();
   const { menus } = useMenu();
 
   const expandMenus = useMemo(() => {
@@ -47,12 +47,15 @@ export default function LeftMenu() {
     });
   }
 
+  const selectedKeys = [];
+  if (activeKey?.name && !activeKey.type) selectedKeys.push(activeKey.name);
+
   return (
     <AntdMenu
       mode="inline"
       items={getItems(menus)}
       onClick={({ key }) => handleMenuItemClick(key)}
-      selectedKeys={[activeName]}
+      selectedKeys={selectedKeys}
       theme="dark"
       inlineIndent={12}
       openKeys={openKeys}

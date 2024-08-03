@@ -1,21 +1,28 @@
-import TagGroup, { TagItem } from "@/common/basic/tag-group";
+import TabBar, { TabBarItem } from "./tab-bar";
 import { ReactNode } from "react";
 import TabPanel from "./panel";
+import { compareTabKey } from "./utils";
 
-export interface TabItem extends TagItem {
-  panel: ReactNode;
+export interface TabKey {
+  name: string;
+  type?: string;
 }
+
+export type TabItem = TabBarItem &
+  TabKey & {
+    panel: ReactNode;
+  };
 
 interface Props {
   items: TabItem[];
-  activeName?: string;
-  onTabClose?: (name: string) => void;
-  onTabClick?: (name: string) => void;
+  activeKey?: TabKey;
+  onTabClose?: (key: TabKey) => void;
+  onTabClick?: (key: TabKey) => void;
 }
 
 export default function Tabs({
   items,
-  activeName,
+  activeKey,
   onTabClick,
   onTabClose,
 }: Props) {
@@ -24,7 +31,7 @@ export default function Tabs({
   for (const item of items) {
     const tabPanel = (
       <TabPanel
-        isActive={item.name === activeName}
+        isActive={compareTabKey(item, activeKey)}
         name={item.name}
         key={item.name}
       >
@@ -38,9 +45,9 @@ export default function Tabs({
   return (
     <div className="h-full flex flex-col">
       <div className="flex-shrink-0">
-        <TagGroup
+        <TabBar
           items={items}
-          activeName={activeName}
+          activeKey={activeKey}
           onTagClick={onTabClick}
           onTagClose={onTabClose}
         />

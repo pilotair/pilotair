@@ -1,20 +1,21 @@
-import { createContext, ReactNode } from "react";
+import { createContext } from "react";
 import { ModalProvider } from "@/common/modals/context";
+import { TabKey } from "./tabs";
+import { ChildrenProps } from "../types";
 
-interface Tab {
-  name: string;
-}
+export const TabContext = createContext(
+  {} as {
+    tabKey: TabKey;
+  },
+);
 
-export const TabContext = createContext<Tab>({} as Tab);
+type Props = ChildrenProps & {
+  tabKey: TabKey;
+};
 
-interface Props {
-  children: ReactNode;
-  name: string;
-}
-
-export function TabProvider({ children, name }: Props) {
+export function TabProvider({ children, tabKey }: Props) {
   return (
-    <TabContext.Provider value={{ name }}>
+    <TabContext.Provider value={{ tabKey }}>
       <div className="relative h-full">
         <ModalProvider>{children}</ModalProvider>
       </div>

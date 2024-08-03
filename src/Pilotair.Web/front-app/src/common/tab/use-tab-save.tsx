@@ -3,12 +3,13 @@ import { TabContext } from "./context";
 import { save } from "../events/sources";
 import { useEvent } from "../events/event";
 import { useTab } from "@/workspace/use-tab";
+import { compareTabKey } from "./utils";
 
 export function useTabSave(action: () => void) {
-  const { name } = useContext(TabContext);
-  const { activeName } = useTab();
+  const { tabKey } = useContext(TabContext);
+  const { activeKey } = useTab();
   useEvent(save, () => {
-    if (name != activeName) return;
+    if (compareTabKey(tabKey, activeKey)) return;
     action();
   });
 }

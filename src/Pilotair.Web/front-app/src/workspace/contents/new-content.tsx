@@ -13,7 +13,7 @@ interface Props {
   path: string;
 }
 
-export default function NewContent({ collection, path }: Props) {
+export default function NewContent({ collection }: Props) {
   const [contentCollection, setContentCollection] =
     useState<Pilotair.Application.Contents.ContentCollectionModel>();
   const dataForm = useRef<DataFormRef>();
@@ -33,7 +33,7 @@ export default function NewContent({ collection, path }: Props) {
   async function handleSave() {
     const value = await dataForm.current?.getValue();
     await httpPost(`/content/${collection}`, value);
-    closeTab(path);
+    closeTab();
     emitReloadContents(collection);
   }
 

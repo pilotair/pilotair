@@ -5,10 +5,16 @@ import { LoadingProvider } from "../loading-context";
 interface TabPanelProps {
   children: ReactNode;
   name: string;
+  type?: string;
   isActive: boolean;
 }
 
-export default function TabPanel({ children, name, isActive }: TabPanelProps) {
+export default function TabPanel({
+  children,
+  name,
+  type,
+  isActive,
+}: TabPanelProps) {
   return (
     <div
       className={
@@ -16,7 +22,7 @@ export default function TabPanel({ children, name, isActive }: TabPanelProps) {
       }
       style={{ display: isActive ? "block" : "none" }}
     >
-      <TabProvider name={name}>
+      <TabProvider tabKey={{ name, type }}>
         <LoadingProvider>
           <div className="h-full overflow-auto">{children}</div>
         </LoadingProvider>

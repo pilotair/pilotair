@@ -1,66 +1,60 @@
 import { atom, useAtom } from "jotai";
-import { TabItem } from "../common/tab/tabs";
+import { TabItem, TabKey } from "../common/tab/tabs";
 import { useContext } from "react";
 import { TabContext } from "@/common/tab/context";
+import { compareTabKey } from "@/common/tab/utils";
 
-const activeNameAtom = atom("");
+const activeKeyAtom = atom<TabKey | undefined>(undefined);
 const tabsAtom = atom<TabItem[]>([]);
 
 export function useTab() {
-  const [activeName, setActiveName] = useAtom(activeNameAtom);
+  const [activeKey, setActiveKey] = useAtom<TabKey | undefined>(activeKeyAtom);
   const [tabs, setTabs] = useAtom(tabsAtom);
-  const { name: currentTabName } = useContext(TabContext);
+  const { tabKey: currentTabKey } = useContext(TabContext);
 
-  function closeTab(name?: string) {
-    name = name || currentTabName;
-    const tab = tabs.find((f) => f.name == name);
+  function closeTab(key?: TabKey) {
+    key = currentTabKey || key;
+    const tab = tabs.find((f) => f.name == key.name && f.type == key.type);
     if (!tab) return;
 
-    if (name == activeName) {
+    if (compareTabKey(key, activeKey)) {
       const currentTabIndex = tabs.indexOf(tab);
-      let activeName = "";
+      let activeTab: TabItem | undefined = undefined;
       if (tabs[currentTabIndex - 1]) {
-        activeName = tabs[currentTabIndex - 1]?.name;
+        activeTab = tabs[currentTabIndex - 1];
       } else if (tabs[currentTabIndex + 1]) {
-        activeName = tabs[currentTabIndex + 1]?.name;
+        activeTab = tabs[currentTabIndex + 1];
       }
-      setActiveName(activeName);
+
+      if (activeTab) {
+        setActiveTab(activeTab);
+      }
     }
 
     setTabs(tabs.filter((f) => f != tab));
   }
 
   function openTab(value: TabItem) {
-    const tab = tabs.find((f) => f.name == value.name);
+    const tab = tabs.find((f) => f.name == value.name && f.type == value.type);
 
     if (tab) {
-      setActiveName(tab.name);
+      setActiveTab(tab);
       return;
     }
 
-    setActiveName(value.name);
+    setActiveTab(value);
     setTabs([...tabs, value]);
   }
 
-  function replaceTab(oldPath: string, value: TabItem) {
-    const index = tabs.findIndex((f) => f.name == oldPath);
-
-    if (index == -1) {
-      tabs.push(value);
-    } else {
-      tabs.splice(index, 1, value);
-    }
-
-    setTabs([...tabs]);
-    if (activeName == oldPath) setActiveName(value.name);
+  function setActiveTab({ name, type }: TabKey) {
+    setActiveKey({ name, type });
   }
 
   return {
-    activeName,
     tabs,
-    setActiveName,
+    activeKey,
+    setActiveTab,
     closeTab,
     openTab,
-    replaceTab,
   };
 }

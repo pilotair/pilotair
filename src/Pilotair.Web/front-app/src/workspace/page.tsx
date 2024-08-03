@@ -82,7 +82,7 @@ function Sider() {
 }
 
 export default function Workspace() {
-  const { tabs, closeTab, setActiveName, activeName } = useTab();
+  const { tabs, closeTab, setActiveTab, activeKey } = useTab();
 
   function Content() {
     if (!tabs.length) {
@@ -92,9 +92,9 @@ export default function Workspace() {
     return (
       <Tabs
         items={tabs}
-        activeName={activeName}
+        activeKey={activeKey}
         onTabClose={closeTab}
-        onTabClick={setActiveName}
+        onTabClick={setActiveTab}
       />
     );
   }
