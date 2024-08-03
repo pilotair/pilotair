@@ -26,9 +26,7 @@ export function useTab() {
         activeTab = tabs[currentTabIndex + 1];
       }
 
-      if (activeTab) {
-        setActiveTab(activeTab);
-      }
+      setActiveKey(activeTab);
     }
 
     setTabs(tabs.filter((f) => f != tab));
@@ -38,22 +36,18 @@ export function useTab() {
     const tab = tabs.find((f) => f.name == value.name && f.type == value.type);
 
     if (tab) {
-      setActiveTab(tab);
+      setActiveKey(tab);
       return;
     }
 
-    setActiveTab(value);
+    setActiveKey(value);
     setTabs([...tabs, value]);
-  }
-
-  function setActiveTab({ name, type }: TabKey) {
-    setActiveKey({ name, type });
   }
 
   return {
     tabs,
     activeKey,
-    setActiveTab,
+    setActiveTab: setActiveKey,
     closeTab,
     openTab,
   };

@@ -56,15 +56,9 @@ function mapMenuItems(items: Pilotair.Web.MenuItem[]) {
 
 function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
   switch (menu.type) {
-    case "Codes":
-      return getCodesMenu(menu);
-    case "CodeFolder":
-      return getCodeFolderMenu(menu);
-    case "Code":
-      return getCodeMenu(menu);
     case "Files":
       return {
-        key: menu.type,
+        key: menu.path,
         label: "Files",
         icon: <FolderOutlined />,
         tab: <AsyncComponent component={() => import("./files/page")} />,
@@ -73,9 +67,15 @@ function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
       return getCollectionsMenu(menu);
     case "ContentCollection":
       return getCollectionMenu(menu);
+    case "Codes":
+      return getCodesMenu(menu);
+    case "CodeFolder":
+      return getCodeFolderMenu(menu);
+    case "Code":
+      return getCodeMenu(menu);
     case "Options":
       return {
-        key: menu.type,
+        key: menu.path,
         label: "Options",
         icon: <ControlOutlined />,
       };

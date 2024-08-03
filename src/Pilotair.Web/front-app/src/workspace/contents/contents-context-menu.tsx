@@ -4,7 +4,7 @@ import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/basic/async-component";
 import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
 import { MenuItemKeys } from "@/common/menus/constants";
-import { combine } from "@/utils/path";
+import { tabKeyTypes } from "@/common/tab/utils";
 
 interface Props {
   children: ReactNode;
@@ -15,9 +15,9 @@ export default function ContentsContextMenu({ children, path }: Props) {
   const { openTab } = useTab();
 
   function handleNew() {
-    path = combine("new", path);
     openTab({
       name: path,
+      type: tabKeyTypes.new,
       label: "New collection",
       panel: <AsyncComponent component={() => import("./new-collection")} />,
       icon: <FormOutlined />,

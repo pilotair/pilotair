@@ -15,7 +15,7 @@ export function getCollectionsMenu(menu: Pilotair.Web.MenuItem): MenuItem {
       </span>
     ),
     label: <ContentsContextMenu path={menu.path}>Contents</ContentsContextMenu>,
-    key: menu.type,
+    key: menu.path,
   };
 }
 
