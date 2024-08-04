@@ -1,6 +1,5 @@
 import { FormOutlined } from "@ant-design/icons";
 import { useHttpClient } from "@/utils/http/use-client";
-import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/basic/async-component";
 import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
 import { MenuItemKeys } from "@/common/menus/constants";
@@ -9,13 +8,15 @@ import { deleteMenu, reloadMenus } from "@/common/events/sources";
 import { Pilotair } from "@/schema";
 import { ChildrenProps } from "@/common/types";
 import { tabKeyTypes } from "@/common/tab/utils";
+import { useContext } from "react";
+import { TabsContext } from "../main-tabs";
 
 interface Props extends ChildrenProps {
   menu: Pilotair.Web.MenuItem;
 }
 
 export default function CollectionContextMenu({ children, menu }: Props) {
-  const { openTab } = useTab();
+  const { openTab } = useContext(TabsContext);
   const { httpDelete } = useHttpClient();
   const emitDeleteMenu = useEvent(deleteMenu);
   const emitReloadMenus = useEvent(reloadMenus);

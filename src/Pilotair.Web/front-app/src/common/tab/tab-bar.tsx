@@ -1,11 +1,10 @@
 import { ReactNode } from "react";
 import { Dropdown, MenuProps, Tag } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { TabKey } from "./tabs";
 import { compareTabKey } from "./utils";
+import { TabKey } from "./tabs";
 
-export interface TabBarItem {
-  name: string;
+export interface TabBarItem extends TabKey {
   label?: ReactNode;
   icon?: ReactNode;
   closable?: boolean;
@@ -39,7 +38,7 @@ export default function TabBar({
     );
     let tag = (
       <Tag
-        key={item.name}
+        key={item.type + item.name}
         closeIcon={closeIcon}
         onClose={(e) => handleClose(item, e)}
         bordered={false}

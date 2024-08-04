@@ -3,16 +3,13 @@ import { Button, GetProp, Input, Table } from "antd";
 import { Key, useContext, useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import { useHttpClient } from "@/utils/http/use-client";
-import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/basic/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { useEvent } from "@/common/events/event";
-import {
-  deleteContentCollection,
-  reloadContents,
-} from "@/common/events/sources";
+import { reloadContents } from "@/common/events/sources";
 import { tabKeyTypes } from "@/common/tab/utils";
 import { TabContext } from "@/common/tab/context";
+import { TabsContext } from "../main-tabs";
 
 type Columns = GetProp<typeof Table, "columns">;
 interface Props {
@@ -27,11 +24,10 @@ export default function Contents({ name, display }: Props) {
     useState<Pilotair.Application.Contents.ContentCollectionModel>();
   const [data, setData] =
     useState<Pilotair.Application.Contents.ContentPagingResult>();
-  const { openTab, closeTab } = useTab();
+  const { openTab } = useContext(TabsContext);
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
   const { httpGet, httpDelete } = useHttpClient();
   const { tabKey } = useContext(TabContext);
-  useEvent(deleteContentCollection, (e) => e == name && closeTab());
 
   useEffect(() => {
     httpGet<Pilotair.Application.Contents.ContentCollectionModel>(

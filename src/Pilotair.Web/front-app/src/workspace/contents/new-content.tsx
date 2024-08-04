@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Pilotair } from "@/schema";
 import { useHttpClient } from "@/utils/http/use-client";
 import { Button, Divider } from "antd";
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
-import { useTab } from "../use-tab";
 import { useEvent } from "@/common/events/event";
 import { reloadContents } from "@/common/events/sources";
+import { TabsContext } from "../main-tabs";
+import { TabContext } from "@/common/tab/context";
 
 interface Props {
   collection: string;
@@ -17,7 +18,8 @@ export default function NewContent({ collection }: Props) {
   const [contentCollection, setContentCollection] =
     useState<Pilotair.Application.Contents.ContentCollectionModel>();
   const dataForm = useRef<DataFormRef>();
-  const { closeTab } = useTab();
+  const { closeTab } = useContext(TabsContext);
+  const { tabKey } = useContext(TabContext);
   const emitReloadContents = useEvent(reloadContents);
   const { httpGet, httpPost } = useHttpClient();
 
@@ -33,7 +35,7 @@ export default function NewContent({ collection }: Props) {
   async function handleSave() {
     const value = await dataForm.current?.getValue();
     await httpPost(`/content/${collection}`, value);
-    closeTab();
+    closeTab(tabKey);
     emitReloadContents(collection);
   }
 

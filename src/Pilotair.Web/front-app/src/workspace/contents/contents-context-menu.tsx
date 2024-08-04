@@ -1,10 +1,10 @@
 import { FormOutlined } from "@ant-design/icons";
-import { ReactNode } from "react";
-import { useTab } from "@/workspace/use-tab";
+import { ReactNode, useContext } from "react";
 import AsyncComponent from "@/common/basic/async-component";
 import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
 import { MenuItemKeys } from "@/common/menus/constants";
 import { tabKeyTypes } from "@/common/tab/utils";
+import { TabsContext } from "../main-tabs";
 
 interface Props {
   children: ReactNode;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function ContentsContextMenu({ children, path }: Props) {
-  const { openTab } = useTab();
+  const { openTab } = useContext(TabsContext);
 
   function handleNew() {
     openTab({

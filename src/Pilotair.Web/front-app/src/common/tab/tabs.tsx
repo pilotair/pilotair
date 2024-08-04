@@ -8,10 +8,9 @@ export interface TabKey {
   type?: string;
 }
 
-export type TabItem = TabBarItem &
-  TabKey & {
-    panel: ReactNode;
-  };
+export type TabItem = TabBarItem & {
+  panel: ReactNode;
+};
 
 interface Props {
   items: TabItem[];

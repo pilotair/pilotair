@@ -1,6 +1,5 @@
 import SiderLayout from "../common/layout/sider-layout";
-import { useTab } from "./use-tab";
-import { memo, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Tabs from "@/common/tab/tabs";
 import AsyncComponent from "@/common/basic/async-component";
 import Empty from "@/common/basic/empty";
@@ -17,10 +16,11 @@ import LeftMenu from "./left-menu";
 import { useMenu } from "./use-menu";
 import { useEvent } from "@/common/events/event";
 import { deleteMenu, reloadMenus } from "@/common/events/sources";
+import { TabsContext, TabsProvider } from "./main-tabs";
 
 function Sider() {
   const { collapsed } = useContext(SiderLayoutContext);
-  const { openTab, closeTab } = useTab();
+  const { openTab, closeTab } = useContext(TabsContext);
   const { loadMenus } = useMenu();
   const nav = useNavigate();
   const [openKeys, setOpenKeys] = useState<string[]>([]);
@@ -29,7 +29,7 @@ function Sider() {
 
   useEffect(() => {
     loadMenus();
-  }, []);
+  }, [loadMenus]);
 
   function handleMoreClick() {
     openTab({
@@ -82,34 +82,39 @@ function Sider() {
   );
 }
 
-export default function Workspace() {
-  const { tabs, closeTab, setActiveTab, activeKey } = useTab();
-
-  function Content() {
-    if (!tabs.length) {
-      return <Empty />;
-    }
-
-    return (
-      <Tabs
-        items={tabs}
-        activeKey={activeKey}
-        onTabClose={closeTab}
-        onTabClick={setActiveTab}
-      />
-    );
+function Content() {
+  const { tabs, activeKey, setActiveKey, closeTab } = useContext(TabsContext);
+  if (!tabs.length) {
+    return <Empty />;
   }
 
   return (
-    <SiderLayout sider={<Sider />} content={Content()} header={<Header />} />
+    <Tabs
+      items={tabs}
+      activeKey={activeKey}
+      onTabClose={closeTab}
+      onTabClick={setActiveKey}
+    />
   );
 }
 
-const Header = memo(function Header() {
+export default function Workspace() {
+  return (
+    <TabsProvider>
+      <SiderLayout
+        sider={<Sider />}
+        content={<Content />}
+        header={<Header />}
+      />
+    </TabsProvider>
+  );
+}
+
+function Header() {
   return (
     <>
       <div className="flex-1"></div>
       <Avatar />
     </>
   );
-});
+}

@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { MenuItem, useMenu } from "./use-menu";
 import { Menu as AntdMenu, GetProps } from "antd";
-import { useTab } from "./use-tab";
 import { ReloadOutlined } from "@ant-design/icons";
+import { TabsContext } from "./main-tabs";
 
 type MenuItems = GetProps<typeof AntdMenu>["items"];
 
 export default function LeftMenu() {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
-  const { openTab, activeKey } = useTab();
+  const { openTab, activeKey } = useContext(TabsContext);
   const { menus } = useMenu();
 
   const expandMenus = useMemo(() => {

@@ -6,9 +6,8 @@ import { Pilotair } from "@/schema";
 import FieldsList from "@/workspace/data-models/fields/field-list";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
 import { useEvent } from "@/common/events/event";
-import { deleteContentCollection, reloadMenus } from "@/common/events/sources";
-import { useTabSave } from "@/common/tab/use-tab-save";
-import { useTab } from "../use-tab";
+import { reloadMenus } from "@/common/events/sources";
+import { useTabSave } from "@/workspace/use-tab-save";
 
 interface Props {
   name: string;
@@ -20,9 +19,7 @@ export default function EditCollection({ name }: Props) {
   const [form] =
     Form.useForm<Pilotair.Application.Contents.ContentCollectionModel>();
   const { httpGet, httpPut } = useHttpClient();
-  const { closeTab } = useTab();
   const emitReloadMenus = useEvent(reloadMenus);
-  useEvent(deleteContentCollection, (e) => e == name && closeTab());
   useTabSave(handleSave);
 
   useEffect(() => {

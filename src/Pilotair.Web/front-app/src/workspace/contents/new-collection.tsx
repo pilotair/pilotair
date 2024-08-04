@@ -1,18 +1,21 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import { useHttpClient } from "@/utils/http/use-client";
-import { useTab } from "@/workspace/use-tab";
 import { Pilotair } from "@/schema";
 import FieldsList from "@/workspace/data-models/fields/field-list";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
-import { useTabSave } from "@/common/tab/use-tab-save";
+import { useTabSave } from "@/workspace/use-tab-save";
 import { useEvent } from "@/common/events/event";
 import { reloadMenus } from "@/common/events/sources";
+import { useContext } from "react";
+import { TabsContext } from "../main-tabs";
+import { TabContext } from "@/common/tab/context";
 
 export default function NewCollection() {
   const [form] =
     Form.useForm<Pilotair.Application.Contents.ContentCollectionModel>();
-  const { closeTab } = useTab();
+  const { closeTab } = useContext(TabsContext);
+  const { tabKey } = useContext(TabContext);
   const { httpPost } = useHttpClient();
   const emitReloadMenus = useEvent(reloadMenus);
   useTabSave(handleSave);
@@ -22,7 +25,7 @@ export default function NewCollection() {
     const model = form.getFieldsValue();
     await httpPost("content-collection", model);
     emitReloadMenus();
-    closeTab();
+    closeTab(tabKey);
   }
 
   function handleReset() {
