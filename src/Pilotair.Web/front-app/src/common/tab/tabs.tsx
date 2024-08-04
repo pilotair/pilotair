@@ -32,8 +32,8 @@ export default function Tabs({
     const tabPanel = (
       <TabPanel
         isActive={compareTabKey(item, activeKey)}
-        name={item.name}
-        key={item.name}
+        tabKey={item}
+        key={item.type + item.name}
       >
         {item.panel}
       </TabPanel>

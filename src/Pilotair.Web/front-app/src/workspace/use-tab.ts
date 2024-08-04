@@ -12,8 +12,16 @@ export function useTab() {
   const [tabs, setTabs] = useAtom(tabsAtom);
   const { tabKey: currentTabKey } = useContext(TabContext);
 
-  function closeTab(key?: TabKey) {
-    key = currentTabKey || key;
+  function closeTab(key?: TabKey | string) {
+    if (typeof key === "string") {
+      const list = tabs.filter((f) => f.name.startsWith(key as string));
+      for (const item of list) {
+        closeTab(item);
+      }
+      return;
+    }
+
+    key = key || currentTabKey;
     const tab = tabs.find((f) => f.name == key.name && f.type == key.type);
     if (!tab) return;
 
@@ -37,11 +45,10 @@ export function useTab() {
 
     if (tab) {
       setActiveKey(tab);
-      return;
+    } else {
+      setActiveKey(value);
+      setTabs([...tabs, value]);
     }
-
-    setActiveKey(value);
-    setTabs([...tabs, value]);
   }
 
   return {

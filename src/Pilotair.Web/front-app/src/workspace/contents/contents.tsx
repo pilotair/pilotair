@@ -1,28 +1,28 @@
 import { EditOutlined, FormOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, GetProp, Input, Table } from "antd";
-import { Key, useEffect, useState } from "react";
+import { Key, useContext, useEffect, useState } from "react";
 import { Pilotair } from "@/schema";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useTab } from "@/workspace/use-tab";
 import AsyncComponent from "@/common/basic/async-component";
 import ToolbarLayout from "@/common/layout/toolbar-layout";
-import { combine } from "@/utils/path";
 import { useEvent } from "@/common/events/event";
 import {
   deleteContentCollection,
   reloadContents,
 } from "@/common/events/sources";
+import { tabKeyTypes } from "@/common/tab/utils";
+import { TabContext } from "@/common/tab/context";
 
 type Columns = GetProp<typeof Table, "columns">;
 interface Props {
   name: string;
   display?: string;
-  path: string;
 }
 
 const { Search } = Input;
 
-export default function Contents({ name, display, path }: Props) {
+export default function Contents({ name, display }: Props) {
   const [collection, setCollection] =
     useState<Pilotair.Application.Contents.ContentCollectionModel>();
   const [data, setData] =
@@ -30,6 +30,7 @@ export default function Contents({ name, display, path }: Props) {
   const { openTab, closeTab } = useTab();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
   const { httpGet, httpDelete } = useHttpClient();
+  const { tabKey } = useContext(TabContext);
   useEvent(deleteContentCollection, (e) => e == name && closeTab());
 
   useEffect(() => {
@@ -52,16 +53,15 @@ export default function Contents({ name, display, path }: Props) {
   });
 
   function handleNew() {
-    const addPath = combine("new", path);
     openTab({
-      name: addPath,
+      name: tabKey.name,
+      type: tabKeyTypes.new,
       label: `New ${display || name}`,
       panel: (
         <AsyncComponent
           component={() => import("./new-content")}
           props={{
             collection: name,
-            path: addPath,
           }}
         />
       ),
@@ -70,16 +70,15 @@ export default function Contents({ name, display, path }: Props) {
   }
 
   function handleEdit(id: string) {
-    const editPath = combine("edit", path);
     openTab({
-      name: editPath,
+      name: tabKey.name,
+      type: tabKeyTypes.edit,
       label: `Edit ${display || name}`,
       panel: (
         <AsyncComponent
           component={() => import("./edit-content")}
           props={{
             collection: name,
-            path: editPath,
             id,
           }}
         />

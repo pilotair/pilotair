@@ -7,7 +7,6 @@ import DataForm, { DataFormRef } from "@/workspace/data-models/data-form";
 
 interface Props {
   collection: string;
-  path: string;
   id: string;
 }
 

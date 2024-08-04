@@ -5,7 +5,7 @@ import AsyncComponent from "@/common/basic/async-component";
 import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
 import { MenuItemKeys } from "@/common/menus/constants";
 import { useEvent } from "@/common/events/event";
-import { deleteContentCollection, reloadMenus } from "@/common/events/sources";
+import { deleteMenu, reloadMenus } from "@/common/events/sources";
 import { Pilotair } from "@/schema";
 import { ChildrenProps } from "@/common/types";
 import { tabKeyTypes } from "@/common/tab/utils";
@@ -17,8 +17,8 @@ interface Props extends ChildrenProps {
 export default function CollectionContextMenu({ children, menu }: Props) {
   const { openTab } = useTab();
   const { httpDelete } = useHttpClient();
+  const emitDeleteMenu = useEvent(deleteMenu);
   const emitReloadMenus = useEvent(reloadMenus);
-  const emitDeleteContentCollection = useEvent(deleteContentCollection);
 
   function handleEdit() {
     openTab({
@@ -38,7 +38,7 @@ export default function CollectionContextMenu({ children, menu }: Props) {
   async function handleDelete() {
     await httpDelete(`content-collection?name=${menu.name}`);
     emitReloadMenus();
-    emitDeleteContentCollection(menu.name);
+    emitDeleteMenu(menu.path);
   }
 
   const items: MenuItem[] = [

@@ -30,7 +30,6 @@ export function getCollectionMenu(menu: Pilotair.Web.MenuItem): MenuItem {
         props={{
           name: menu.name,
           display: menu.display,
-          path: menu.path,
         }}
       />
     ),

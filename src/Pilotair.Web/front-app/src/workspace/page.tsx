@@ -16,15 +16,16 @@ import FoldUp from "@/assets/fold-up.svg";
 import LeftMenu from "./left-menu";
 import { useMenu } from "./use-menu";
 import { useEvent } from "@/common/events/event";
-import { reloadMenus } from "@/common/events/sources";
+import { deleteMenu, reloadMenus } from "@/common/events/sources";
 
 function Sider() {
   const { collapsed } = useContext(SiderLayoutContext);
-  const { openTab } = useTab();
+  const { openTab, closeTab } = useTab();
   const { loadMenus } = useMenu();
   const nav = useNavigate();
   const [openKeys, setOpenKeys] = useState<string[]>([]);
   useEvent(reloadMenus, loadMenus);
+  useEvent(deleteMenu, closeTab);
 
   useEffect(() => {
     loadMenus();
