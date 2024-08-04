@@ -2,7 +2,6 @@ import { TabItem, TabKey } from "@/common/tab/tabs";
 import { compareTabKey } from "@/common/tab/utils";
 import { ChildrenProps } from "@/common/types";
 import { createContext, useState } from "react";
-import { useImmer } from "use-immer";
 
 export const TabsContext = createContext(
   {} as {
@@ -15,7 +14,7 @@ export const TabsContext = createContext(
 );
 
 export function TabsProvider({ children }: ChildrenProps) {
-  const [tabs, setTabs] = useImmer<TabItem[]>([]);
+  const [tabs, setTabs] = useState<TabItem[]>([]);
   const [activeKey, setActiveKey] = useState<TabKey | undefined>();
 
   function openTab(value: TabItem) {
@@ -47,10 +46,10 @@ export function TabsProvider({ children }: ChildrenProps) {
       for (const i of closedTabs) {
         if (compareTabKey(i, activeTab)) {
           const currentTabIndex = value.indexOf(i);
-          if (tabs[currentTabIndex - 1]) {
-            activeTab = tabs[currentTabIndex - 1];
-          } else if (tabs[currentTabIndex + 1]) {
-            activeTab = tabs[currentTabIndex + 1];
+          if (value[currentTabIndex - 1]) {
+            activeTab = value[currentTabIndex - 1];
+          } else if (value[currentTabIndex + 1]) {
+            activeTab = value[currentTabIndex + 1];
           } else {
             activeTab = undefined;
           }
