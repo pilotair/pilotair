@@ -9,6 +9,7 @@ import {
   getCollectionMenu,
   getCollectionsMenu,
 } from "./contents/collection-menu";
+import { combine } from "@/utils/path";
 
 export type MenuItem = {
   key: string;
@@ -58,7 +59,7 @@ function getMenu(menu: Pilotair.Web.MenuItem): MenuItem | undefined {
   switch (menu.type) {
     case "Files":
       return {
-        key: menu.path,
+        key: combine(menu.type, menu.path),
         label: "Files",
         icon: <FolderOutlined />,
         tab: <AsyncComponent component={() => import("./files/page")} />,

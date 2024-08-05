@@ -1,6 +1,4 @@
-using Pilotair.Web.Menus;
-
-namespace Pilotair.Application;
+namespace Pilotair.Web.Menus.Providers;
 
 [Singleton(typeof(IMenuProvider))]
 public class OptionMenuProvider : IMenuProvider

@@ -1,7 +1,6 @@
 using Pilotair.Application.Contents;
-using Pilotair.Web.Menus;
 
-namespace Pilotair.Web.Menus;
+namespace Pilotair.Web.Menus.Providers;
 
 [Singleton(typeof(IMenuProvider))]
 public class ContentMenuProvider(ContentCollectionStore store) : IMenuProvider
@@ -33,7 +32,6 @@ public class ContentMenuProvider(ContentCollectionStore store) : IMenuProvider
                 Type = MenuItem.Types.ContentCollection,
                 Name = collection.Key,
                 Display = collection.Value.Display,
-                Folder = "content-collections"
             });
         }
         return result;

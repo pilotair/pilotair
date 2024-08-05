@@ -1,8 +1,7 @@
-import { DeleteOutlined } from "@ant-design/icons";
-import { Dropdown, MenuProps } from "antd";
 import { ReactNode } from "react";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
+import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
 
 interface Props {
   children: ReactNode;
@@ -13,40 +12,21 @@ export default function CodeContextMenu({ children, path }: Props) {
   const { loadMenus } = useMenu();
   const { httpDelete } = useHttpClient();
 
-  async function handleItemClick({
-    key,
-    domEvent,
-  }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
-    domEvent.stopPropagation();
-
-    switch (key) {
-      case "delete":
+  const items: MenuItem[] = [
+    {
+      key: "delete",
+      async onClick() {
         await httpDelete("code", {
           paths: [path],
         });
         loadMenus();
-        break;
-      default:
-        break;
-    }
-  }
-
-  const menu: MenuProps = {
-    items: [
-      {
-        key: "delete",
-        label: <span>Delete</span>,
-        icon: <DeleteOutlined />,
-        title: "",
-        danger: true,
       },
-    ],
-    onClick: handleItemClick,
-  };
+    },
+  ];
 
   return (
-    <Dropdown trigger={["contextMenu"]} menu={menu}>
+    <ContextMenu items={items}>
       <div>{children}</div>
-    </Dropdown>
+    </ContextMenu>
   );
 }

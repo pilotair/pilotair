@@ -1,15 +1,12 @@
-import {
-  DeleteOutlined,
-  FileAddOutlined,
-  FolderAddOutlined,
-} from "@ant-design/icons";
-import { Dropdown, MenuProps } from "antd";
+import { FolderAddOutlined } from "@ant-design/icons";
 import { ReactNode, useContext } from "react";
 import { ModalContext } from "@/common/modals/context";
 import { useNewFolderModal } from "./use-new-folder-modal";
 import CreateFileForm from "./create-file-form";
 import { useHttpClient } from "@/utils/http/use-client";
 import { useMenu } from "@/workspace/use-menu";
+import ContextMenu, { MenuItem } from "@/common/menus/context-menu";
+import { MenuItemKeys } from "@/common/menus/constants";
 
 interface Props {
   children: ReactNode;
@@ -22,60 +19,40 @@ export default function FolderContextMenu({ children, path }: Props) {
   const { loadMenus } = useMenu();
   const { httpDelete } = useHttpClient();
 
-  async function onItemClick({
-    key,
-    domEvent,
-  }: Parameters<NonNullable<MenuProps["onClick"]>>[0]) {
-    domEvent.stopPropagation();
-
-    switch (key) {
-      case "file":
+  const items: MenuItem[] = [
+    {
+      key: MenuItemKeys.edit,
+      label: <div>New file</div>,
+      onClick() {
         open({
           title: "Create file",
           children: <CreateFileForm path={path} />,
         });
-        break;
-      case "folder":
+      },
+    },
+    {
+      key: "folder",
+      label: "New folder",
+      icon: <FolderAddOutlined />,
+      title: "",
+      onClick() {
         openNewFolderModal();
-        break;
-      case "delete":
+      },
+    },
+    {
+      key: MenuItemKeys.delete,
+      async onClick() {
         await httpDelete("code", {
           paths: [path],
         });
         loadMenus();
-        break;
-      default:
-        break;
-    }
-  }
-
-  const menu: MenuProps = {
-    items: [
-      {
-        key: "file",
-        label: <div>New file</div>,
-        icon: <FileAddOutlined />,
-        title: "",
       },
-      {
-        key: "folder",
-        label: "New folder",
-        icon: <FolderAddOutlined />,
-        title: "",
-      },
-      {
-        key: "delete",
-        label: <span className="text-red-500">Delete</span>,
-        icon: <DeleteOutlined className="text-red-500" />,
-        title: "",
-      },
-    ],
-    onClick: onItemClick,
-  };
+    },
+  ];
 
   return (
-    <Dropdown trigger={["contextMenu"]} menu={menu}>
+    <ContextMenu items={items}>
       <div>{children}</div>
-    </Dropdown>
+    </ContextMenu>
   );
 }

@@ -1,6 +1,6 @@
 import { Pilotair } from "@/schema";
 import FolderContextMenu from "./folder-context-menu";
-import { FunctionOutlined } from "@ant-design/icons";
+import { MacCommandOutlined } from "@ant-design/icons";
 import { MenuItem } from "@/workspace/use-menu";
 import CodeContextMenu from "./code-context-menu";
 import AsyncComponent from "@/common/basic/async-component";
@@ -10,7 +10,7 @@ export function getCodesMenu(menu: Pilotair.Web.MenuItem): MenuItem {
     icon: (
       <span>
         <FolderContextMenu path={menu.path}>
-          <FunctionOutlined />
+          <MacCommandOutlined />
         </FolderContextMenu>
       </span>
     ),

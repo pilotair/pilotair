@@ -15,7 +15,7 @@ public class MenuItem
         ContentCollection,
         Options,
     }
-   
+
     public uint Order { get; set; }
 
     public required Types Type { get; set; }
@@ -31,7 +31,7 @@ public class MenuItem
     {
         get
         {
-            return System.IO.Path.Combine(Type.ToString(), Folder ?? string.Empty, Name);
+            return System.IO.Path.Combine(Folder ?? string.Empty, Name);
         }
     }
 

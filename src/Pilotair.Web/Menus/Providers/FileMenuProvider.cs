@@ -1,4 +1,4 @@
-namespace Pilotair.Web.Menus;
+namespace Pilotair.Web.Menus.Providers;
 
 [Singleton(typeof(IMenuProvider))]
 public class FileMenuProvider : IMenuProvider
