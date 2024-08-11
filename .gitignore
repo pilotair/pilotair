@@ -206,6 +206,5 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,dotnetcore,node
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
-src/Pilotair.Web/wwwroot
-src/Pilotair.Web/data
-src/Pilotair.Web/front-app/src/schema.d.ts
+src/Pilotair/wwwroot
+src/pilotair-front-app/src/schema.d.ts
