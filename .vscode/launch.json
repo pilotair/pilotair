@@ -2,13 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Web Dev",
+            "name": "Launch Dev",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Pilotair.Web/bin/Debug/net8.0/Pilotair.Web.dll",
+            "program": "${workspaceFolder}/src/Pilotair/bin/Debug/net8.0/Pilotair.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Pilotair.Web",
+            "cwd": "${workspaceFolder}/src/Pilotair",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
@@ -17,13 +17,13 @@
             }
         },
         {
-            "name": "Launch Web Preview",
+            "name": "Launch Preview",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build release",
-            "program": "${workspaceFolder}/src/Pilotair.Web/bin/Release/net8.0/Pilotair.Web.dll",
+            "program": "${workspaceFolder}/src/Pilotair/bin/Release/net8.0/Pilotair.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Pilotair.Web",
+            "cwd": "${workspaceFolder}/src/Pilotair",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Staging",

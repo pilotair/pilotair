@@ -32,9 +32,9 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish web",
+            "label": "publish",
             "type": "shell",
-            "command": "${workspaceFolder}/scripts/publish-web.sh"
+            "command": "${workspaceFolder}/scripts/publish.sh"
         }
     ]
 }
