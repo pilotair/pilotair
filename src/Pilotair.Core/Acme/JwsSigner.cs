@@ -1,7 +1,5 @@
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
-using Microsoft.IdentityModel.Tokens;
 using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Acme;
@@ -23,10 +21,10 @@ public class JwsSigner : IDisposable
             Curve = ECCurve.CreateFromFriendlyName(parameters.Curve),
             Q = new ECPoint
             {
-                X = Base64UrlEncoder.DecodeBytes(parameters.X),
-                Y = Base64UrlEncoder.DecodeBytes(parameters.Y)
+                X = Base64UrlHelper.DecodeBytes(parameters.X),
+                Y = Base64UrlHelper.DecodeBytes(parameters.Y)
             },
-            D = Base64UrlEncoder.DecodeBytes(parameters.D)
+            D = Base64UrlHelper.DecodeBytes(parameters.D)
         };
 
         ecdsa.ImportParameters(ecParameters);
@@ -38,21 +36,21 @@ public class JwsSigner : IDisposable
 
         return new Parameters(
             parameters.Curve.Oid.FriendlyName!,
-            Base64UrlEncoder.Encode(parameters.D),
-            Base64UrlEncoder.Encode(parameters.Q.X),
-            Base64UrlEncoder.Encode(parameters.Q.Y)
+            Base64UrlHelper.Encode(parameters.D),
+            Base64UrlHelper.Encode(parameters.Q.X),
+            Base64UrlHelper.Encode(parameters.Q.Y)
         );
     }
 
     public JsonWebSignature Sign(object? message, string url, string nonce, string? kid = null)
     {
-        var payload = message == null ? string.Empty : ToBase64(message);
+        var payload = Base64UrlHelper.EncodeObject(message);
         var @protected = BuildHeader(url, nonce, kid);
 
         var body = $"{@protected}.{payload}";
         var bodyBytes = Encoding.ASCII.GetBytes(body);
         var signatureBytes = ecdsa.SignData(bodyBytes, HashAlgorithmName.SHA256);
-        var signature = Base64UrlEncoder.Encode(signatureBytes);
+        var signature = Base64UrlHelper.Encode(signatureBytes);
         return new JsonWebSignature(@protected, payload, signature);
     }
 
@@ -60,7 +58,7 @@ public class JwsSigner : IDisposable
     {
         var body = $"{jws.Protected}.{jws.Payload}";
         var bodyBytes = Encoding.ASCII.GetBytes(body);
-        return ecdsa.VerifyData(bodyBytes, Base64UrlEncoder.DecodeBytes(jws.Signature), HashAlgorithmName.SHA256);
+        return ecdsa.VerifyData(bodyBytes, Base64UrlHelper.DecodeBytes(jws.Signature), HashAlgorithmName.SHA256);
     }
 
     public void Dispose()
@@ -73,10 +71,10 @@ public class JwsSigner : IDisposable
         var parameters = ecdsa.ExportParameters(includePrivateParameters: false);
 
         return new JsonWebKey(
-            JsonWebKeyECTypes.P256,
-            JsonWebAlgorithmsKeyTypes.EllipticCurve,
-            Base64UrlEncoder.Encode(parameters.Q.X),
-            Base64UrlEncoder.Encode(parameters.Q.Y)
+            "P-256",
+            "EC",
+            Base64UrlHelper.Encode(parameters.Q.X),
+            Base64UrlHelper.Encode(parameters.Q.Y)
         );
     }
 
@@ -98,11 +96,6 @@ public class JwsSigner : IDisposable
             header["jwk"] = GetJwk();
         }
 
-        return ToBase64(header);
-    }
-
-    private static string ToBase64(object value)
-    {
-        return Base64UrlEncoder.Encode(JsonHelper.Serialize(value));
+        return Base64UrlHelper.EncodeObject(header);
     }
 }

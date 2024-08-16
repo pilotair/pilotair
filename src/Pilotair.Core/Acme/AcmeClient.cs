@@ -62,7 +62,7 @@ public class AcmeClient
 
     public async Task<string> GetAccount()
     {
-        var response = await SendAsync(Directory.NewAccount, new CheckAccount());
+        var response = await SendAsync(Directory.NewAccount, new NewAccount { OnlyReturnExisting = true });
         var kid = (response.Headers.Location?.ToString()) ?? throw new AcmeException("Kid not found");
         return kid;
     }
