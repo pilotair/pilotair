@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using Pilotair.Core.Acme.Messages;
 using Pilotair.Core.Acme.Resources;
+using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Acme;
 
@@ -12,8 +13,9 @@ public class AcmeClient
     private readonly ConcurrentQueue<string> nonceQueue = [];
     private ServiceDirectory? directory;
     private record ErrorMessage(string Type, string Detail);
+    private readonly JwsSigner signer;
 
-    internal ServiceDirectory Directory
+    private ServiceDirectory Directory
     {
         get
         {
@@ -28,6 +30,13 @@ public class AcmeClient
         var baseUrl = options.Staging ? Constants.LetsEncryptV2StagingEndpoint : Constants.LetsEncryptV2Endpoint;
         httpClient.BaseAddress = new Uri(baseUrl);
         this.httpClient = httpClient;
+
+        if (!string.IsNullOrWhiteSpace(options.JwsSignerParameters))
+        {
+            var ecParameters = JsonHelper.Deserialize<JwsSigner.Parameters>(options.JwsSignerParameters);
+            signer = new JwsSigner(ecParameters);
+        }
+        else signer = new JwsSigner();
     }
 
     public async Task InitAsync()
@@ -35,6 +44,12 @@ public class AcmeClient
         directory = await httpClient.GetFromJsonAsync<ServiceDirectory>("directory")
             ?? throw new AcmeException("Directory init failed");
         await NewNonceAsync();
+    }
+
+    public string ExportJwsSignerParameters()
+    {
+        var ecParameters = signer.Export();
+        return JsonHelper.Serialize(ecParameters);
     }
 
     public async Task<string> NewAccount(NewAccount account)

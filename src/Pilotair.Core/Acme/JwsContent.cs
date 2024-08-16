@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Pilotair.Core.Helpers;
 
 namespace Pilotair.Core.Acme;
 
@@ -14,7 +15,6 @@ public class JwsContent : StringContent
     protected static string ComputeAcmeSigned(object message, string url, string nonce, string? kid = null)
     {
         var signer = new JwsSigner();
-        return signer.Sign(message, url, nonce, kid);
+        return JsonHelper.Serialize(signer.Sign(message, url, nonce, kid));
     }
-
 }
