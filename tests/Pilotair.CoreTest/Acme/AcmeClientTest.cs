@@ -19,12 +19,15 @@ public class AcmeClientTest
     public async Task NewAccountAsync()
     {
         var client = await CreateClientAsync(testParameters);
-        //https://acme-v02.api.letsencrypt.org/acme/acct/1893629016
+        //https://acme-staging-v02.api.letsencrypt.org/acme/acct/159595913
         var kid = await client.NewAccount(new Core.Acme.Messages.NewAccount
         {
-            OnlyReturnExisting = true,
             TermsOfServiceAgreed = true
         });
+
+        Assert.IsNotNull(kid);
+        var existKid= await client.GetAccount();
+        Assert.AreEqual(kid, existKid);
     }
 
     private async Task<AcmeClient> CreateClientAsync(string? jwsSignerParameters = null)

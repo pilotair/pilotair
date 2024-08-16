@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Pilotair.Core.Acme.Messages;
 using Pilotair.Core.Acme.Resources;
@@ -54,20 +55,36 @@ public class AcmeClient
 
     public async Task<string> NewAccount(NewAccount account)
     {
+        var response = await SendAsync(Directory.NewAccount, account);
+        var kid = (response.Headers.Location?.ToString()) ?? throw new AcmeException("Kid not found");
+        return kid;
+    }
+
+    public async Task<string> GetAccount()
+    {
+        var response = await SendAsync(Directory.NewAccount, new CheckAccount());
+        var kid = (response.Headers.Location?.ToString()) ?? throw new AcmeException("Kid not found");
+        return kid;
+    }
+
+    private async Task<HttpResponseMessage> SendAsync(string url, object message)
+    {
         var nonce = await GetNonceAsync();
-        var content = new JwsContent(account, Directory.NewAccount, nonce);
-        var response = await httpClient.PostAsync(Directory.NewAccount, content);
+        var jws = signer.Sign(message, url, nonce);
+        var content = JsonContent.Create(jws);
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/jose+json");
+        var response = await httpClient.PostAsync(url, content);
         ExtractNonce(response);
         if (!response.IsSuccessStatusCode)
         {
             var error = await response.Content.ReadFromJsonAsync<ErrorMessage>();
             throw new AcmeException(error?.Detail);
         }
-        var kid = (response.Headers.Location?.ToString()) ?? throw new AcmeException("Kid not found");
-        return kid;
+
+        return response;
     }
 
-    public async Task<string> GetNonceAsync()
+    private async Task<string> GetNonceAsync()
     {
         if (nonceQueue.TryDequeue(out var nonce))
         {
